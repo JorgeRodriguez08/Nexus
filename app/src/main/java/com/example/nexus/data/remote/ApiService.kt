@@ -14,7 +14,7 @@ interface ApiService {
     // The Movies
     @GET("movie/popular")
     suspend fun getPopularMovies(
-        @Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
+        //@Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
         @Query("language") language: String = "en-Us",
         @Query("page") page: Int = 1
     ): MovieResponse
@@ -22,14 +22,14 @@ interface ApiService {
     @GET("movie/{movie_id}")
     suspend fun getDetailsMovies(
         @Path("movie_id") movieId: Int,
-        @Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
+        //@Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
         @Query("language") language: String = "en-Us"
     ): MovieDto
 
     @GET("search/movie")
     suspend fun searchMovie(
         @Query("query") query: String,
-        @Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
+        //@Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
         @Query("language") language: String = "en-Us",
         @Query("page") page: Int = 1
     ): MovieResponse
@@ -37,7 +37,7 @@ interface ApiService {
     // The Series
     @GET("tv/popular")
     suspend fun getPopularSeries(
-        @Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
+        //@Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
         @Query("language") language: String = "en-Us",
         @Query("page") page: Int = 1
     ): SeriesResponse
@@ -45,14 +45,14 @@ interface ApiService {
     @GET("tv/{series_id}")
     suspend fun getDetailsSeries(
         @Path("series_id") seriesId: Int,
-        @Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
+        //@Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
         @Query("language") language: String = "en-Us"
     ): SeriesDto
 
     @GET("search/tv")
     suspend fun searchSeries(
         @Query("query") query: String,
-        @Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
+        //@Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
         @Query("language") language: String = "en-Us",
         @Query("page") page: Int = 1
     ): SeriesResponse
