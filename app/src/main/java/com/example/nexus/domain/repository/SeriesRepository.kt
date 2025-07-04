@@ -1,7 +1,7 @@
 package com.example.nexus.domain.repository
 
 import com.example.nexus.domain.model.Series
-import com.example.nexus.untils.Resource
+import com.example.nexus.utils.Resource
 
 interface SeriesRepository {
 

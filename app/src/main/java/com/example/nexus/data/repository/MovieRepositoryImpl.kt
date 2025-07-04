@@ -4,7 +4,7 @@ import com.example.nexus.data.remote.ApiService
 import com.example.nexus.data.mappers.toDomainMovie
 import com.example.nexus.domain.model.Movie
 import com.example.nexus.domain.repository.MovieRepository
-import com.example.nexus.untils.Resource
+import com.example.nexus.utils.Resource
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -52,7 +52,7 @@ class MovieRepositoryImpl(
     override suspend fun searchMovies(query: String, page: Int): Resource<List<Movie>> {
         return try {
             val response = apiService.searchMovie(query = query, page = page)
-            if (!response.results.isNotEmpty()) {
+            if (response.results.isNotEmpty()) {
                 val domainMoviesFound = response.results.map { it.toDomainMovie()}
                 Resource.Success(domainMoviesFound)
             } else {

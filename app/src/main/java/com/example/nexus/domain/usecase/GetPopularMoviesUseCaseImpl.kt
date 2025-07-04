@@ -2,7 +2,7 @@ package com.example.nexus.domain.usecase
 
 import com.example.nexus.domain.model.Movie
 import com.example.nexus.domain.repository.MovieRepository
-import com.example.nexus.untils.Resource
+import com.example.nexus.utils.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

@@ -4,7 +4,7 @@ import com.example.nexus.data.remote.ApiService
 import com.example.nexus.data.mappers.toDomainSeries
 import com.example.nexus.domain.model.Series
 import com.example.nexus.domain.repository.SeriesRepository
-import com.example.nexus.untils.Resource
+import com.example.nexus.utils.Resource
 import retrofit2.HttpException
 import java.io.IOException
 

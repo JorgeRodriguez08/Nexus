@@ -77,6 +77,10 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // navigation
+    implementation (libs.androidx.navigation.compose)
+    implementation (libs.androidx.hilt.navigation.compose)
+
     // room
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
@@ -99,5 +103,7 @@ dependencies {
     // coroutines
     implementation(libs.coroutines.android)
 
-
+    // google fonts
+    implementation(libs.androidx.compose.ui.text.google.fonts)
+    implementation(libs.google.play.services.basement)
 }
