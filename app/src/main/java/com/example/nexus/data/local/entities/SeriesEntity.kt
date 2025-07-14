@@ -3,7 +3,7 @@ package com.example.nexus.data.local.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity (tableName = "series")
+@Entity(tableName = "series")
 data class SeriesEntity(
     @PrimaryKey
     val id: Int,

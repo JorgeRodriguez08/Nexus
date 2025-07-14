@@ -1,4 +1,4 @@
-    package com.example.nexus.ui.screen.popular
+/*    package com.example.nexus.ui.screen.popular
 
     import android.content.res.Configuration
     import androidx.compose.foundation.layout.fillMaxSize
@@ -46,3 +46,5 @@
             }
         }
     }
+
+ */

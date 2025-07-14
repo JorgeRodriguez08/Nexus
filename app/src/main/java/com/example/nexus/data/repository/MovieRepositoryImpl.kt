@@ -1,69 +1,82 @@
 package com.example.nexus.data.repository
 
-import com.example.nexus.data.remote.ApiService
 import com.example.nexus.data.mappers.toDomainMovie
+import com.example.nexus.data.remote.ApiService
 import com.example.nexus.domain.model.Movie
 import com.example.nexus.domain.repository.MovieRepository
+import com.example.nexus.utils.ErrorMessages
 import com.example.nexus.utils.Resource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
 
-class MovieRepositoryImpl(
-    private val apiService: ApiService
-) : MovieRepository {
-    override suspend fun getPopularMovies(page: Int): Resource<List<Movie>> {
-        return try {
-            val response = apiService.getPopularMovies(page = page)
-            if (response.results.isNotEmpty()) {
-                val domainMovies = response.results.map { it.toDomainMovie() }
-                Resource.Success(domainMovies)
+class MovieRepositoryImpl(private val apiService: ApiService) : MovieRepository {
+
+    override fun getMovies(page: Int): Flow<Resource<List<Movie>>> = flow {
+        emit(Resource.Loading())
+        try {
+            val response = apiService.getMovies(page = page)
+            val domainMovies = response.results.map { it.toDomainMovie() }
+            if (domainMovies.isNotEmpty()) {
+                emit(Resource.Success(domainMovies))
             } else {
-                Resource.Error("No popular movies found.")
+                emit(Resource.Error(ErrorMessages.NO_POPULAR_MOVIES))
             }
         } catch (e: HttpException) {
-            // HTTP error (e.g., 404, 500)
-            Resource.Error(e.localizedMessage ?: "An unexpected networking error occurred")
+            emit(Resource.Error(e.localizedMessage ?: ErrorMessages.HTTP))
         } catch (e: IOException) {
-            // Network error (no internet connection, DNS, etc.)
-            Resource.Error("Could not connect to the server. Please check your internet connection.")
+            emit(Resource.Error(e.localizedMessage ?: ErrorMessages.NETWORK))
         } catch (e: Exception) {
-            // Other generic errors
-            Resource.Error(e.localizedMessage ?: "An unknown error occurred")
+            emit(Resource.Error(e.localizedMessage ?: ErrorMessages.UNKNOWN))
         }
     }
 
-    override suspend fun getMovieDetails(movieId: Int): Resource<Movie> {
-        return try {
-            val response = apiService.getDetailsMovies(movieId = movieId)
-            val domainMovieDetails = response.toDomainMovie()
-            Resource.Success(domainMovieDetails)
+    override fun getMovieById(movieId: Int): Flow<Resource<Movie>> = flow {
+        emit(Resource.Loading())
+        try {
+            val response = apiService.getMovieById(movieId = movieId)
+            emit(Resource.Success(response.toDomainMovie()))
         } catch (e: HttpException) {
-            // HTTP error (e.g., 404, 500)
-            Resource.Error(e.localizedMessage ?: "An unexpected networking error occurred")
+            emit(Resource.Error(e.localizedMessage ?: ErrorMessages.HTTP))
         } catch (e: IOException) {
-            // Network error (no internet connection, DNS, etc.)
-            Resource.Error("Could not connect to the server. Please check your internet connection.")
+            emit(Resource.Error(e.localizedMessage ?: ErrorMessages.NETWORK))
         } catch (e: Exception) {
-            // Other generic errors
-            Resource.Error(e.localizedMessage ?: "An unknown error occurred")
+            emit(Resource.Error(e.localizedMessage ?: ErrorMessages.UNKNOWN))
         }
     }
 
-    override suspend fun searchMovies(query: String, page: Int): Resource<List<Movie>> {
-        return try {
-            val response = apiService.searchMovie(query = query, page = page)
-            if (response.results.isNotEmpty()) {
-                val domainMoviesFound = response.results.map { it.toDomainMovie()}
-                Resource.Success(domainMoviesFound)
+    override fun searchMovies(query: String, page: Int): Flow<Resource<List<Movie>>> = flow {
+        emit(Resource.Loading())
+        try {
+            val response = apiService.searchMovies(query = query, page = page)
+            val domainMovies = response.results.map { it.toDomainMovie() }
+            if (domainMovies.isNotEmpty()) {
+                emit(Resource.Success(domainMovies))
             } else {
-                Resource.Error("No search movies found")
+                emit(Resource.Error(ErrorMessages.NO_POPULAR_MOVIES))
             }
         } catch (e: HttpException) {
-            Resource.Error(e.localizedMessage ?: "An unexpected networking error occurred")
+            emit(Resource.Error(e.localizedMessage ?: ErrorMessages.HTTP))
         } catch (e: IOException) {
-            Resource.Error("Could not connect to the server. Please check your internet connection")
+            emit(Resource.Error(e.localizedMessage ?: ErrorMessages.NETWORK))
         } catch (e: Exception) {
-            Resource.Error(e.localizedMessage ?: "An unknown error occurred")
+            emit(Resource.Error(e.localizedMessage ?: ErrorMessages.UNKNOWN))
+        }
+    }
+
+    override fun getMovieByGenre(genreId: Int, language: String?, page: Int): Flow<Resource<List<Movie>>> = flow {
+        emit(Resource.Loading())
+        try {
+            val response = apiService.getMoviesByGenre(genreId = genreId, language = language, page = page)
+            val movies = response.results.map { it.toDomainMovie() }
+            emit(Resource.Success(movies))
+        } catch (e: HttpException) {
+            emit(Resource.Error(e.localizedMessage ?: ErrorMessages.HTTP))
+        } catch (e: IOException) {
+            emit(Resource.Error(e.localizedMessage ?: ErrorMessages.NETWORK))
+        } catch (e: Exception) {
+            emit(Resource.Error(e.localizedMessage ?: ErrorMessages.UNKNOWN))
         }
     }
 }

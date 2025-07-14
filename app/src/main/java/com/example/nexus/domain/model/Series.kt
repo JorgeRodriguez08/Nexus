@@ -2,7 +2,7 @@ package com.example.nexus.domain.model
 
 data class Series(
     val id: Int,
-    val name: String,
+    val title: String,
     val overview: String,
     val posterUrl: String,
     val backdropUrl: String,

@@ -1,4 +1,4 @@
-    package com.example.nexus.ui.screen.mynexus
+/*    package com.example.nexus.ui.screen.mynexus
 
     import android.content.res.Configuration
     import androidx.compose.foundation.layout.fillMaxSize
@@ -46,3 +46,5 @@
             }
         }
     }
+
+ */

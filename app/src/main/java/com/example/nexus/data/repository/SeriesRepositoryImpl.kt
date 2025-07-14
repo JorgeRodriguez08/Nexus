@@ -1,69 +1,87 @@
 package com.example.nexus.data.repository
 
-import com.example.nexus.data.remote.ApiService
 import com.example.nexus.data.mappers.toDomainSeries
+import com.example.nexus.data.remote.ApiService
 import com.example.nexus.domain.model.Series
 import com.example.nexus.domain.repository.SeriesRepository
+import com.example.nexus.utils.ErrorMessages
 import com.example.nexus.utils.Resource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
 
-class SeriesRepositoryImpl(
-    private val apiService: ApiService
-) : SeriesRepository {
-    override suspend fun getPopularSeries(page: Int): Resource<List<Series>> {
-        return try {
-            val response = apiService.getPopularSeries(page = page)
-            if (response.results.isNotEmpty()) {
-                val domainSeries = response.results.map { it.toDomainSeries() }
-                Resource.Success(domainSeries)
+class SeriesRepositoryImpl(private val apiService: ApiService) : SeriesRepository {
+
+    override fun getSeries(page: Int): Flow<Resource<List<Series>>> = flow {
+        emit(Resource.Loading())
+        try {
+            val response = apiService.getSeries(page = page)
+            val domainSeries = response.results.map { it.toDomainSeries() }
+            if (domainSeries.isNotEmpty()) {
+                emit(Resource.Success(domainSeries))
             } else {
-                Resource.Error("No popular series found. ")
+                emit(Resource.Error(ErrorMessages.NO_POPULAR_MOVIES))
             }
         } catch (e: HttpException) {
-            // HTTP error (e.g., 404, 500)
-            Resource.Error(e.localizedMessage ?: "An unexpected networking error occurred")
+            emit(Resource.Error(e.localizedMessage ?: ErrorMessages.HTTP))
         } catch (e: IOException) {
-            // Network error (no internet connection, DNC, etc.)
-            Resource.Error("Could not connected to the server. Please check your internet connection")
+            emit(Resource.Error(e.localizedMessage ?: ErrorMessages.NETWORK))
         } catch (e: Exception) {
-            // Other generic errors
-            Resource.Error(e.localizedMessage ?: "An unknown error occurred")
+            emit(Resource.Error(e.localizedMessage ?: ErrorMessages.UNKNOWN))
         }
     }
 
-    override suspend fun getSeriesDetails(seriesId: Int): Resource<Series> {
-        return try {
-            val response = apiService.getDetailsSeries(seriesId = seriesId)
-            val domainSeriesDetails = response.toDomainSeries()
-            Resource.Success(domainSeriesDetails)
+    override fun getSeriesById(seriesId: Int): Flow<Resource<Series>> = flow {
+        emit(Resource.Loading())
+        try {
+            val response = apiService.getSeriesById(seriesId = seriesId)
+            emit(Resource.Success(response.toDomainSeries()))
         } catch (e: HttpException) {
-            // HTTP error (e.g., 404, 500)
-            Resource.Error(e.localizedMessage ?: "An unexpected networking error occurred")
+            emit(Resource.Error(e.localizedMessage ?: ErrorMessages.HTTP))
         } catch (e: IOException) {
-            // Network error (no internet connection, DNC, etc.)
-            Resource.Error("Could not connect to the server. Please check your internet connection.")
+            emit(Resource.Error(e.localizedMessage ?: ErrorMessages.NETWORK))
         } catch (e: Exception) {
-            // Other generic errors.
-            Resource.Error(e.localizedMessage ?: "An unknown error occurred")
+            emit(Resource.Error(e.localizedMessage ?: ErrorMessages.UNKNOWN))
         }
     }
 
-    override suspend fun searchSeries(query: String, page: Int): Resource<List<Series>> {
-        return try {
+    override fun searchSeries(query: String, page: Int): Flow<Resource<List<Series>>> = flow {
+        emit(Resource.Loading())
+        try {
             val response = apiService.searchSeries(query = query, page = page)
-            if (!response.results.isNotEmpty()) {
-                val domainSeriesFound = response.results.map { it.toDomainSeries() }
-                Resource.Success(domainSeriesFound)
+            val domainSeries = response.results.map { it.toDomainSeries() }
+            if (domainSeries.isNotEmpty()) {
+                emit(Resource.Success(domainSeries))
             } else {
-                Resource.Error("No search series found")
+                emit(Resource.Error(ErrorMessages.NO_POPULAR_MOVIES))
             }
         } catch (e: HttpException) {
-            Resource.Error(e.localizedMessage ?: "An unexpected networking error occurred")
+            emit(Resource.Error(e.localizedMessage ?: ErrorMessages.HTTP))
         } catch (e: IOException) {
-            Resource.Error("Could not connect to the server. Please check your internet connection.")
+            emit(Resource.Error(e.localizedMessage ?: ErrorMessages.NETWORK))
         } catch (e: Exception) {
-            Resource.Error(e.localizedMessage ?: "An unknown error occurred")
+            emit(Resource.Error(e.localizedMessage ?: ErrorMessages.UNKNOWN))
         }
     }
+
+    override fun getSeriesByGenre(genreId: Int, language: String, page: Int): Flow<Resource<List<Series>>> = flow {
+        emit(Resource.Loading())
+        try {
+            val response = apiService.getSeriesByGenre(genreId = genreId, language = language, page = page)
+            val domainSeries = response.results.map { it.toDomainSeries() }
+            if (domainSeries.isNotEmpty()) {
+                emit(Resource.Success(domainSeries))
+            } else {
+                emit(Resource.Error(ErrorMessages.NO_POPULAR_MOVIES))
+            }
+        } catch (e: HttpException) {
+            emit(Resource.Error(e.localizedMessage ?: ErrorMessages.HTTP))
+        } catch (e: IOException) {
+            emit(Resource.Error(e.localizedMessage ?: ErrorMessages.NETWORK))
+        } catch (e: Exception) {
+            emit(Resource.Error(e.localizedMessage ?: ErrorMessages.UNKNOWN))
+        }
+    }
+
 }

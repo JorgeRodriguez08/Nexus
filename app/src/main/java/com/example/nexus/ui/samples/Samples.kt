@@ -1,10 +1,12 @@
 package com.example.nexus.ui.samples
 
 import com.example.nexus.domain.model.Movie
+import com.example.nexus.domain.model.Series
 import kotlin.reflect.typeOf
 
 object Samples {
     val movie = Movie(1, "Inception", "Overview 1", "https://image.tmdb.org/t/p/original/rJLvP1mQfUu9S2Zt4c2f7P0M2w.jpg", "", 8.8, "2010-07-16")
+    val series = Series(1, "Inception", "Overview 1", "https://image.tmdb.org/t/p/original/rJLvP1mQfUu9S2Zt4c2f7P0M2w.jpg", "", 8.8, "2010-07-16")
 
     val movies = listOf(
         Movie(1, "Inception", "Overview 1", "https://image.tmdb.org/t/p/original/rJLvP1mQfUu9S2Zt4c2f7P0M2w.jpg", "", 8.8, "2010-07-16"),

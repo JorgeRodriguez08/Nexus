@@ -34,6 +34,7 @@ android {
         buildConfigField("String", "TMDB_API_KEY", "\"${properties.getProperty("tmdb.api.key", "")}\"")
         buildConfigField("String", "TMDB_BASE_URL", "\"https://api.themoviedb.org/3/\"")
         buildConfigField("String", "TMDB_IMAGE_BASE_URL", "\"https://image.tmdb.org/t/p/original/\"")
+        buildConfigField("String", "TMDB_BEARER_TOKEN", "\"${properties.getProperty("TMDB_BEARER_TOKEN", "")}\"")
     }
 
     buildTypes {

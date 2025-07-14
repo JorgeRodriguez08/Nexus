@@ -1,4 +1,4 @@
-    package com.example.nexus.ui.screen.news
+/*    package com.example.nexus.ui.screen.news
 
     import android.content.res.Configuration
     import androidx.compose.foundation.layout.fillMaxSize
@@ -46,3 +46,5 @@
             }
         }
     }
+
+ */

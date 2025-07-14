@@ -2,13 +2,17 @@ package com.example.nexus.domain.repository
 
 import com.example.nexus.domain.model.Movie
 import com.example.nexus.utils.Resource
+import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
 
-    suspend fun getPopularMovies(page: Int): Resource<List<Movie>>
+    fun getMovies(page: Int): Flow<Resource<List<Movie>>>
 
-    suspend fun getMovieDetails(movieId: Int): Resource<Movie>
+    fun getMovieById(movieId: Int): Flow<Resource<Movie>>
 
-    suspend fun searchMovies(query: String, page: Int): Resource<List<Movie>>
+    fun searchMovies(query: String, page: Int): Flow<Resource<List<Movie>>>
+
+    fun getMovieByGenre(genreId: Int, language: String?, page: Int): Flow<Resource<List<Movie>>>
 
 }
+

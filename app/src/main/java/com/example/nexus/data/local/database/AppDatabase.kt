@@ -7,13 +7,12 @@ import com.example.nexus.data.local.entities.SeriesEntity
 import com.example.nexus.data.local.dao.MovieDao
 import com.example.nexus.data.local.dao.SeriesDao
 
-@Database (
-    entities = [ MovieEntity::class, SeriesEntity::class],
+@Database(
+    entities = [MovieEntity::class, SeriesEntity::class],
     version = 1,
     exportSchema = true
 )
-abstract class AppDatabase : RoomDatabase()
-{
+abstract class AppDatabase : RoomDatabase() {
     abstract fun movieDao(): MovieDao
 
     abstract fun seriesDao(): SeriesDao

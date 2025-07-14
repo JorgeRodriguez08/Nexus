@@ -16,13 +16,10 @@
     import androidx.navigation.compose.rememberNavController
     import com.example.nexus.ui.composables.bottomappbar.NexusBottomAppBar
     import com.example.nexus.ui.composables.topappbar.NexusTopAppBar
-    import com.example.nexus.ui.samples.Samples
     import com.example.nexus.ui.screen.home.HomeScreen
-    import com.example.nexus.ui.screen.mynexus.MyNexusScreen
-    import com.example.nexus.ui.screen.news.NewsScreen
-    import com.example.nexus.ui.screen.popular.PopularScreen
-    import com.example.nexus.ui.screen.search.SearchScreen
+    import com.example.nexus.ui.screen.home.HomeViewModel
     import com.example.nexus.ui.theme.NexusTheme
+    import org.koin.androidx.compose.koinViewModel
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
@@ -33,43 +30,44 @@
         Scaffold(
             topBar = {
                 NexusTopAppBar(
-                    onSearchClick = { navController.navigate(NexusDestination.Search.route) },
+                    onSearchClick = { navController.navigate(NexusScreen.Search.route) },
                     onBackClick = { navController.popBackStack() },
-                    onDownloadClick = { navController.navigate(NexusDestination.MyNexus.route) }
+                    onDownloadClick = { navController.navigate(NexusScreen.MyNexus.route) }
                 )
             },
             bottomBar = {
                 NexusBottomAppBar(
-                    onHome = { navController.navigate(NexusDestination.Home.route) },
-                    onNews = { navController.navigate(NexusDestination.News.route) },
-                    onPopular = { navController.navigate(NexusDestination.Popular.route) },
-                    onMyNexus = { navController.navigate(NexusDestination.MyNexus.route) },
+                    onHome = { navController.navigate(NexusScreen.Home.route) },
+                    onNews = { navController.navigate(NexusScreen.News.route) },
+                    onPopular = { navController.navigate(NexusScreen.Popular.route) },
+                    onMyNexus = { navController.navigate(NexusScreen.MyNexus.route) },
                 )
             }
         ) { innerPadding ->
             NavHost(
                 navController = navController,
-                startDestination = NexusDestination.Home.route,
+                startDestination = NexusScreen.Home.route,
                 modifier = modifier.padding(innerPadding)
             ) {
-                composable(route = NexusDestination.Home.route) {
-                    HomeScreen(movie = Samples.movie, movies = Samples.movies)
+                composable(route = NexusScreen.Home.route) {
+                    val homeViewModel: HomeViewModel = koinViewModel()
+                    HomeScreen(homeViewModel)
                 }
 
-                composable(route = NexusDestination.News.route) {
-                    NewsScreen(movie = Samples.movie, movies = Samples.movies)
+                composable(route = NexusScreen.News.route) {
+                   /* NewsScreen(movie = Samples.movie, movies = Samples.movies)*/
                 }
 
-                composable(route = NexusDestination.Popular.route) {
-                    PopularScreen(movie = Samples.movie, movies = Samples.movies)
+                composable(route = NexusScreen.Popular.route) {
+                    /*PopularScreen(movie = Samples.movie, movies = Samples.movies)*/
                 }
 
-                composable(route = NexusDestination.MyNexus.route) {
-                    MyNexusScreen(movie = Samples.movie, movies = Samples.movies)
+                composable(route = NexusScreen.MyNexus.route) {
+                    /*MyNexusScreen(movie = Samples.movie, movies = Samples.movies)*/
                 }
 
-                composable(route = NexusDestination.Search.route) {
-                    SearchScreen(movie = Samples.movie, movies = Samples.movies)
+                composable(route = NexusScreen.Search.route) {
+                    /*SearchScreen(movie = Samples.movie, movies = Samples.movies)*/
                 }
             }
         }

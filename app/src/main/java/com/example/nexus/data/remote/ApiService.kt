@@ -1,6 +1,8 @@
 package com.example.nexus.data.remote
 
 import com.example.nexus.BuildConfig
+import com.example.nexus.data.remote.NetworkConstants.DEFAULT_LANGUAGE
+import com.example.nexus.data.remote.NetworkConstants.DEFAULT_PAGE
 import com.example.nexus.data.remote.models.MovieDto
 import com.example.nexus.data.remote.models.MovieResponse
 import com.example.nexus.data.remote.models.SeriesDto
@@ -11,50 +13,57 @@ import retrofit2.http.Query
 
 interface ApiService {
 
-    // The Movies
     @GET("movie/popular")
-    suspend fun getPopularMovies(
-        //@Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
-        @Query("language") language: String = "en-Us",
-        @Query("page") page: Int = 1
+    suspend fun getMovies(
+        @Query("language") language: String = DEFAULT_LANGUAGE,
+        @Query("page") page: Int = DEFAULT_PAGE
     ): MovieResponse
 
     @GET("movie/{movie_id}")
-    suspend fun getDetailsMovies(
+    suspend fun getMovieById(
         @Path("movie_id") movieId: Int,
-        //@Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
-        @Query("language") language: String = "en-Us"
+        @Query("language") language: String = DEFAULT_LANGUAGE
     ): MovieDto
 
     @GET("search/movie")
-    suspend fun searchMovie(
+    suspend fun searchMovies(
         @Query("query") query: String,
-        //@Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
-        @Query("language") language: String = "en-Us",
-        @Query("page") page: Int = 1
+        @Query("language") language: String = DEFAULT_LANGUAGE,
+        @Query("page") page: Int = DEFAULT_PAGE
     ): MovieResponse
 
-    // The Series
     @GET("tv/popular")
-    suspend fun getPopularSeries(
-        //@Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
-        @Query("language") language: String = "en-Us",
-        @Query("page") page: Int = 1
+    suspend fun getSeries(
+        @Query("language") language: String = DEFAULT_LANGUAGE,
+        @Query("page") page: Int = DEFAULT_PAGE
     ): SeriesResponse
 
     @GET("tv/{series_id}")
-    suspend fun getDetailsSeries(
+    suspend fun getSeriesById(
         @Path("series_id") seriesId: Int,
-        //@Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
-        @Query("language") language: String = "en-Us"
+        @Query("language") language: String = DEFAULT_LANGUAGE
     ): SeriesDto
 
     @GET("search/tv")
     suspend fun searchSeries(
         @Query("query") query: String,
-        //@Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
-        @Query("language") language: String = "en-Us",
-        @Query("page") page: Int = 1
+        @Query("language") language: String = DEFAULT_LANGUAGE,
+        @Query("page") page: Int = DEFAULT_PAGE
     ): SeriesResponse
+
+    @GET("discover/movie")
+    suspend fun getMoviesByGenre(
+        @Query("with_genres") genreId: Int,
+        @Query("language") language: String? = NetworkConstants.DEFAULT_LANGUAGE,
+        @Query("page") page: Int = NetworkConstants.DEFAULT_PAGE
+    ): MovieResponse
+
+    @GET("discover/tv")
+    suspend fun getSeriesByGenre(
+        @Query("with_genres") genreId: Int,
+        @Query("language") language: String = NetworkConstants.DEFAULT_LANGUAGE,
+        @Query("page") page: Int = NetworkConstants.DEFAULT_PAGE
+    ): SeriesResponse
+
 }
 

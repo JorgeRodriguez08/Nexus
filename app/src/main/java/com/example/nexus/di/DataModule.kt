@@ -8,7 +8,7 @@ import com.example.nexus.domain.repository.SeriesRepository
 import org.koin.dsl.module
 
 val dataModule = module {
-    single<MovieRepository> {MovieRepositoryImpl(get())}
-    single<SeriesRepository> {SeriesRepositoryImpl(get())}
+    single<MovieRepository> { MovieRepositoryImpl(get()) }
+    single<SeriesRepository> { SeriesRepositoryImpl(get()) }
 }
 

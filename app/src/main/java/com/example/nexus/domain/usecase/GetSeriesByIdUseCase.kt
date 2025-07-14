@@ -5,10 +5,10 @@ import com.example.nexus.domain.repository.SeriesRepository
 import com.example.nexus.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
-class SearchSeriesUseCase(private val repository: SeriesRepository) {
+class GetSeriesByIdUseCase(private val repository: SeriesRepository)  {
 
-    operator fun invoke(query: String, page: Int): Flow<Resource<List<Series>>> {
-        return repository.searchSeries(query = query, page = page)
+    operator fun invoke(seriesId: Int): Flow<Resource<Series>> {
+        return repository.getSeriesById(seriesId = seriesId)
     }
 
 }

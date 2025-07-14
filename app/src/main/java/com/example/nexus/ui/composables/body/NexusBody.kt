@@ -1,4 +1,4 @@
-package com.example.nexus.ui.composables.body
+/*package com.example.nexus.ui.composables.body
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
@@ -80,3 +80,4 @@ fun PreviewNexusBody() {
         }
     }
 }
+*/

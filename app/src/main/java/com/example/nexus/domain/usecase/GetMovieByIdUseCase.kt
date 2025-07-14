@@ -5,10 +5,10 @@ import com.example.nexus.domain.repository.MovieRepository
 import com.example.nexus.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
-class SearchMoviesUseCase(private val repository: MovieRepository) {
+class GetMovieByIdUseCase(private val repository: MovieRepository) {
 
-    operator fun invoke(query: String, page: Int): Flow<Resource<List<Movie>>> {
-        return repository.searchMovies(query = query, page = page)
+    operator fun invoke(movieId: Int): Flow<Resource<Movie>> {
+        return repository.getMovieById(movieId = movieId)
     }
 
 }

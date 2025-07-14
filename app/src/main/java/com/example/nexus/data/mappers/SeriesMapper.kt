@@ -20,7 +20,7 @@ fun SeriesDto.toDomainSeries(): Series {
 
     return Series(
         id = id,
-        name = name ?: "Unknown Name",
+        title = title ?: "Unknown Name",
         overview = overview ?: "No overview available",
         posterUrl = posterUrl,
         backdropUrl = backdropUrl,
