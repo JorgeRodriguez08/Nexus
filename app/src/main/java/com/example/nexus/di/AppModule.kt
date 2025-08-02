@@ -4,7 +4,8 @@ import androidx.room.Room
 import com.example.nexus.BuildConfig
 import com.example.nexus.data.local.database.AppDatabase
 import com.example.nexus.data.remote.ApiService
-import com.example.nexus.data.remote.NetworkConstants
+import com.example.nexus.data.remote.constants.ApiConstants
+import com.example.nexus.data.remote.constants.NetworkConstants
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -17,7 +18,6 @@ import java.util.concurrent.TimeUnit
 
 val appModule = module {
 
-    // OkHttpClient Singleton
     single {
         val logging = HttpLoggingInterceptor().apply {
             level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
@@ -27,8 +27,8 @@ val appModule = module {
         val headerInterceptor = Interceptor { chain ->
             val originalRequest = chain.request()
             val newRequest = originalRequest.newBuilder()
-                .addHeader(NetworkConstants.HEADER_ACCEPT, NetworkConstants.HEADER_VALUE_APPLICATION_JSON)
-                .addHeader(NetworkConstants.HEADER_AUTHORIZATION, "Bearer ${BuildConfig.TMDB_BEARER_TOKEN}")
+                .addHeader(ApiConstants.HEADER_ACCEPT, ApiConstants.HEADER_VALUE_APPLICATION_JSON)
+                .addHeader(ApiConstants.HEADER_AUTHORIZATION, "Bearer ${BuildConfig.TMDB_BEARER_TOKEN}")
                 .build()
             chain.proceed(newRequest)
         }
@@ -38,6 +38,7 @@ val appModule = module {
             .addInterceptor(logging)
             .connectTimeout(NetworkConstants.CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .readTimeout(NetworkConstants.READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .retryOnConnectionFailure(true)
             .build()
     }
 

@@ -3,9 +3,9 @@ package com.example.nexus
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.nexus.ui.navigation.NexusNavHost
+import com.example.nexus.ui.navigation.NavigationHost
 
 @Composable
 fun NexusApp(navController: NavHostController = rememberNavController()) {
-    NexusNavHost(navController = navController)
+    NavigationHost(navController = navController)
 }

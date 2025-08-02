@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class SeriesDto(
     val id: Int,
+    @SerializedName("name")
     val title: String?,
     val overview: String?,
     @SerializedName("poster_path")
