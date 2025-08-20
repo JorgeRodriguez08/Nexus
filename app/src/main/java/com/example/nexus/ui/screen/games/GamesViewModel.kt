@@ -1,4 +1,4 @@
-package com.example.nexus.ui.screen.home
+package com.example.nexus.ui.screen.games
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,19 +17,19 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class HomeViewModel(
+class GamesViewModel(
     private val moviesUseCase: MoviesUseCase,
     private val seriesUseCase: SeriesUseCase
 ) : ViewModel() {
 
-    private val _homeUiState = MutableStateFlow(HomeUiState(rows = HomeCategories.rows))
-    val homeUiState: StateFlow<HomeUiState> = _homeUiState.asStateFlow()
+    private val _gamesUiState = MutableStateFlow(GamesUiState(rows = GamesCategories.rows))
+    val gamesUiState: StateFlow<GamesUiState> = _gamesUiState.asStateFlow()
 
-    fun loadHomeContent() {
-        HomeCategories.rows.forEach { row ->
+    fun loadGamesContent() {
+        GamesCategories.rows.forEach { row ->
             when (row) {
-                is HomeRow.MoviesRow -> loadMoviesRow(row.category, 1)
-                is HomeRow.SeriesRow -> loadSeriesRow(row.category, 1)
+                is GamesRow.MoviesRow -> loadMoviesRow(row.category, 1)
+                is GamesRow.SeriesRow -> loadSeriesRow(row.category, 1)
             }
         }
     }
@@ -101,14 +101,15 @@ class HomeViewModel(
     }
 
     private fun updateMoviesState(category: MoviesCategory, resource: Resource<List<Movie>>) {
-        _homeUiState.update { currentUiState ->
+        _gamesUiState.update { currentUiState ->
             val moviesMap = currentUiState.moviesMap.toMutableMap()
             moviesMap[category] = when (resource) {
-                is Resource.Loading -> HomeState.Loading
-                is Resource.Success -> HomeState.Success(resource.data)
-                is Resource.Error -> HomeState.Error(resource.message)
+                is Resource.Loading -> GamesState.Loading
+                is Resource.Success -> GamesState.Success(resource.data)
+                is Resource.Error -> GamesState.Error(resource.message)
             }
             currentUiState.copy(moviesMap = moviesMap)
+
         }
     }
 
@@ -151,7 +152,7 @@ class HomeViewModel(
     private fun loadSeriesByGenre(category: SeriesCategory, page: Int) {
         val genreId = category.genreId ?: return
         viewModelScope.launch(Dispatchers.IO) {
-            delay(100)
+            delay(50)
             seriesUseCase.getSeriesByGenre.invoke(genreId, page).collect { resource ->
                 updateSeriesState(category, resource)
             }
@@ -159,12 +160,12 @@ class HomeViewModel(
     }
 
     private fun updateSeriesState(category: SeriesCategory, resource: Resource<List<Series>>) {
-        _homeUiState.update { currentUiState ->
+        _gamesUiState.update { currentUiState ->
             val seriesMap = currentUiState.seriesMap.toMutableMap()
             seriesMap[category] = when (resource) {
-                is Resource.Loading -> HomeState.Loading
-                is Resource.Success -> HomeState.Success(items = resource.data)
-                is Resource.Error -> HomeState.Error(message = resource.message)
+                is Resource.Loading -> GamesState.Loading
+                is Resource.Success -> GamesState.Success(items = resource.data)
+                is Resource.Error -> GamesState.Error(message = resource.message)
             }
             currentUiState.copy(seriesMap = seriesMap)
         }

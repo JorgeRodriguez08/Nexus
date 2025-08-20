@@ -30,8 +30,6 @@ fun MovieCardLarge(
             contentDescription = movie.title,
             contentScale = ContentScale.Crop,
             modifier = modifier.fillMaxSize(),
-            error = painterResource(R.drawable.squid_game),
-            placeholder = painterResource(R.drawable.squid_game),
             alignment = Alignment.Center
         )
     }

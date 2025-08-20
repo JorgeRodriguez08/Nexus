@@ -64,11 +64,9 @@ fun NexusTopAppBar(
             modifier = modifier
         )
 
-        if (currentRoute in screensFilter) {
-            FilterRowBar(
-                selectedOption = currentRoute,
-                onOptionSelected = onFilterSelected
-            )
-        }
+        FilterRowBar(
+            selectedOption = currentRoute,
+            onOptionSelected = onFilterSelected
+        )
     }
 }

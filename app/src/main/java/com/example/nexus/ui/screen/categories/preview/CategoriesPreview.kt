@@ -1,4 +1,4 @@
-package com.example.nexus.ui.screen.series.preview
+package com.example.nexus.ui.screen.categories.preview
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.nexus.ui.screen.series.preview.ScreenWrapperPreview
 import com.example.nexus.ui.theme.NexusTheme
 
 @Preview(
@@ -24,7 +25,7 @@ fun SeriesScreenPreview() {
             color = MaterialTheme.colorScheme.background
         ) {
             ScreenWrapperPreview() { modifier ->
-                SeriesScreenFake(modifier)
+                CategoriesScreenFake(modifier)
             }
         }
     }

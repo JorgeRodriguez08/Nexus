@@ -1,6 +1,8 @@
 package com.example.nexus.ui.screen.movies
 
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import com.example.nexus.ui.screen.movies.layout.MoviesContentLayout
@@ -13,6 +15,11 @@ fun MoviesScreen(
     val featuredMoviesState = moviesViewModel.featuredMoviesState.collectAsState()
     val uiState = moviesViewModel.uiState.collectAsState()
     val moviesUiState = uiState.value.moviesUiState
+
+    LaunchedEffect(Unit) {
+        moviesViewModel.loadFeaturedMovies()
+        moviesViewModel.loadMoviesContent()
+    }
 
     MoviesContentLayout(
         featuredState = featuredMoviesState.value,

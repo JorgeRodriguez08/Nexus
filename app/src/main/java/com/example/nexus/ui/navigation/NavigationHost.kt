@@ -11,6 +11,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.nexus.ui.components.bottomappbar.NexusBottomAppBar
 import com.example.nexus.ui.components.topappbar.NexusTopAppBar
+import com.example.nexus.ui.screen.categories.CategoriesScreen
+import com.example.nexus.ui.screen.games.GamesScreen
+import com.example.nexus.ui.screen.games.GamesViewModel
+import com.example.nexus.ui.screen.home.HomeScreen
+import com.example.nexus.ui.screen.home.HomeViewModel
 import com.example.nexus.ui.screen.movies.MoviesScreen
 import com.example.nexus.ui.screen.series.SeriesScreen
 import com.example.nexus.ui.screen.series.SeriesViewModel
@@ -42,8 +47,8 @@ fun NavigationHost(
         bottomBar = {
             NexusBottomAppBar(
                 onHome = {
-                    navigationViewModel.onRouteChanged(NexusScreen.Series.route)
-                    navController.navigate(NexusScreen.Series.route)},
+                    navigationViewModel.onRouteChanged(NexusScreen.Home.route)
+                    navController.navigate(NexusScreen.Home.route)},
                 onGames = {
                     navigationViewModel.onRouteChanged(NexusScreen.Games.route)
                     navController.navigate(NexusScreen.Games.route) },
@@ -58,7 +63,7 @@ fun NavigationHost(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = NexusScreen.Series.route,
+            startDestination = NexusScreen.Home.route,
             modifier = modifier.padding(innerPadding)
         ) {
             composable(route = NexusScreen.Series.route) {
@@ -74,7 +79,7 @@ fun NavigationHost(
             }
 
             composable(route = NexusScreen.Categories.route) {
-
+                CategoriesScreen()
             }
 
             composable(route = NexusScreen.Search.route) {
@@ -82,17 +87,16 @@ fun NavigationHost(
             }
 
             composable(route = NexusScreen.Home.route) {
-
-
+                val homeViewModel: HomeViewModel = koinViewModel()
+                HomeScreen(homeViewModel)
             }
 
             composable(route = NexusScreen.Games.route) {
-
-
+                val gamesViewModel: GamesViewModel = koinViewModel()
+                GamesScreen(gamesViewModel)
             }
 
             composable(route = NexusScreen.NewsAndPopular.route) {
-
 
             }
 

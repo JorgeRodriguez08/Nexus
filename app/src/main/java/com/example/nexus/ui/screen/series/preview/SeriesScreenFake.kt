@@ -1,4 +1,4 @@
-package com.example.nexus.ui.screen.series.fake
+package com.example.nexus.ui.screen.series.preview
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -34,5 +34,4 @@ fun SeriesScreenFake(modifier: Modifier = Modifier) {
         categories = seriesCategories,
         modifier = modifier
     )
-
 }

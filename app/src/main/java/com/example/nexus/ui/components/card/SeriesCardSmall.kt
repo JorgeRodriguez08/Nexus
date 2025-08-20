@@ -28,9 +28,7 @@ fun SeriesCardSmall(
         AsyncImage(
             model = series.posterUrl,
             contentDescription = series.title,
-            contentScale = ContentScale.Crop,
-            placeholder = painterResource(R.drawable.squid_game),
-            error = painterResource(R.drawable.squid_game)
+            contentScale = ContentScale.Crop
         )
     }
 }

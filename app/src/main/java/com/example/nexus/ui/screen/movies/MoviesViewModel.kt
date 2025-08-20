@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.nexus.common.Resource
 import com.example.nexus.domain.model.Movie
 import com.example.nexus.domain.usecase.movies.MoviesUseCase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,25 +25,22 @@ class MoviesViewModel(
 
     val moviesCategories = MoviesCategories.moviesCategories
 
-    init {
-        loadFeaturedMovies()
-        loadMoviesContent()
-    }
-
-    private fun loadMoviesContent() {
+    fun loadMoviesContent() {
         moviesCategories.forEach { category ->
             when (category) {
-                is MoviesCategory.NowPlaying -> loadMoviesNowPlaying(category)
-                is MoviesCategory.Popular -> loadMoviesPopular(category)
-                is MoviesCategory.TopRated -> loadMoviesTopRated(category)
-                is MoviesCategory.UpComing -> loadMoviesUpComing(category)
-                else -> loadMoviesByGenre(category)
+                is MoviesCategory.NowPlaying -> loadMoviesNowPlaying(category, 1)
+                is MoviesCategory.Popular -> loadMoviesPopular(category, 1)
+                is MoviesCategory.TopRated -> loadMoviesTopRated(category, 1)
+                is MoviesCategory.UpComing -> loadMoviesUpComing(category, 1)
+                else -> loadMoviesByGenre(category,1)
             }
 
         }
     }
-    private fun loadFeaturedMovies(page: Int = 1) {
+
+    fun loadFeaturedMovies(page: Int = 1) {
         viewModelScope.launch {
+            delay(50)
             moviesUseCase.getMoviesNowPlaying.invoke(page).collect { resource ->
                 _featuredMoviesState.value = when (resource) {
                     is Resource.Loading -> MoviesState.Loading
@@ -52,41 +51,46 @@ class MoviesViewModel(
         }
     }
 
-    private fun loadMoviesNowPlaying(category: MoviesCategory, page: Int = 1) {
-        viewModelScope.launch {
+    private fun loadMoviesNowPlaying(category: MoviesCategory, page: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            delay(50)
             moviesUseCase.getMoviesNowPlaying.invoke(page).collect { resource ->
                 updateUiState(category, resource)
             }
         }
     }
 
-    private fun loadMoviesPopular(category: MoviesCategory, page: Int = 1) {
-        viewModelScope.launch {
+    private fun loadMoviesPopular(category: MoviesCategory, page: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            delay(50)
             moviesUseCase.getMoviesPopular.invoke(page).collect { resource ->
                 updateUiState(category, resource)
             }
         }
     }
 
-    private fun loadMoviesTopRated(category: MoviesCategory, page: Int = 1) {
-        viewModelScope.launch {
+    private fun loadMoviesTopRated(category: MoviesCategory, page: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            delay(50)
             moviesUseCase.getMoviesTopRated.invoke(page).collect { resource ->
                 updateUiState(category, resource)
             }
         }
     }
 
-    private fun loadMoviesUpComing(category: MoviesCategory, page: Int = 1) {
-        viewModelScope.launch {
+    private fun loadMoviesUpComing(category: MoviesCategory, page: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            delay(50)
             moviesUseCase.getMoviesUpComing.invoke(page).collect { resource ->
                 updateUiState(category, resource)
             }
         }
     }
 
-    private fun loadMoviesByGenre(category: MoviesCategory, page: Int = 1) {
+    private fun loadMoviesByGenre(category: MoviesCategory, page: Int) {
         val genreId = category.genreId ?: return
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
+            delay(100)
             moviesUseCase.getMoviesByGenre.invoke(genreId, page).collect { resource ->
                 updateUiState(category, resource)
             }
