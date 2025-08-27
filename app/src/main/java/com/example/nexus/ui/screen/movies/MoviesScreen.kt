@@ -10,6 +10,7 @@ import com.example.nexus.ui.screen.movies.layout.MoviesContentLayout
 @Composable
 fun MoviesScreen(
     moviesViewModel: MoviesViewModel,
+    onMovieClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val featuredMoviesState = moviesViewModel.featuredMoviesState.collectAsState()
@@ -25,6 +26,7 @@ fun MoviesScreen(
         featuredState = featuredMoviesState.value,
         moviesUiState = moviesUiState,
         categories = moviesViewModel.moviesCategories,
+        onMovieClick = onMovieClick,
         modifier = modifier
     )
 }

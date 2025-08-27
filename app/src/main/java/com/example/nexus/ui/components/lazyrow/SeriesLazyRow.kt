@@ -19,6 +19,7 @@ import com.example.nexus.ui.components.card.SeriesCardSmall
 fun SeriesLazyRow(
     title: String,
     seriesList: List<Series>,
+    onSeriesClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -37,7 +38,7 @@ fun SeriesLazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(seriesList) { series ->
-                SeriesCardSmall(series = series)
+                SeriesCardSmall(series = series, onSeriesClick = onSeriesClick)
             }
         }
     }

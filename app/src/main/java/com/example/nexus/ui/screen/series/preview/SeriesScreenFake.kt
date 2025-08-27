@@ -32,6 +32,7 @@ fun SeriesScreenFake(modifier: Modifier = Modifier) {
         featuredState = fakeFeaturedState,
         seriesUiState = fakeSeriesUiState,
         categories = seriesCategories,
+        onSeriesClick = {},
         modifier = modifier
     )
 }

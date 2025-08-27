@@ -22,6 +22,7 @@ fun SeriesContentLayout(
     featuredState: SeriesState<Series>,
     seriesUiState: Map<SeriesCategory, SeriesState<Series>>,
     categories: List<SeriesCategory>,
+    onSeriesClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -36,7 +37,7 @@ fun SeriesContentLayout(
                 is SeriesState.Loading -> { SeriesCardLargeShimmer() }
                 is SeriesState.Success -> {
                     val featured = featuredState.items.random()
-                    SeriesCardLarge(featured)
+                    SeriesCardLarge(featured, onSeriesClick = onSeriesClick)
                 }
                 is SeriesState.Error -> { SeriesCardLargeShimmer() }
             }
@@ -46,7 +47,7 @@ fun SeriesContentLayout(
             val seriesState = seriesUiState[category]
             when (seriesState) {
                 null, is SeriesState.Loading -> { SeriesRowShimmer(category.title)}
-                is SeriesState.Success -> { SeriesLazyRow(category.title, seriesState.items) }
+                is SeriesState.Success -> { SeriesLazyRow(category.title, seriesState.items, onSeriesClick = onSeriesClick) }
                 is SeriesState.Error -> { SeriesRowShimmer(category.title) }
             }
         }

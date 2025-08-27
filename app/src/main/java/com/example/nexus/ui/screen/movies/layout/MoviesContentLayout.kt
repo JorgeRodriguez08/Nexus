@@ -22,6 +22,7 @@ fun MoviesContentLayout(
     featuredState: MoviesState<Movie>,
     moviesUiState: Map<MoviesCategory, MoviesState<Movie>>,
     categories: List<MoviesCategory>,
+    onMovieClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -36,7 +37,7 @@ fun MoviesContentLayout(
                 is MoviesState.Loading -> { MoviesCardLargeShimmer() }
                 is MoviesState.Success -> {
                     val featured = featuredState.items.first()
-                    MovieCardLarge(featured)
+                    MovieCardLarge(featured, onMovieClick = onMovieClick)
                 }
                 is MoviesState.Error -> { MoviesCardLargeShimmer()}
             }
@@ -46,7 +47,7 @@ fun MoviesContentLayout(
             val moviesState = moviesUiState[category]
             when (moviesState) {
                 null, is MoviesState.Loading -> { MoviesRowShimmer(category.title) }
-                is MoviesState.Success -> { MoviesLazyRow(category.title, moviesState.items) }
+                is MoviesState.Success -> { MoviesLazyRow(category.title, moviesState.items, onMovieClick = onMovieClick) }
                 is MoviesState.Error -> { MoviesRowShimmer(category.title) }
             }
         }

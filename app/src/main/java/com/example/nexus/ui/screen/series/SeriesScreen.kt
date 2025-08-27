@@ -9,6 +9,7 @@ import com.example.nexus.ui.screen.series.layout.SeriesContentLayout
 @Composable
 fun SeriesScreen(
     seriesViewModel: SeriesViewModel,
+    onSeriesClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val featuredSeriesState = seriesViewModel.featuredSeriesState.collectAsState()
@@ -24,6 +25,7 @@ fun SeriesScreen(
         featuredState = featuredSeriesState.value,
         seriesUiState = seriesUiState,
         categories = seriesViewModel.seriesCategories,
+        onSeriesClick = onSeriesClick,
         modifier = modifier
     )
 }

@@ -8,6 +8,7 @@ import com.example.nexus.domain.model.Series
 import com.example.nexus.domain.usecase.movies.MoviesUseCase
 import com.example.nexus.domain.usecase.series.SeriesUseCase
 import com.example.nexus.ui.screen.movies.MoviesCategory
+import com.example.nexus.ui.screen.movies.MoviesState
 import com.example.nexus.ui.screen.series.SeriesCategory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -25,11 +26,27 @@ class GamesViewModel(
     private val _gamesUiState = MutableStateFlow(GamesUiState(rows = GamesCategories.rows))
     val gamesUiState: StateFlow<GamesUiState> = _gamesUiState.asStateFlow()
 
+    private val _featuredState = MutableStateFlow<MoviesState<Movie>>(MoviesState.Loading)
+    val featuredState: StateFlow<MoviesState<Movie>> = _featuredState.asStateFlow()
+
     fun loadGamesContent() {
         GamesCategories.rows.forEach { row ->
             when (row) {
                 is GamesRow.MoviesRow -> loadMoviesRow(row.category, 1)
                 is GamesRow.SeriesRow -> loadSeriesRow(row.category, 1)
+            }
+        }
+    }
+
+    fun loadFeaturedMovies(page: Int = 1) {
+        viewModelScope.launch {
+            delay(50)
+            moviesUseCase.getMoviesUpComing.invoke(page).collect { resource ->
+                _featuredState.value = when (resource) {
+                    is Resource.Loading -> MoviesState.Loading
+                    is Resource.Success -> MoviesState.Success(resource.data)
+                    is Resource.Error -> MoviesState.Error(resource.message)
+                }
             }
         }
     }

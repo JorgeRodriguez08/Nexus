@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.nexus.ui.components.bottomappbar.NexusBottomAppBar
 import com.example.nexus.ui.components.topappbar.NexusTopAppBar
-import com.example.nexus.ui.navigation.NexusScreen
+import com.example.nexus.ui.navigation.Dest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -16,7 +16,7 @@ fun ScreenWrapperPreview(
     content: @Composable (Modifier) -> Unit
 ) {
     Scaffold(
-        topBar = { NexusTopAppBar(currentRoute = NexusScreen.Home.route,onSearchClick = { }, onBackClick = { }, onDownloadClick = { }, onFilterSelected = {})},
+        topBar = { NexusTopAppBar(currentRoute = Dest.Home.route,onSearchClick = { }, onBackClick = { }, onDownloadClick = { }, onFilterSelected = {})},
         bottomBar = { NexusBottomAppBar(onHome = { }, onGames = { }, onNewsAndPopular = { }, onMyNexus = { }) }
     ) { innerPadding ->
         content(modifier.padding(innerPadding))

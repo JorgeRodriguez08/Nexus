@@ -19,6 +19,7 @@ import com.example.nexus.ui.components.card.MovieCardSmall
 fun MoviesLazyRow(
     title: String,
     movies: List<Movie>,
+    onMovieClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -37,7 +38,7 @@ fun MoviesLazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(movies) { movie ->
-                MovieCardSmall(movie = movie)
+                MovieCardSmall(movie = movie, onMovieClick = onMovieClick)
             }
         }
     }

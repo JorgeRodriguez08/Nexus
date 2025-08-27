@@ -15,16 +15,22 @@ import com.example.nexus.ui.components.lazyrow.SeriesLazyRow
 import com.example.nexus.ui.components.shimmer.MoviesRowShimmer
 import com.example.nexus.ui.components.shimmer.SeriesRowShimmer
 import com.example.nexus.domain.model.Series
+import com.example.nexus.ui.components.card.MovieCardLarge
+import com.example.nexus.ui.components.shimmer.MoviesCardLargeShimmer
 import com.example.nexus.ui.screen.home.HomeRow
 import com.example.nexus.ui.screen.home.HomeState
 import com.example.nexus.ui.screen.movies.MoviesCategory
+import com.example.nexus.ui.screen.movies.MoviesState
 import com.example.nexus.ui.screen.series.SeriesCategory
 
 @Composable
 fun HomeContentLayout(
+    featuredState: MoviesState<Movie>,
     rows: List<HomeRow>,
     moviesMap: Map<MoviesCategory, HomeState<Movie>>,
     seriesMap: Map<SeriesCategory, HomeState<Series>>,
+    onMovieClick: (Int) -> Unit,
+    onSeriesClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -34,6 +40,16 @@ fun HomeContentLayout(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        item {
+            when (featuredState) {
+                is MoviesState.Loading -> { MoviesCardLargeShimmer() }
+                is MoviesState.Success -> {
+                    val featured = featuredState.items.first()
+                    MovieCardLarge(featured, onMovieClick =  onMovieClick)
+                }
+                is MoviesState.Error -> { MoviesCardLargeShimmer() }
+            }
+        }
 
         items(rows) { row ->
             when (row) {
@@ -41,7 +57,7 @@ fun HomeContentLayout(
                     val homeState = moviesMap[row.category]
                     when (homeState) {
                         null, is HomeState.Loading -> MoviesRowShimmer(row.category.title)
-                        is HomeState.Success -> MoviesLazyRow(row.category.title, movies = homeState.items)
+                        is HomeState.Success -> MoviesLazyRow(row.category.title, movies = homeState.items, onMovieClick = onMovieClick)
                         is HomeState.Error -> MoviesRowShimmer(row.category.title)
                     }
                 }
@@ -50,7 +66,7 @@ fun HomeContentLayout(
                     val homeState = seriesMap[row.category]
                     when (homeState) {
                         null, is HomeState.Loading -> SeriesRowShimmer(row.category.title)
-                        is HomeState.Success -> SeriesLazyRow(row.category.title, seriesList = homeState.items)
+                        is HomeState.Success -> SeriesLazyRow(row.category.title, seriesList = homeState.items, onSeriesClick = onSeriesClick)
                         is HomeState.Error -> SeriesRowShimmer(row.category.title)
                     }
                 }

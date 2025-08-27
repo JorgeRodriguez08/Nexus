@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class NavigationViewModel : ViewModel() {
 
-    private val _currentRoute = MutableStateFlow(NexusScreen.Home.route)
+    private val _currentRoute = MutableStateFlow(Dest.Home.route)
     val currentRoute: StateFlow<String> = _currentRoute.asStateFlow()
 
     fun onRouteChanged(route: String) {
@@ -20,7 +20,7 @@ class NavigationViewModel : ViewModel() {
     }
 
     fun canNavigateBack(): Boolean {
-        return _currentRoute.value != NexusScreen.Home.route
+        return _currentRoute.value != Dest.Home.route
     }
 
 }

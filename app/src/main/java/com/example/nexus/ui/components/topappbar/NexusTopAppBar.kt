@@ -15,8 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.nexus.R
 import com.example.nexus.ui.components.filterrowbar.FilterRowBar
-import com.example.nexus.ui.navigation.NexusScreen
-import com.example.nexus.ui.navigation.screensFilter
+import com.example.nexus.ui.navigation.Dest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,13 +50,13 @@ fun NexusTopAppBar(
                 IconButton(onClick = onSearchClick) {
                     Icon(
                         imageVector = Icons.Filled.Search,
-                        contentDescription = NexusScreen.Search.route
+                        contentDescription = Dest.Search.route
                     )
                 }
                 IconButton(onClick = onDownloadClick) {
                     Icon(
                         imageVector = Icons.Filled.Add,
-                        contentDescription = NexusScreen.MyNexus.route
+                        contentDescription = Dest.MyNexus.route
                     )
                 }
             },
