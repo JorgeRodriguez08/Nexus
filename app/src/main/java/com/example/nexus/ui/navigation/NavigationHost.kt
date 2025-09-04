@@ -42,7 +42,7 @@ fun NavigationHost(
                 currentRoute = currentRoute,
                 canNavigateBack = navigationViewModel.canNavigateBack(),
                 onSearchClick = { navController.navigate(Dest.Search.route) },
-                onBackClick = { navController.popBackStack() },
+                onBackClick = { navController.navigate(Dest.Home.route) },
                 onDownloadClick = { navController.navigate(Dest.MyNexus.route) },
                 onFilterSelected = { selectedRoute ->
                     navigationViewModel.onRouteChanged(selectedRoute)
@@ -116,6 +116,7 @@ fun NavigationHost(
             }
 
             composable(route = Dest.Categories.route) {
+                navigationViewModel.onRouteChanged(Dest.Categories.route)
                 CategoriesScreen()
             }
 
@@ -124,6 +125,7 @@ fun NavigationHost(
             }
 
             composable(route = Dest.Home.route) {
+                navigationViewModel.onRouteChanged(Dest.Home.route)
                 val homeViewModel: HomeViewModel = koinViewModel()
                 HomeScreen(
                     homeViewModel,
