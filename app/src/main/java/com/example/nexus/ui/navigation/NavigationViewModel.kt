@@ -7,20 +7,19 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class NavigationViewModel : ViewModel() {
 
-    private val _currentRoute = MutableStateFlow(Dest.Home.route)
+    private val _currentRoute = MutableStateFlow(Destinations.Home.route)
     val currentRoute: StateFlow<String> = _currentRoute.asStateFlow()
 
     fun onRouteChanged(route: String) {
         _currentRoute.value = route
     }
 
-    fun shouldShowFilter(): Boolean {
-        val screensFilter = screensFilter
-        return _currentRoute.value in screensFilter
+    fun canNavigateBack(): Boolean {
+        return _currentRoute.value != Destinations.Home.route
     }
 
-    fun canNavigateBack(): Boolean {
-        return _currentRoute.value != Dest.Home.route
+    fun shouldShowFilter(): Boolean {
+        return _currentRoute.value in screensFilter
     }
 
 }

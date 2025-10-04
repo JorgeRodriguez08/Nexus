@@ -1,5 +1,6 @@
 package com.example.nexus.ui.components.topappbar
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,14 +22,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.nexus.R
 import com.example.nexus.ui.components.filterrowbar.FilterRowBar
-import com.example.nexus.ui.navigation.Dest
+import com.example.nexus.ui.navigation.Destinations
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NexusTopAppBar(
     modifier: Modifier = Modifier,
     currentRoute: String,
-    canNavigateBack: Boolean = false,
+    canNavigateBack: Boolean,
     onSearchClick: () -> Unit,
     onBackClick: () -> Unit,
     onDownloadClick: () -> Unit,
@@ -38,66 +39,43 @@ fun NexusTopAppBar(
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
         TopAppBar(
-            title = {
-                when (currentRoute) {
-                    Dest.Home.route -> Text(text = Dest.Home.route, fontSize = 22.sp)
-                    Dest.Games.route -> Text(text = Dest.Games.route, fontSize = 22.sp)
-                    Dest.NewsAndPopular.route -> Text(text = Dest.NewsAndPopular.route, fontSize = 22.sp)
-                    Dest.MyNexus.route -> Text(text = Dest.MyNexus.route, fontSize = 22.sp)
-                    Dest.Series.route -> Text(text = Dest.Series.route, fontSize = 22.sp)
-                    Dest.Movies.route -> Text(text = Dest.Movies.route, fontSize = 22.sp)
-                    Dest.Categories.route -> Text(text = Dest.Categories.route, fontSize = 22.sp)
-                }
-            },
+            title = { Text(text = getTitleForRoute(currentRoute)) },
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = MaterialTheme.colorScheme.background,
                 titleContentColor = MaterialTheme.colorScheme.onBackground
             ),
             navigationIcon = {
-                when (currentRoute) {
-                    Dest.Series.route, Dest.Movies.route, Dest.Categories.route -> {
-                        IconButton(onClick = onBackClick) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(R.string.back_icon)
-                            )
-                        }
-                    }
-                    Dest.Home.route -> {
-                        Image(
-                            painter = painterResource(R.drawable.icons8_netflix_96),
-                            contentDescription = stringResource(R.string.nexus_icon),
-                            modifier = Modifier
-                                .size(43.dp)
+                if (canNavigateBack) {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back_icon)
                         )
                     }
+                } else {
+                    Image(
+                        painter = painterResource(R.drawable.icons8_netflix_96),
+                        contentDescription = stringResource(R.string.nexus_icon),
+                        modifier = Modifier.size(43.dp)
+                    )
                 }
             },
             actions = {
-
-                IconButton(onClick = {  }) {
-                    Icon(
-                        painter = painterResource(R.drawable.cast_24dp),
-                        contentDescription = Dest.MyNexus.route,
-                        modifier = Modifier.size(28.dp)
-                    )
-                }
-
-                IconButton(onClick = onDownloadClick) {
-                    Icon(
-                        painter = painterResource(R.drawable.vertical_align_bottom),
-                        contentDescription = Dest.MyNexus.route,
-                        modifier = Modifier.size(28.dp)
-                    )
-                }
-
-                IconButton(onClick = onSearchClick) {
-                    Icon(
-                        painter = painterResource(R.drawable.magnifying_glass),
-                        contentDescription = Dest.Search.route,
-                        modifier = Modifier.size(28.dp)
-                    )
-                }
+                TopBarAction(
+                    iconRes = R.drawable.cast_24dp,
+                    contentDescription = stringResource(R.string.home_screen),
+                    onClick = { }
+                )
+                TopBarAction(
+                    iconRes = R.drawable.vertical_align_bottom,
+                    contentDescription = stringResource(R.string.home_screen),
+                    onClick = onDownloadClick
+                )
+                TopBarAction(
+                    iconRes = R.drawable.magnifying_glass,
+                    contentDescription = stringResource(R.string.search_icon),
+                    onClick = onSearchClick
+                )
             },
             modifier = modifier
         )
@@ -105,6 +83,40 @@ fun NexusTopAppBar(
         FilterRowBar(
             selectedOption = currentRoute,
             onOptionSelected = onFilterSelected
+
         )
     }
 }
+
+@Composable
+fun TopBarAction(
+    @DrawableRes iconRes: Int,
+    contentDescription: String,
+    onClick: () -> Unit
+) {
+    IconButton(onClick = onClick) {
+        Icon(
+            painter = painterResource(iconRes),
+            contentDescription = contentDescription,
+            modifier = Modifier.size(28.dp)
+        )
+    }
+}
+
+fun getTitleForRoute(route: String): String {
+    return when (route) {
+        Destinations.Home.route -> Destinations.Home.route
+        Destinations.Movies.route -> Destinations.Movies.route
+        Destinations.Series.route -> Destinations.Series.route
+        Destinations.Categories.route -> Destinations.Categories.route
+        Destinations.Games.route -> Destinations.Games.route
+        Destinations.NewsAndPopular.route -> Destinations.NewsAndPopular.route
+        Destinations.MyNexus.route -> Destinations.MyNexus.route
+        Destinations.Search.route -> Destinations.Search.route
+        Destinations.MovieDetail.route -> Destinations.MovieDetail.route
+        Destinations.SeriesDetail.route -> Destinations.SeriesDetail.route
+        else -> ""
+    }
+}
+
+

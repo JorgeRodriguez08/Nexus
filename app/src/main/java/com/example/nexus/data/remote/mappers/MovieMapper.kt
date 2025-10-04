@@ -12,6 +12,7 @@ fun MovieDto.toDomainMovie(): Movie {
         posterUrl = BuildConfig.TMDB_IMAGE_BASE_URL + posterPath.orEmpty(),
         backdropUrl = BuildConfig.TMDB_IMAGE_BASE_URL + backdropPath.orEmpty(),
         voteAverage = voteAverage ?: 0.0,
-        releaseDate = releaseDate.orEmpty()
+        releaseDate = releaseDate.orEmpty(),
+        adult = adult ?: true
     )
 }

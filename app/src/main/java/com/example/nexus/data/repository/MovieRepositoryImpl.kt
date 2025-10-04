@@ -1,12 +1,17 @@
 package com.example.nexus.data.repository
 
-import com.example.nexus.data.remote.mappers.toDomainMovie
-import com.example.nexus.data.remote.ApiService
-import com.example.nexus.domain.model.Movie
-import com.example.nexus.domain.repository.MovieRepository
+import coil.network.HttpException
 import com.example.nexus.common.Resource
 import com.example.nexus.common.safeApiCall
+import com.example.nexus.data.remote.ApiService
+import com.example.nexus.data.remote.mappers.toDomainMovie
+import com.example.nexus.data.remote.mappers.toDomainVideo
+import com.example.nexus.domain.model.Movie
+import com.example.nexus.domain.model.Video
+import com.example.nexus.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import java.io.IOException
 
 class MovieRepositoryImpl(private val apiService: ApiService) : MovieRepository {
 
@@ -39,6 +44,26 @@ class MovieRepositoryImpl(private val apiService: ApiService) : MovieRepository 
         safeApiCall {
             apiService.getMovieById(movieId = movieId).toDomainMovie()
         }
+
+    override fun getMovieVideos(movieId: Int): Flow<Resource<Video>> = flow {
+        emit(Resource.Loading)
+        try {
+            val response = apiService.getMovieVideos(movieId = movieId)
+            val video = response.results
+                .firstOrNull { it.site.equals("YouTube", ignoreCase = true) && it.type == "Trailer" && it.official }
+                ?.toDomainVideo()
+            if (video != null) {
+                emit(Resource.Success(video))
+            } else {
+                emit(Resource.Error("No official YouTube trailer available for this movie."))
+            }
+
+        } catch (e: HttpException) {
+            emit(Resource.Error("Unable to fetch movie videos due to a server error. Please try again later."))
+        } catch (e: IOException) {
+            emit(Resource.Error("Network error occurred. Please check your internet connection and try again."))
+        }
+    }
 
     override fun searchMovies(query: String, page: Int): Flow<Resource<List<Movie>>> =
         safeApiCall {

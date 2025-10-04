@@ -13,19 +13,19 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.nexus.ui.components.bottomappbar.NexusBottomAppBar
 import com.example.nexus.ui.components.topappbar.NexusTopAppBar
-import com.example.nexus.ui.screen.categories.CategoriesScreen
-import com.example.nexus.ui.screen.movieDetail.MovieDetailScreen
-import com.example.nexus.ui.screen.movieDetail.MovieDetailViewModel
-import com.example.nexus.ui.screen.games.GamesScreen
-import com.example.nexus.ui.screen.games.GamesViewModel
-import com.example.nexus.ui.screen.home.HomeScreen
-import com.example.nexus.ui.screen.home.HomeViewModel
-import com.example.nexus.ui.screen.movies.MoviesScreen
-import com.example.nexus.ui.screen.series.SeriesScreen
-import com.example.nexus.ui.screen.series.SeriesViewModel
-import com.example.nexus.ui.screen.movies.MoviesViewModel
-import com.example.nexus.ui.screen.seriesDetail.SeriesDetailScreen
-import com.example.nexus.ui.screen.seriesDetail.SeriesDetailViewModel
+import com.example.nexus.ui.screens.categories.CategoriesScreen
+import com.example.nexus.ui.screens.movieDetail.MovieDetailScreen
+import com.example.nexus.ui.screens.movieDetail.MovieDetailViewModel
+import com.example.nexus.ui.screens.games.GamesScreen
+import com.example.nexus.ui.screens.games.GamesViewModel
+import com.example.nexus.ui.screens.home.HomeScreen
+import com.example.nexus.ui.screens.home.HomeViewModel
+import com.example.nexus.ui.screens.movies.MoviesScreen
+import com.example.nexus.ui.screens.series.SeriesScreen
+import com.example.nexus.ui.screens.series.SeriesViewModel
+import com.example.nexus.ui.screens.movies.MoviesViewModel
+import com.example.nexus.ui.screens.seriesDetail.SeriesDetailScreen
+import com.example.nexus.ui.screens.seriesDetail.SeriesDetailViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,14 +36,15 @@ fun NavigationHost(
 ) {
     val navigationViewModel: NavigationViewModel = koinViewModel()
     val currentRoute = navigationViewModel.currentRoute.collectAsState().value
+
     Scaffold(
         topBar = {
             NexusTopAppBar(
                 currentRoute = currentRoute,
                 canNavigateBack = navigationViewModel.canNavigateBack(),
-                onSearchClick = { navController.navigate(Dest.Search.route) },
-                onBackClick = { navController.navigate(Dest.Home.route) },
-                onDownloadClick = { navController.navigate(Dest.MyNexus.route) },
+                onSearchClick = { navController.navigate(Destinations.Search.route) },
+                onBackClick = { navController.navigate(Destinations.Home.route) },
+                onDownloadClick = { navController.navigate(Destinations.MyNexus.route) },
                 onFilterSelected = { selectedRoute ->
                     navigationViewModel.onRouteChanged(selectedRoute)
                     navController.navigate(selectedRoute)
@@ -52,50 +53,44 @@ fun NavigationHost(
         },
         bottomBar = {
             NexusBottomAppBar(
-                onHome = {
-                    navigationViewModel.onRouteChanged(Dest.Home.route)
-                    navController.navigate(Dest.Home.route)},
-                onGames = {
-                    navigationViewModel.onRouteChanged(Dest.Games.route)
-                    navController.navigate(Dest.Games.route) },
-                onNewsAndPopular = {
-                    navigationViewModel.onRouteChanged(Dest.NewsAndPopular.route)
-                    navController.navigate(Dest.NewsAndPopular.route) },
-                onMyNexus = {
-                    navigationViewModel.onRouteChanged(Dest.MyNexus.route)
-                    navController.navigate(Dest.MyNexus.route) },
+                currentRoute = currentRoute,
+                onNavigate = { route ->
+                    navController.navigate(route)
+                    navigationViewModel.onRouteChanged(route)
+                }
+
             )
         }
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Dest.Home.route,
+            startDestination = currentRoute,
             modifier = modifier.padding(innerPadding)
         ) {
-            composable(route = Dest.Series.route) {
-                navigationViewModel.onRouteChanged(Dest.Series.route)
+            composable(route = Destinations.Series.route) {
+                navigationViewModel.onRouteChanged(Destinations.Series.route)
                 val seriesViewModel: SeriesViewModel = koinViewModel()
                 SeriesScreen(
                     seriesViewModel,
-                    onSeriesClick = {id -> navController.navigate(Dest.SeriesDetail.create(id)) }
+                    onSeriesClick = {id -> navController.navigate(Destinations.SeriesDetail.create(id)) }
                 )
             }
 
-            composable(route = Dest.Movies.route) {
-                navigationViewModel.onRouteChanged(Dest.Movies.route)
+            composable(route = Destinations.Movies.route) {
+                navigationViewModel.onRouteChanged(Destinations.Movies.route)
                 val moviesViewModel: MoviesViewModel = koinViewModel()
                 MoviesScreen(
                     moviesViewModel,
-                    onMovieClick = {id -> navController.navigate(Dest.MovieDetail.create(id))
+                    onMovieClick = {id -> navController.navigate(Destinations.MovieDetail.create(id))
                     }
                 )
             }
 
             composable(
-                route = Dest.SeriesDetail.route,
-                arguments = listOf(navArgument(Dest.SeriesDetail.ARGUMENT) { type = NavType.IntType })
+                route = Destinations.SeriesDetail.route,
+                arguments = listOf(navArgument(Destinations.SeriesDetail.ARGUMENT) { type = NavType.IntType })
             ) { backStackEntry ->
-                val seriesId = backStackEntry.arguments?.getInt(Dest.SeriesDetail.ARGUMENT) ?: return@composable
+                val seriesId = backStackEntry.arguments?.getInt(Destinations.SeriesDetail.ARGUMENT) ?: return@composable
                 val seriesDetailViewModel: SeriesDetailViewModel = koinViewModel()
                 SeriesDetailScreen(
                     seriesDetailViewModel,
@@ -104,10 +99,10 @@ fun NavigationHost(
             }
 
             composable(
-                route = Dest.MovieDetail.route,
-                arguments = listOf(navArgument(Dest.MovieDetail.ARGUMENT) { type = NavType.IntType })
+                route = Destinations.MovieDetail.route,
+                arguments = listOf(navArgument(Destinations.MovieDetail.ARGUMENT) { type = NavType.IntType })
             ) { backStackEntry ->
-                val movieId = backStackEntry.arguments?.getInt(Dest.MovieDetail.ARGUMENT) ?: return@composable
+                val movieId = backStackEntry.arguments?.getInt(Destinations.MovieDetail.ARGUMENT) ?: return@composable
                 val movieDetailViewModel: MovieDetailViewModel = koinViewModel()
                 MovieDetailScreen(
                     movieDetailViewModel,
@@ -115,43 +110,45 @@ fun NavigationHost(
                 )
             }
 
-            composable(route = Dest.Categories.route) {
-                navigationViewModel.onRouteChanged(Dest.Categories.route)
+            composable(route = Destinations.Categories.route) {
+                navigationViewModel.onRouteChanged(Destinations.Categories.route)
                 CategoriesScreen()
             }
 
-            composable(route = Dest.Search.route) {
+            composable(route = Destinations.Search.route) {
+                navigationViewModel.onRouteChanged(Destinations.Search.route)
 
             }
 
-            composable(route = Dest.Home.route) {
-                navigationViewModel.onRouteChanged(Dest.Home.route)
+            composable(route = Destinations.Home.route) {
+                navigationViewModel.onRouteChanged(Destinations.Home.route)
                 val homeViewModel: HomeViewModel = koinViewModel()
                 HomeScreen(
                     homeViewModel,
-                    onMovieClick = { id -> navController.navigate(Dest.MovieDetail.create(id)) },
-                    onSeriesClick = { id -> navController.navigate(Dest.SeriesDetail.create(id)) }
+                    onMovieClick = { id -> navController.navigate(Destinations.MovieDetail.create(id)) },
+                    onSeriesClick = { id -> navController.navigate(Destinations.SeriesDetail.create(id)) }
                 )
             }
 
-            composable(route = Dest.Games.route) {
+            composable(route = Destinations.Games.route) {
+                navigationViewModel.onRouteChanged(Destinations.Games.route)
                 val gamesViewModel: GamesViewModel = koinViewModel()
                 GamesScreen(
                     gamesViewModel,
-                    onMovieClick = { id -> navController.navigate(Dest.MovieDetail.create(id)) },
-                    onSeriesClick = { id -> navController.navigate(Dest.SeriesDetail.create(id)) }
+                    onMovieClick = { id -> navController.navigate(Destinations.MovieDetail.create(id)) },
+                    onSeriesClick = { id -> navController.navigate(Destinations.SeriesDetail.create(id)) }
                 )
             }
 
-            composable(route = Dest.NewsAndPopular.route) {
+            composable(route = Destinations.NewsAndPopular.route) {
+                navigationViewModel.onRouteChanged(Destinations.NewsAndPopular.route)
 
             }
 
-            composable(route = Dest.MyNexus.route) {
+            composable(route = Destinations.MyNexus.route) {
+                navigationViewModel.onRouteChanged(Destinations.MyNexus.route)
 
             }
         }
     }
 }
-
-

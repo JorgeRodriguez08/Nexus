@@ -90,21 +90,19 @@ dependencies {
     // koin
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
-
     // coil
     implementation(libs.coil.compose)
-
     // retrofit
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)
-
     // OkHttp (para logs de red)
     implementation(libs.okhttp.logging)
-
     // coroutines
     implementation(libs.coroutines.android)
-
     // google fonts
     implementation(libs.androidx.compose.ui.text.google.fonts)
     implementation(libs.google.play.services.basement)
+    // youtube player
+    implementation(libs.youtube.player)
+
 }

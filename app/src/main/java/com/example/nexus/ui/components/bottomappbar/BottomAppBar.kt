@@ -10,95 +10,42 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 import com.example.nexus.R
-import com.example.nexus.ui.navigation.Dest
+import com.example.nexus.ui.navigation.Destinations
 
 @Composable
 fun NexusBottomAppBar(
     modifier: Modifier = Modifier,
-    selectedItemIndex: Int = 0,
-    onHome: () -> Unit = {},
-    onGames: () -> Unit = {},
-    onNewsAndPopular: () -> Unit = {},
-    onMyNexus: () -> Unit = {},
+    currentRoute: String,
+    onNavigate: (String) -> Unit
 ) {
     NavigationBar(
         modifier = modifier
     ) {
-        NavigationBarItem(
-            selected = selectedItemIndex == 0,
-            onClick = onHome,
-            icon = {
-                Icon(
-                    painter = if (selectedItemIndex == 1) painterResource(R.drawable.filled_home)
-                    else painterResource(R.drawable.outlined_home),
-                    contentDescription = Dest.Home.route
-                )
-            },
-            label = {
-                Text(
-                    text = Dest.Home.route,
-                    style = MaterialTheme.typography.labelSmall,
-                    fontSize = 10.sp
-                )
-            }
+        val items = listOf(
+            Triple(Destinations.Home.route, R.drawable.outlined_home, R.drawable.filled_home),
+            Triple(Destinations.Games.route, R.drawable.outlined_game, R.drawable.filled_game),
+            Triple(Destinations.NewsAndPopular.route, R.drawable.outlined_play, R.drawable.filled_play),
+            Triple(Destinations.MyNexus.route, R.drawable.outlined_profile, R.drawable.filled_profile)
         )
 
-        NavigationBarItem(
-            selected = selectedItemIndex == 1,
-            onClick = onGames,
-            icon = {
-                Icon(
-                    painter = if (selectedItemIndex == 1) painterResource(R.drawable.filled_game)
-                    else painterResource(R.drawable.outlined_game),
-                    contentDescription = Dest.Games.route
-                )
-            },
-            label = {
-                Text(
-                    text = Dest.Games.route,
-                    style = MaterialTheme.typography.labelSmall,
-                    fontSize = 10.sp
-                )
-            }
-        )
-
-        NavigationBarItem(
-            selected = selectedItemIndex == 2,
-            onClick = onNewsAndPopular,
-            icon = {
-                Icon(
-                    painter = if (selectedItemIndex == 1) painterResource(R.drawable.filled_play)
-                    else painterResource(R.drawable.outlined_play),
-                    contentDescription = Dest.NewsAndPopular.route
-                )
-            },
-            label = {
-                Text(
-                    text = Dest.NewsAndPopular.route,
-                    maxLines = 1,
-                    style = MaterialTheme.typography.labelSmall,
-                    fontSize = 10.sp
-                )
-            }
-        )
-
-        NavigationBarItem(
-            selected = selectedItemIndex == 2,
-            onClick = onMyNexus,
-            icon = {
-                Icon(
-                    painter = if (selectedItemIndex == 0) painterResource(R.drawable.filled_profile)
-                    else painterResource(R.drawable.outlined_profile),
-                    contentDescription = Dest.MyNexus.route
-                )
-            },
-            label = {
-                Text(
-                    text = Dest.MyNexus.route,
-                    style = MaterialTheme.typography.labelSmall,
-                    fontSize = 10.sp
-                )
-            }
-        )
+        items.forEachIndexed { index, (destination, outlinedIcon, filledIcon) ->
+            NavigationBarItem(
+                selected = currentRoute == destination,
+                onClick = { onNavigate(destination) },
+                icon = {
+                    Icon(
+                        painter = painterResource(if (currentRoute == destination) filledIcon else outlinedIcon),
+                        contentDescription = destination
+                    )
+                },
+                label = {
+                    Text(
+                        text = destination,
+                        style = MaterialTheme.typography.labelSmall,
+                        fontSize = 10.sp
+                    )
+                }
+            )
+        }
     }
 }

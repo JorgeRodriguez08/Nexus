@@ -1,7 +1,5 @@
 package com.example.nexus.data.remote.constants
 
-import com.example.nexus.ui.screen.movies.MoviesCategory
-
 object SeriesGenreIds {
     const val ACTION_ADVENTURE = 10759
     const val ANIMATION = 16

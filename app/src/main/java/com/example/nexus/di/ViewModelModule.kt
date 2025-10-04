@@ -1,11 +1,11 @@
 package com.example.nexus.di
 
 import com.example.nexus.ui.navigation.NavigationViewModel
-import com.example.nexus.ui.screen.movieDetail.MovieDetailViewModel
-import com.example.nexus.ui.screen.games.GamesViewModel
-import com.example.nexus.ui.screen.movies.MoviesViewModel
-import com.example.nexus.ui.screen.series.SeriesViewModel
-import com.example.nexus.ui.screen.home.HomeViewModel
+import com.example.nexus.ui.screens.movieDetail.MovieDetailViewModel
+import com.example.nexus.ui.screens.games.GamesViewModel
+import com.example.nexus.ui.screens.movies.MoviesViewModel
+import com.example.nexus.ui.screens.series.SeriesViewModel
+import com.example.nexus.ui.screens.home.HomeViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
