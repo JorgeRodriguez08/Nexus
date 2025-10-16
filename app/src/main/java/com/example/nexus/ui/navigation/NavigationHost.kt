@@ -1,8 +1,11 @@
 package com.example.nexus.ui.navigation
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -20,6 +23,8 @@ import com.example.nexus.ui.screens.games.GamesScreen
 import com.example.nexus.ui.screens.games.GamesViewModel
 import com.example.nexus.ui.screens.home.HomeScreen
 import com.example.nexus.ui.screens.home.HomeViewModel
+import com.example.nexus.ui.screens.movieVideo.MovieVideoScreen
+import com.example.nexus.ui.screens.movieVideo.MovieVideoViewModel
 import com.example.nexus.ui.screens.movies.MoviesScreen
 import com.example.nexus.ui.screens.series.SeriesScreen
 import com.example.nexus.ui.screens.series.SeriesViewModel
@@ -39,32 +44,36 @@ fun NavigationHost(
 
     Scaffold(
         topBar = {
-            NexusTopAppBar(
-                currentRoute = currentRoute,
-                canNavigateBack = navigationViewModel.canNavigateBack(),
-                onSearchClick = { navController.navigate(Destinations.Search.route) },
-                onBackClick = { navController.navigate(Destinations.Home.route) },
-                onDownloadClick = { navController.navigate(Destinations.MyNexus.route) },
-                onFilterSelected = { selectedRoute ->
-                    navigationViewModel.onRouteChanged(selectedRoute)
-                    navController.navigate(selectedRoute)
-                }
-            )
+            if (Destinations.shouldShowTopBar(currentRoute)) {
+                NexusTopAppBar(
+                    currentRoute = currentRoute,
+                    canNavigateBack = navigationViewModel.canNavigateBack(),
+                    onSearchClick = { navController.navigate(Destinations.Search.route) },
+                    onBackClick = { navController.navigateUp() },
+                    onDownloadClick = { navController.navigate(Destinations.MyNexus.route) },
+                    onFilterSelected = { selectedRoute ->
+                        navigationViewModel.onRouteChanged(selectedRoute)
+                        navController.navigate(selectedRoute)
+                    }
+                )
+            }
         },
         bottomBar = {
-            NexusBottomAppBar(
-                currentRoute = currentRoute,
-                onNavigate = { route ->
-                    navController.navigate(route)
-                    navigationViewModel.onRouteChanged(route)
-                }
-
-            )
+            if (Destinations.shouldShowBottomBar(currentRoute)) {
+                NexusBottomAppBar(
+                    currentRoute = currentRoute,
+                    onNavigate = { route ->
+                        navController.navigate(route)
+                        navigationViewModel.onRouteChanged(route)
+                    }
+                )
+            }
         }
     ) { innerPadding ->
+
         NavHost(
             navController = navController,
-            startDestination = currentRoute,
+            startDestination = Destinations.Home.route,
             modifier = modifier.padding(innerPadding)
         ) {
             composable(route = Destinations.Series.route) {
@@ -72,7 +81,7 @@ fun NavigationHost(
                 val seriesViewModel: SeriesViewModel = koinViewModel()
                 SeriesScreen(
                     seriesViewModel,
-                    onSeriesClick = {id -> navController.navigate(Destinations.SeriesDetail.create(id)) }
+                    onSeriesClick = { id -> navController.navigate(Destinations.SeriesDetail.create(id)) }
                 )
             }
 
@@ -81,8 +90,7 @@ fun NavigationHost(
                 val moviesViewModel: MoviesViewModel = koinViewModel()
                 MoviesScreen(
                     moviesViewModel,
-                    onMovieClick = {id -> navController.navigate(Destinations.MovieDetail.create(id))
-                    }
+                    onMovieClick = { id -> navController.navigate(Destinations.MovieDetail.create(id)) }
                 )
             }
 
@@ -103,11 +111,23 @@ fun NavigationHost(
                 arguments = listOf(navArgument(Destinations.MovieDetail.ARGUMENT) { type = NavType.IntType })
             ) { backStackEntry ->
                 val movieId = backStackEntry.arguments?.getInt(Destinations.MovieDetail.ARGUMENT) ?: return@composable
+                navigationViewModel.onRouteChanged(Destinations.MovieDetail.create(movieId))
                 val movieDetailViewModel: MovieDetailViewModel = koinViewModel()
                 MovieDetailScreen(
                     movieDetailViewModel,
-                    movieId
+                    movieId,
+                    onFullClick = { videoUrl -> navController.navigate(Destinations.MovieVideo.create(videoUrl)) }
                 )
+            }
+
+            composable(
+                route = Destinations.MovieVideo.route,
+                arguments = listOf(navArgument(Destinations.MovieVideo.ARGUMENT) { type = NavType.StringType })
+            ) { backStackEntry ->
+                val videoUrl = backStackEntry.arguments?.getString(Destinations.MovieVideo.ARGUMENT) ?: return@composable
+                navigationViewModel.onRouteChanged(Destinations.MovieVideo.create(videoUrl))
+                val movieVideoViewModel: MovieVideoViewModel = koinViewModel()
+                MovieVideoScreen(videoUrl = videoUrl, movieVideoViewModel)
             }
 
             composable(route = Destinations.Categories.route) {
@@ -117,7 +137,6 @@ fun NavigationHost(
 
             composable(route = Destinations.Search.route) {
                 navigationViewModel.onRouteChanged(Destinations.Search.route)
-
             }
 
             composable(route = Destinations.Home.route) {
@@ -142,13 +161,12 @@ fun NavigationHost(
 
             composable(route = Destinations.NewsAndPopular.route) {
                 navigationViewModel.onRouteChanged(Destinations.NewsAndPopular.route)
-
             }
 
             composable(route = Destinations.MyNexus.route) {
                 navigationViewModel.onRouteChanged(Destinations.MyNexus.route)
-
             }
         }
     }
 }
+

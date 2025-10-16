@@ -27,7 +27,7 @@ fun SeriesCardLargeShimmer(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.onSecondaryContainer)
+                .background(MaterialTheme.colorScheme.surface)
         )
     }
 }

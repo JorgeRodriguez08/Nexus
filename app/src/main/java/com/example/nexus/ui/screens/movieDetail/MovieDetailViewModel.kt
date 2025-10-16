@@ -24,6 +24,9 @@ class MovieDetailViewModel(
     private val _isVideoLoading = MutableStateFlow(false)
     val isVideoLoading: StateFlow<Boolean> = _isVideoLoading.asStateFlow()
 
+    private val _isFullScreen = MutableStateFlow(false)
+    val isFullScreen: StateFlow<Boolean> = _isFullScreen.asStateFlow()
+
     fun loadMovieDetail(movieId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             delay(50)
@@ -48,6 +51,10 @@ class MovieDetailViewModel(
 
     fun setVideoLoadingState(isLoading: Boolean) {
         _isVideoLoading.value = isLoading
+    }
+
+    fun setFullScreenState(isFullScreen: Boolean) {
+        _isFullScreen.value = isFullScreen
     }
 }
 

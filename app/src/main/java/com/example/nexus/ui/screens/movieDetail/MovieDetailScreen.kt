@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 fun MovieDetailScreen(
     movieDetailViewModel: MovieDetailViewModel,
     movieId: Int,
+    onFullClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LaunchedEffect(movieId) {
@@ -19,6 +20,7 @@ fun MovieDetailScreen(
     MovieDetailLayout(
         movieDetailState = movieDetailState,
         movieDetailViewModel = movieDetailViewModel,
+        onFullClick = onFullClick,
         modifier = modifier
     )
 }

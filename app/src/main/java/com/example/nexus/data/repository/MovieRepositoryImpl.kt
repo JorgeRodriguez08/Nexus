@@ -50,12 +50,12 @@ class MovieRepositoryImpl(private val apiService: ApiService) : MovieRepository 
         try {
             val response = apiService.getMovieVideos(movieId = movieId)
             val video = response.results
-                .firstOrNull { it.site.equals("YouTube", ignoreCase = true) && it.type == "Trailer" && it.official }
+                .firstOrNull { it.site == "YouTube" && it.official == true }
                 ?.toDomainVideo()
             if (video != null) {
                 emit(Resource.Success(video))
             } else {
-                emit(Resource.Error("No official YouTube trailer available for this movie."))
+                emit(Resource.Error("No official trailer available for this movie."))
             }
 
         } catch (e: HttpException) {

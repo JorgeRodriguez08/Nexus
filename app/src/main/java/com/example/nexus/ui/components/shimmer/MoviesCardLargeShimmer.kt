@@ -1,5 +1,6 @@
 package com.example.nexus.ui.components.shimmer
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,13 +22,14 @@ fun MoviesCardLargeShimmer(
         modifier = modifier
             .width(340.dp)
             .height(500.dp),
-        shape = RoundedCornerShape(8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.30f)),
+        elevation = CardDefaults.cardElevation(defaultElevation = 15.dp),
+        shape = RoundedCornerShape(16.dp),
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.onSecondaryContainer)
+                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
         )
     }
 }

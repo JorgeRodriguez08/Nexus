@@ -104,5 +104,8 @@ dependencies {
     implementation(libs.google.play.services.basement)
     // youtube player
     implementation(libs.youtube.player)
+    // Exo player
+    implementation(libs.media3.exoplayer)
+    implementation(libs.media3.ui)
 
 }

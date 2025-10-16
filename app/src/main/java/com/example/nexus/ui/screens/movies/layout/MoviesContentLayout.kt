@@ -39,7 +39,7 @@ fun MoviesContentLayout(
                     val featured = featuredState.items.first()
                     MovieCardLarge(featured, onMovieClick = onMovieClick)
                 }
-                is MoviesState.Error -> { MoviesCardLargeShimmer()}
+                is MoviesState.Error -> { MoviesCardLargeShimmer() }
             }
         }
 

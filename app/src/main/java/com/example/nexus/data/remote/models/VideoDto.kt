@@ -8,3 +8,4 @@ data class VideoDto(
     val type: String,
     val official: Boolean = true
 )
+

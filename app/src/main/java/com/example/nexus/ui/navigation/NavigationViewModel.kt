@@ -18,8 +18,4 @@ class NavigationViewModel : ViewModel() {
         return _currentRoute.value != Destinations.Home.route
     }
 
-    fun shouldShowFilter(): Boolean {
-        return _currentRoute.value in screensFilter
-    }
-
 }

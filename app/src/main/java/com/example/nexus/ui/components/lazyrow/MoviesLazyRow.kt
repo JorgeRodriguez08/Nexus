@@ -28,6 +28,7 @@ fun MoviesLazyRow(
         Text(
             text = title,
             style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onSurface,
             fontWeight = FontWeight.SemiBold,
             maxLines = 2,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)

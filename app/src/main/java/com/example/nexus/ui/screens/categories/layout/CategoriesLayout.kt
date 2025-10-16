@@ -31,6 +31,7 @@ fun CategoriesLayout(
             Text(
                 text = "Todas las Categorías",
                 style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Bold
 
             )
@@ -39,6 +40,7 @@ fun CategoriesLayout(
             Text(
                 text = category.title,
                 style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier
                     .clickable(onClick = onClick)
             )

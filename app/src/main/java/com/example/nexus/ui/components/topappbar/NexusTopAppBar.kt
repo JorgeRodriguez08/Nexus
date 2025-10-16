@@ -16,13 +16,16 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.nexus.R
 import com.example.nexus.ui.components.filterrowbar.FilterRowBar
 import com.example.nexus.ui.navigation.Destinations
+import com.example.nexus.ui.navigation.Destinations.Companion.findDestination
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,10 +42,23 @@ fun NexusTopAppBar(
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
         TopAppBar(
-            title = { Text(text = getTitleForRoute(currentRoute)) },
+            title = {
+                Text(
+                    text = when (findDestination(currentRoute)) {
+                        Destinations.MovieDetail -> ""
+                        Destinations.SeriesDetail -> ""
+                        else -> currentRoute
+                    },
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontSize = 18.sp
+
+                )
+            },
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.background,
-                titleContentColor = MaterialTheme.colorScheme.onBackground
+                containerColor = Color.Transparent,
+                titleContentColor = MaterialTheme.colorScheme.onSurface
             ),
             navigationIcon = {
                 if (canNavigateBack) {
@@ -80,13 +96,15 @@ fun NexusTopAppBar(
             modifier = modifier
         )
 
-        FilterRowBar(
-            selectedOption = currentRoute,
-            onOptionSelected = onFilterSelected
-
-        )
+        if (Destinations.shouldShowFilterBar(currentRoute)) {
+            FilterRowBar(
+                selectedOption = currentRoute,
+                onOptionSelected = onFilterSelected
+            )
+        }
     }
 }
+
 
 @Composable
 fun TopBarAction(
@@ -98,25 +116,7 @@ fun TopBarAction(
         Icon(
             painter = painterResource(iconRes),
             contentDescription = contentDescription,
-            modifier = Modifier.size(28.dp)
+            modifier = Modifier.size(26.dp)
         )
     }
 }
-
-fun getTitleForRoute(route: String): String {
-    return when (route) {
-        Destinations.Home.route -> Destinations.Home.route
-        Destinations.Movies.route -> Destinations.Movies.route
-        Destinations.Series.route -> Destinations.Series.route
-        Destinations.Categories.route -> Destinations.Categories.route
-        Destinations.Games.route -> Destinations.Games.route
-        Destinations.NewsAndPopular.route -> Destinations.NewsAndPopular.route
-        Destinations.MyNexus.route -> Destinations.MyNexus.route
-        Destinations.Search.route -> Destinations.Search.route
-        Destinations.MovieDetail.route -> Destinations.MovieDetail.route
-        Destinations.SeriesDetail.route -> Destinations.SeriesDetail.route
-        else -> ""
-    }
-}
-
-
