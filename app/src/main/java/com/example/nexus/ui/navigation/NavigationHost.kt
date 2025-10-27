@@ -1,11 +1,8 @@
 package com.example.nexus.ui.navigation
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -17,18 +14,20 @@ import androidx.navigation.navArgument
 import com.example.nexus.ui.components.bottomappbar.NexusBottomAppBar
 import com.example.nexus.ui.components.topappbar.NexusTopAppBar
 import com.example.nexus.ui.screens.categories.CategoriesScreen
-import com.example.nexus.ui.screens.movieDetail.MovieDetailScreen
-import com.example.nexus.ui.screens.movieDetail.MovieDetailViewModel
 import com.example.nexus.ui.screens.games.GamesScreen
 import com.example.nexus.ui.screens.games.GamesViewModel
 import com.example.nexus.ui.screens.home.HomeScreen
 import com.example.nexus.ui.screens.home.HomeViewModel
+import com.example.nexus.ui.screens.movieDetail.MovieDetailScreen
+import com.example.nexus.ui.screens.movieDetail.MovieDetailViewModel
 import com.example.nexus.ui.screens.movieVideo.MovieVideoScreen
 import com.example.nexus.ui.screens.movieVideo.MovieVideoViewModel
 import com.example.nexus.ui.screens.movies.MoviesScreen
+import com.example.nexus.ui.screens.movies.MoviesViewModel
+import com.example.nexus.ui.screens.newsPopular.UpcomingScreen
+import com.example.nexus.ui.screens.newsPopular.UpcomingViewModel
 import com.example.nexus.ui.screens.series.SeriesScreen
 import com.example.nexus.ui.screens.series.SeriesViewModel
-import com.example.nexus.ui.screens.movies.MoviesViewModel
 import com.example.nexus.ui.screens.seriesDetail.SeriesDetailScreen
 import com.example.nexus.ui.screens.seriesDetail.SeriesDetailViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -161,6 +160,10 @@ fun NavigationHost(
 
             composable(route = Destinations.NewsAndPopular.route) {
                 navigationViewModel.onRouteChanged(Destinations.NewsAndPopular.route)
+                val newsPopularViewModel: UpcomingViewModel = koinViewModel()
+                UpcomingScreen(
+                    newsPopularViewModel
+                )
             }
 
             composable(route = Destinations.MyNexus.route) {

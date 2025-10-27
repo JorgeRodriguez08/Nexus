@@ -8,5 +8,6 @@ data class Movie(
     val posterUrl: String,
     val backdropUrl: String,
     val voteAverage: Double,
-    val releaseDate: String
+    val releaseDate: String,
+    val runtime: Int
 )

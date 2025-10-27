@@ -3,12 +3,13 @@ package com.example.nexus.ui.screens.movieDetail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nexus.common.Resource
-import com.example.nexus.domain.model.Movie
-import com.example.nexus.domain.model.Video
 import com.example.nexus.domain.usecase.movies.MoviesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 class MovieDetailViewModel(
@@ -32,13 +33,15 @@ class MovieDetailViewModel(
             delay(50)
             val movieResource = moviesUseCase.getMovieById.invoke(movieId)
             val videoResource = moviesUseCase.getMovieVideo.invoke(movieId)
+            val castResource = moviesUseCase.getMovieCast.invoke(movieId)
+            val crewResource = moviesUseCase.getMovieCrew.invoke(movieId)
 
-            combine(movieResource, videoResource) { movie, video ->
-                Pair(movie, video)
-            }.collect { (movie, video) ->
+            combine(movieResource, videoResource, castResource, crewResource) { movie, video, cast, crew ->
+                Quadruple(movie, video, cast, crew)
+            }.collect { (movie, video, cast, crew) ->
                 _movieDetailState.value = when {
-                    movie is Resource.Loading || video is Resource.Loading -> MovieDetailState.Loading
-                    movie is Resource.Success && video is Resource.Success -> MovieDetailState.Success(movie.data, video.data)
+                    movie is Resource.Loading || video is Resource.Loading || cast is Resource.Loading || crew is Resource.Loading  -> MovieDetailState.Loading
+                    movie is Resource.Success && video is Resource.Success && cast is Resource.Success && crew is Resource.Success -> MovieDetailState.Success(movie.data, video.data, cast.data, crew.data)
                     else -> MovieDetailState.Error("Failed to load movie or video")
                 }
             }
@@ -58,8 +61,4 @@ class MovieDetailViewModel(
     }
 }
 
-sealed class MovieDetailState {
-    object Loading : MovieDetailState()
-    data class Success(val movie: Movie, val video: Video) : MovieDetailState()
-    data class Error(val message: String) : MovieDetailState()
-}
+

@@ -26,6 +26,7 @@ import com.example.nexus.R
 import com.example.nexus.ui.components.filterrowbar.FilterRowBar
 import com.example.nexus.ui.navigation.Destinations
 import com.example.nexus.ui.navigation.Destinations.Companion.findDestination
+import com.example.nexus.ui.screens.newsPopular.NewsFilterBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -102,6 +103,12 @@ fun NexusTopAppBar(
                 onOptionSelected = onFilterSelected
             )
         }
+
+        if (Destinations.shouldShowNewsFilterBar(currentRoute)) {
+            NewsFilterBar(
+            )
+        }
+
     }
 }
 

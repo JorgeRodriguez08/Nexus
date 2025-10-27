@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,13 +34,16 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import coil.compose.AsyncImage
 import com.example.nexus.R
+import com.example.nexus.domain.model.Actor
 import com.example.nexus.domain.model.Movie
+import com.example.nexus.domain.model.Producer
 import com.example.nexus.domain.model.Video
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
@@ -49,6 +53,8 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 fun MovieDetailCard(
     movie: Movie,
     video: Video,
+    cast: List<Actor>,
+    crew: List<Producer>,
     movieDetailViewModel: MovieDetailViewModel,
     onFullClick: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -69,7 +75,7 @@ fun MovieDetailCard(
             .fillMaxSize()
             .padding(horizontal = 10.dp)
             .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(7.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
         horizontalAlignment = Alignment.Start
     ) {
         Card(
@@ -120,9 +126,11 @@ fun MovieDetailCard(
         Text(
             text = movie.title,
             style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 33.sp,
             color = MaterialTheme.colorScheme.onSurface
         )
+
 
         Row(
             horizontalArrangement = Arrangement.spacedBy(15.dp),
@@ -131,17 +139,23 @@ fun MovieDetailCard(
         ) {
             Text(
                 text = movie.releaseDate.substring(0, 4),
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                fontSize = 12.sp
             )
-            Card(shape = RectangleShape) {
+            Card(
+                shape = RectangleShape,
+                modifier = Modifier.size(20.dp)
+            ) {
                 Text(
                     text = if (movie.adult) "16-" else "16+",
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    fontSize = 12.sp
                 )
             }
             Text(
-                text = "1 h 53 min",
-                color = MaterialTheme.colorScheme.onSurface
+                text = "${movie.runtime / 60} h ${movie.runtime % 60} min",
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                fontSize = 12.sp
             )
         }
 
@@ -159,20 +173,30 @@ fun MovieDetailCard(
             enabled = true,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp)
+                .height(50.dp)
                 .padding(bottom = 2.dp),
             shape = RoundedCornerShape(2.dp)
         ) {
-            Icon(
-                imageVector = Icons.Filled.PlayArrow,
-                contentDescription = "Ver",
-                modifier = Modifier.size(35.dp)
-            )
-            Text(
-                text = "Ver",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.SemiBold
-            )
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.PlayArrow,
+                    contentDescription = "Ver",
+                    modifier = Modifier.size(26.dp)
+                )
+
+                Spacer(modifier.size(6.dp))
+
+                Text(
+                    text = "Ver",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 15.sp
+                )
+            }
         }
 
         Button(
@@ -185,37 +209,56 @@ fun MovieDetailCard(
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp)
+                .height(50.dp)
                 .padding(bottom = 2.dp),
             shape = RoundedCornerShape(2.dp)
         ) {
-            Icon(
-                painter = painterResource(R.drawable.vertical_align_bottom),
-                contentDescription = "Descargar",
-                modifier = Modifier.size(35.dp)
-            )
-            Text(
-                text = "Descargar",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.SemiBold
-            )
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.vertical_align_bottom),
+                    contentDescription = "Descargar",
+                    modifier = Modifier.size(26.dp),
+                    tint = MaterialTheme.colorScheme.onSurface
+                )
+
+                Spacer(modifier.size(6.dp))
+
+                Text(
+                    text = "Descargar",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 15.sp,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
         }
+
+        Spacer(modifier = Modifier.height(5.dp))
 
         Text(
             text = movie.overview,
-            fontSize = 17.sp,
-            color = MaterialTheme.colorScheme.onSurface
+            fontSize = 13.sp,
+            color = MaterialTheme.colorScheme.onSurface,
+            lineHeight = 16.sp
         )
 
         Text(
-            text = "Protagonistas: Liam Hemsworth, Russell Crowe, Luke Hemsworth",
-            color = MaterialTheme.colorScheme.onSurface
-
+            text = "Protagonistas: " + cast.joinToString(", ") { it.name },
+            color = MaterialTheme.colorScheme.onSurface,
+            fontSize = 11.5.sp,
+            lineHeight = 16.sp
         )
 
+        val director = crew.find { it.job == "Director" }?.name ?: "Desconocido"
+
         Text(
-            text = "Dirección: William Eubank",
-            color = MaterialTheme.colorScheme.onSurface
+            text = "Dirección: " + director,
+            color = MaterialTheme.colorScheme.onSurface,
+            fontSize = 11.5.sp
         )
 
     }

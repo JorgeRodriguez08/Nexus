@@ -45,7 +45,7 @@ fun GamesContentLayout(
             when (featuredState) {
                 is MoviesState.Loading -> { MoviesCardLargeShimmer() }
                 is MoviesState.Success -> {
-                    val featured = featuredState.items.first()
+                    val featured = featuredState.results.first()
                     MovieCardLarge(featured, onMovieClick =  onMovieClick)
                 }
                 is MoviesState.Error -> { MoviesCardLargeShimmer() }

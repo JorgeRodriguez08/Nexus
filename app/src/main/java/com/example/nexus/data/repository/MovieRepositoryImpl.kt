@@ -4,9 +4,13 @@ import coil.network.HttpException
 import com.example.nexus.common.Resource
 import com.example.nexus.common.safeApiCall
 import com.example.nexus.data.remote.ApiService
+import com.example.nexus.data.remote.mappers.toDomainActor
 import com.example.nexus.data.remote.mappers.toDomainMovie
+import com.example.nexus.data.remote.mappers.toDomainProducer
 import com.example.nexus.data.remote.mappers.toDomainVideo
+import com.example.nexus.domain.model.Actor
 import com.example.nexus.domain.model.Movie
+import com.example.nexus.domain.model.Producer
 import com.example.nexus.domain.model.Video
 import com.example.nexus.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
@@ -68,6 +72,16 @@ class MovieRepositoryImpl(private val apiService: ApiService) : MovieRepository 
     override fun searchMovies(query: String, page: Int): Flow<Resource<List<Movie>>> =
         safeApiCall {
             apiService.searchMovies(query = query, page = page).results.map { it.toDomainMovie() }
+        }
+
+    override fun getMovieCast(movieId: Int): Flow<Resource<List<Actor>>> =
+        safeApiCall {
+            apiService.getMovieCredits(movieId = movieId).cast.map { it.toDomainActor() }
+        }
+
+    override fun getMovieCrew(movieId: Int): Flow<Resource<List<Producer>>> =
+        safeApiCall {
+            apiService.getMovieCredits(movieId = movieId).crew.map { it.toDomainProducer()}
         }
 
 }

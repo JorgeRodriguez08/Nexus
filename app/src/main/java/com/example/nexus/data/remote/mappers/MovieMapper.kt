@@ -13,6 +13,7 @@ fun MovieDto.toDomainMovie(): Movie {
         backdropUrl = BuildConfig.TMDB_IMAGE_BASE_URL + backdropPath.orEmpty(),
         voteAverage = voteAverage ?: 0.0,
         releaseDate = releaseDate.orEmpty(),
+        runtime = runtime ?: 0,
         adult = adult ?: true
     )
 }

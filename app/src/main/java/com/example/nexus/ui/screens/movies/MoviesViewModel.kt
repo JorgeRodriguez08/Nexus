@@ -34,7 +34,6 @@ class MoviesViewModel(
                 is MoviesCategory.UpComing -> loadMoviesUpComing(category, 1)
                 else -> loadMoviesByGenre(category,1)
             }
-
         }
     }
 

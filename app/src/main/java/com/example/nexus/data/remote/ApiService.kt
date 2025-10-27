@@ -1,6 +1,7 @@
 package com.example.nexus.data.remote
 
 import com.example.nexus.data.remote.constants.NetworkConstants
+import com.example.nexus.data.remote.models.CreditsResponse
 import com.example.nexus.data.remote.models.MovieDto
 import com.example.nexus.data.remote.models.MovieResponse
 import com.example.nexus.data.remote.models.SeriesDto
@@ -13,6 +14,7 @@ import retrofit2.http.Query
 
 interface ApiService {
 
+    // Movie Endpoints
     @GET("movie/now_playing")
     suspend fun getMoviesNowPlaying(
         @Query("language") language: String = NetworkConstants.DEFAULT_LANGUAGE,
@@ -67,7 +69,14 @@ interface ApiService {
         @Query("page") page: Int = NetworkConstants.DEFAULT_PAGE
     ): MovieResponse
 
+    @GET("movie/{movie_id}/credits")
+    suspend fun getMovieCredits(
+        @Path("movie_id") movieId: Int,
+        @Query("language") language: String = NetworkConstants.DEFAULT_LANGUAGE
+    ) : CreditsResponse
 
+
+    // TV Series Endpoints
     @GET("tv/airing_today")
     suspend fun getSeriesAiringToday(
         @Query("language") language: String = NetworkConstants.DEFAULT_LANGUAGE,

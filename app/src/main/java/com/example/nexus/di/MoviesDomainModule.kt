@@ -1,6 +1,8 @@
 package com.example.nexus.di
 
 import com.example.nexus.domain.usecase.movies.GetMovieByIdUseCase
+import com.example.nexus.domain.usecase.movies.GetMovieCastUseCase
+import com.example.nexus.domain.usecase.movies.GetMovieCrewUseCase
 import com.example.nexus.domain.usecase.movies.GetMovieVideoUseCase
 import com.example.nexus.domain.usecase.movies.GetMoviesByGenreUseCase
 import com.example.nexus.domain.usecase.movies.GetMoviesNowPlayingUseCase
@@ -21,6 +23,8 @@ val moviesDomainModule = module {
     factory { GetMovieByIdUseCase(get()) }
     factory { GetMovieVideoUseCase(get()) }
     factory { SearchMoviesUseCase(get()) }
+    factory { GetMovieCastUseCase(get()) }
+    factory { GetMovieCrewUseCase(get()) }
 
     factory {
         MoviesUseCase(
@@ -31,7 +35,9 @@ val moviesDomainModule = module {
             getMoviesByGenre = get(),
             getMovieById = get(),
             getMovieVideo = get(),
-            searchMovies = get()
+            searchMovies = get(),
+            getMovieCast = get(),
+            getMovieCrew = get()
         )
     }
 }

@@ -18,6 +18,8 @@ fun MovieDetailLayout(
             MovieDetailCard(
                 movie = movieDetailState.movie,
                 video = movieDetailState.video,
+                cast = movieDetailState.cast,
+                crew = movieDetailState.crew,
                 movieDetailViewModel = movieDetailViewModel,
                 onFullClick = onFullClick,
                 modifier = modifier
