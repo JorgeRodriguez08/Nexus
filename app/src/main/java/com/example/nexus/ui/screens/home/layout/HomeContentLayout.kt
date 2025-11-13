@@ -25,7 +25,7 @@ import com.example.nexus.ui.screens.series.SeriesCategory
 
 @Composable
 fun HomeContentLayout(
-    featuredState: MoviesState<Movie>,
+    featuredState: MoviesState,
     rows: List<HomeRow>,
     moviesMap: Map<MoviesCategory, HomeState<Movie>>,
     seriesMap: Map<SeriesCategory, HomeState<Series>>,

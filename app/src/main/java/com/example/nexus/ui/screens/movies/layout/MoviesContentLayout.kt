@@ -19,8 +19,8 @@ import com.example.nexus.ui.screens.movies.MoviesState
 
 @Composable
 fun MoviesContentLayout(
-    featuredState: MoviesState<Movie>,
-    moviesUiState: Map<MoviesCategory, MoviesState<Movie>>,
+    featuredState: MoviesState,
+    moviesUiState: Map<MoviesCategory, MoviesState>,
     categories: List<MoviesCategory>,
     onMovieClick: (Int) -> Unit,
     modifier: Modifier = Modifier

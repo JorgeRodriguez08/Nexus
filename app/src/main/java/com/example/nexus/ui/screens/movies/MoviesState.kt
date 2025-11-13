@@ -1,9 +1,11 @@
 package com.example.nexus.ui.screens.movies
 
-sealed class MoviesState<out Movie> {
+import com.example.nexus.domain.model.Movie
 
-    object Loading : MoviesState<Nothing>()
-    data class Success<Movie>(val results: List<Movie>) : MoviesState<Movie>()
-    data class Error(val message: String) : MoviesState<Nothing>()
+sealed class MoviesState {
+
+    object Loading : MoviesState()
+    data class Success(val results: List<Movie>) : MoviesState()
+    data class Error(val message: String) : MoviesState()
 
 }

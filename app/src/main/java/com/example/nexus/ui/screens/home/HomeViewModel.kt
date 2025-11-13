@@ -26,8 +26,8 @@ class HomeViewModel(
     private val _homeUiState = MutableStateFlow(HomeUiState(rows = HomeCategories.rows))
     val homeUiState: StateFlow<HomeUiState> = _homeUiState.asStateFlow()
 
-    private val _featuredState = MutableStateFlow<MoviesState<Movie>>(MoviesState.Loading)
-    val featuredState: StateFlow<MoviesState<Movie>> = _featuredState.asStateFlow()
+    private val _featuredState = MutableStateFlow<MoviesState>(MoviesState.Loading)
+    val featuredState: StateFlow<MoviesState> = _featuredState.asStateFlow()
 
     fun loadHomeContent() {
         HomeCategories.rows.forEach { row ->

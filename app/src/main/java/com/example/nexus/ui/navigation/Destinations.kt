@@ -14,12 +14,6 @@ sealed class Destinations(
     object Home : Destinations("Inicio")
     object Games : Destinations("Juegos", showFilterBar = false)
     object NewsAndPopular : Destinations("Nuevo y popular", showFilterBar = false, showNewsFilterBar = true)
-    object Upcoming : Destinations("\uD83C\uDF7F Próximamente", showFilterBar = false, showNewsFilterBar = true)
-    object Popular : Destinations("\uD83D\uDD25 Lo más cool", showFilterBar = false, showNewsFilterBar = true)
-    object MobileGames : Destinations("\uD83C\uDFAE Juegos móviles", showFilterBar = false, showNewsFilterBar = true)
-    object Top10Series : Destinations("Las 10 series más populares", showFilterBar = false, showNewsFilterBar = true)
-    object Top10Movies : Destinations("Las 10 películas más populares", showFilterBar = false, showNewsFilterBar = true)
-
     object MyNexus : Destinations("My Nexus", showFilterBar = false)
 
     data object MovieDetail : Destinations("detail/{movieId}", showBottomBar = false, showFilterBar = false) {
@@ -40,8 +34,6 @@ sealed class Destinations(
     companion object {
 
         val screensFilter = listOf(Series.route, Movies.route, Categories.route)
-
-        val newsFilter = listOf(Upcoming.route, Popular.route, MobileGames.route, Top10Series.route, Top10Movies.route)
 
         fun findDestination(route: String): Destinations? {
             return screens().firstOrNull { base ->

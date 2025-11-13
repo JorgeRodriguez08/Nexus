@@ -26,6 +26,7 @@ import com.example.nexus.R
 import com.example.nexus.ui.components.filterrowbar.FilterRowBar
 import com.example.nexus.ui.navigation.Destinations
 import com.example.nexus.ui.navigation.Destinations.Companion.findDestination
+import com.example.nexus.ui.screens.newsPopular.FilterType
 import com.example.nexus.ui.screens.newsPopular.NewsFilterBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,7 +38,9 @@ fun NexusTopAppBar(
     onSearchClick: () -> Unit,
     onBackClick: () -> Unit,
     onDownloadClick: () -> Unit,
-    onFilterSelected: (String) -> Unit
+    onFilterSelected: (String) -> Unit,
+    selectedFilter: FilterType,
+    onNewFilterSelected: (FilterType) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.SpaceEvenly
@@ -106,6 +109,8 @@ fun NexusTopAppBar(
 
         if (Destinations.shouldShowNewsFilterBar(currentRoute)) {
             NewsFilterBar(
+                selectedFilter = selectedFilter,
+                onNewFilterSelected = onNewFilterSelected
             )
         }
 

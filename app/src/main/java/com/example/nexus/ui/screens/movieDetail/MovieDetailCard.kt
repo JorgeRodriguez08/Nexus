@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -34,7 +36,6 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -44,7 +45,7 @@ import com.example.nexus.R
 import com.example.nexus.domain.model.Actor
 import com.example.nexus.domain.model.Movie
 import com.example.nexus.domain.model.Producer
-import com.example.nexus.domain.model.Video
+import com.example.nexus.domain.model.VideoMovie
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -52,7 +53,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 @Composable
 fun MovieDetailCard(
     movie: Movie,
-    video: Video,
+    video: VideoMovie,
     cast: List<Actor>,
     crew: List<Producer>,
     movieDetailViewModel: MovieDetailViewModel,
@@ -109,7 +110,9 @@ fun MovieDetailCard(
                 } else {
                     AndroidView(
                         factory = { youtubePlayerView },
-                        modifier = if (isFullScreen) Modifier.fillMaxSize() else Modifier.fillMaxWidth().aspectRatio(1.7f)
+                        modifier = if (isFullScreen) Modifier.fillMaxSize() else Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(1.7f)
                     )
                 }
             } else {
@@ -144,13 +147,19 @@ fun MovieDetailCard(
             )
             Card(
                 shape = RectangleShape,
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier
+                    .height(18.dp)
+                    .wrapContentWidth()
             ) {
-                Text(
-                    text = if (movie.adult) "16-" else "16+",
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    fontSize = 12.sp
-                )
+                Column(
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = if (movie.adult) "16+" else "16-",
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        fontSize = 12.sp
+                    )
+                }
             }
             Text(
                 text = "${movie.runtime / 60} h ${movie.runtime % 60} min",
@@ -243,14 +252,16 @@ fun MovieDetailCard(
             text = movie.overview,
             fontSize = 13.sp,
             color = MaterialTheme.colorScheme.onSurface,
-            lineHeight = 16.sp
+            lineHeight = 16.sp,
+            maxLines = 4
         )
 
         Text(
             text = "Protagonistas: " + cast.joinToString(", ") { it.name },
             color = MaterialTheme.colorScheme.onSurface,
             fontSize = 11.5.sp,
-            lineHeight = 16.sp
+            lineHeight = 16.sp,
+            maxLines = 2
         )
 
         val director = crew.find { it.job == "Director" }?.name ?: "Desconocido"

@@ -2,12 +2,12 @@ package com.example.nexus.data.remote
 
 import com.example.nexus.data.remote.constants.NetworkConstants
 import com.example.nexus.data.remote.models.CreditsResponse
+import com.example.nexus.data.remote.models.ImagesMovieResponse
 import com.example.nexus.data.remote.models.MovieDto
 import com.example.nexus.data.remote.models.MovieResponse
 import com.example.nexus.data.remote.models.SeriesDto
 import com.example.nexus.data.remote.models.SeriesResponse
-import com.example.nexus.data.remote.models.VideoDto
-import com.example.nexus.data.remote.models.VideoResponse
+import com.example.nexus.data.remote.models.VideosMovieResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -57,10 +57,16 @@ interface ApiService {
         @Query("language") language: String = NetworkConstants.DEFAULT_LANGUAGE
     ): MovieDto
 
+    @GET("movie/{movie_id}/images")
+    suspend fun getMovieImages(
+        @Path("movie_id") movieId: Int,
+        @Query("language") language: String = NetworkConstants.DEFAULT_LANGUAGE
+    ): ImagesMovieResponse
+
     @GET("movie/{movie_id}/videos")
     suspend fun getMovieVideos(
         @Path("movie_id") movieId: Int,
-    ): VideoResponse
+    ): VideosMovieResponse
 
     @GET("search/movie")
     suspend fun searchMovies(

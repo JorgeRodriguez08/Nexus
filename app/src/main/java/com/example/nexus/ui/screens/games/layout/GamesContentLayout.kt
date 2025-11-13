@@ -31,7 +31,7 @@ fun GamesContentLayout(
     seriesMap: Map<SeriesCategory, GamesState<Series>>,
     onMovieClick: (Int) -> Unit,
     onSeriesClick: (Int) -> Unit,
-    featuredState: MoviesState<Movie>,
+    featuredState: MoviesState,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(

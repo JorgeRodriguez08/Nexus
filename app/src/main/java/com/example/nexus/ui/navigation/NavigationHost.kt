@@ -24,8 +24,8 @@ import com.example.nexus.ui.screens.movieVideo.MovieVideoScreen
 import com.example.nexus.ui.screens.movieVideo.MovieVideoViewModel
 import com.example.nexus.ui.screens.movies.MoviesScreen
 import com.example.nexus.ui.screens.movies.MoviesViewModel
-import com.example.nexus.ui.screens.newsPopular.UpcomingScreen
-import com.example.nexus.ui.screens.newsPopular.UpcomingViewModel
+import com.example.nexus.ui.screens.newsPopular.NewsAndPopularViewModel
+import com.example.nexus.ui.screens.newsPopular.NewsAndPopularScreen
 import com.example.nexus.ui.screens.series.SeriesScreen
 import com.example.nexus.ui.screens.series.SeriesViewModel
 import com.example.nexus.ui.screens.seriesDetail.SeriesDetailScreen
@@ -39,7 +39,9 @@ fun NavigationHost(
     modifier: Modifier = Modifier
 ) {
     val navigationViewModel: NavigationViewModel = koinViewModel()
+    val newsAndPopularViewModel: NewsAndPopularViewModel = koinViewModel()
     val currentRoute = navigationViewModel.currentRoute.collectAsState().value
+    val selectedFilter = newsAndPopularViewModel.selectedFilter.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -53,6 +55,10 @@ fun NavigationHost(
                     onFilterSelected = { selectedRoute ->
                         navigationViewModel.onRouteChanged(selectedRoute)
                         navController.navigate(selectedRoute)
+                    },
+                    selectedFilter = selectedFilter,
+                    onNewFilterSelected = { filter ->
+                        newsAndPopularViewModel.setFilter(filter)
                     }
                 )
             }
@@ -160,9 +166,9 @@ fun NavigationHost(
 
             composable(route = Destinations.NewsAndPopular.route) {
                 navigationViewModel.onRouteChanged(Destinations.NewsAndPopular.route)
-                val newsPopularViewModel: UpcomingViewModel = koinViewModel()
-                UpcomingScreen(
-                    newsPopularViewModel
+                NewsAndPopularScreen(
+                    selectedFilter = selectedFilter,
+                    newsAndPopularViewModel = newsAndPopularViewModel
                 )
             }
 

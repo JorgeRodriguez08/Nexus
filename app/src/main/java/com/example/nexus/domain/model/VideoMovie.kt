@@ -1,6 +1,6 @@
 package com.example.nexus.domain.model
 
-data class Video(
+data class VideoMovie(
     val id: String,
     val name: String,
     val key: String,

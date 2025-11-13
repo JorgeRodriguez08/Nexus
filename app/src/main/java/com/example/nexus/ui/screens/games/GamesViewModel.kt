@@ -26,8 +26,8 @@ class GamesViewModel(
     private val _gamesUiState = MutableStateFlow(GamesUiState(rows = GamesCategories.rows))
     val gamesUiState: StateFlow<GamesUiState> = _gamesUiState.asStateFlow()
 
-    private val _featuredState = MutableStateFlow<MoviesState<Movie>>(MoviesState.Loading)
-    val featuredState: StateFlow<MoviesState<Movie>> = _featuredState.asStateFlow()
+    private val _featuredState = MutableStateFlow<MoviesState>(MoviesState.Loading)
+    val featuredState: StateFlow<MoviesState> = _featuredState.asStateFlow()
 
     fun loadGamesContent() {
         GamesCategories.rows.forEach { row ->

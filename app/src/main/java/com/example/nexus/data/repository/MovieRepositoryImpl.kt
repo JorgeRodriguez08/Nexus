@@ -4,14 +4,19 @@ import coil.network.HttpException
 import com.example.nexus.common.Resource
 import com.example.nexus.common.safeApiCall
 import com.example.nexus.data.remote.ApiService
+import com.example.nexus.data.remote.mappers.imageDefault
 import com.example.nexus.data.remote.mappers.toDomainActor
+import com.example.nexus.data.remote.mappers.toDomainImageMovie
 import com.example.nexus.data.remote.mappers.toDomainMovie
 import com.example.nexus.data.remote.mappers.toDomainProducer
-import com.example.nexus.data.remote.mappers.toDomainVideo
+import com.example.nexus.data.remote.mappers.toDomainVideoMovie
+import com.example.nexus.data.remote.mappers.videoDefault
 import com.example.nexus.domain.model.Actor
+import com.example.nexus.domain.model.ImageMovie
 import com.example.nexus.domain.model.Movie
+import com.example.nexus.domain.model.MovieDetail
 import com.example.nexus.domain.model.Producer
-import com.example.nexus.domain.model.Video
+import com.example.nexus.domain.model.VideoMovie
 import com.example.nexus.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -49,18 +54,25 @@ class MovieRepositoryImpl(private val apiService: ApiService) : MovieRepository 
             apiService.getMovieById(movieId = movieId).toDomainMovie()
         }
 
-    override fun getMovieVideos(movieId: Int): Flow<Resource<Video>> = flow {
+    override fun getMovieImages(movieId: Int): Flow<Resource<ImageMovie>> = flow {
+        emit(Resource.Loading)
+        try {
+            val response =  apiService.getMovieImages(movieId = movieId)
+            val imageMovie = response.logos?.firstOrNull()?.toDomainImageMovie() ?: imageDefault
+            emit(Resource.Success(imageMovie))
+        } catch (e: HttpException) {
+            emit(Resource.Error("Unable to fetch movie images due to a server error. Please try again later."))
+        } catch (e: IOException) {
+            emit(Resource.Error("Network error occurred. Please check your internet connection and try again."))
+        }
+    }
+
+    override fun getMovieVideos(movieId: Int): Flow<Resource<VideoMovie>> = flow {
         emit(Resource.Loading)
         try {
             val response = apiService.getMovieVideos(movieId = movieId)
-            val video = response.results
-                .firstOrNull { it.site == "YouTube" && it.official == true }
-                ?.toDomainVideo()
-            if (video != null) {
+            val video = response.results?.firstOrNull()?.toDomainVideoMovie() ?: videoDefault
                 emit(Resource.Success(video))
-            } else {
-                emit(Resource.Error("No official trailer available for this movie."))
-            }
 
         } catch (e: HttpException) {
             emit(Resource.Error("Unable to fetch movie videos due to a server error. Please try again later."))
@@ -84,4 +96,23 @@ class MovieRepositoryImpl(private val apiService: ApiService) : MovieRepository 
             apiService.getMovieCredits(movieId = movieId).crew.map { it.toDomainProducer()}
         }
 
+    override fun getMovieDetail(movieId: Int): Flow<Resource<MovieDetail>> = flow {
+        emit(Resource.Loading)
+        try {
+            val movieDto = apiService.getMovieById(movieId)
+            val imageDto = apiService.getMovieImages(movieId).logos?.firstOrNull()
+            val videoDto = apiService.getMovieVideos(movieId).results?.firstOrNull()
+
+            val movieDetail = MovieDetail(
+                movie = movieDto.toDomainMovie(),
+                image = imageDto?.toDomainImageMovie() ?: imageDefault,
+                video = videoDto?.toDomainVideoMovie() ?: videoDefault
+            )
+            emit(Resource.Success(movieDetail))
+        } catch (e: HttpException) {
+            emit(Resource.Error("Unable to fetch movie details due to a server error. Please try again later."))
+        } catch (e: IOException) {
+            emit(Resource.Error("Network error occurred. Please check your internet connection and try again."))
+        }
+    }
 }

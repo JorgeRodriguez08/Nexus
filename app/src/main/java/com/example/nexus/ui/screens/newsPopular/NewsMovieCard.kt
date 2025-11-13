@@ -1,7 +1,6 @@
 package com.example.nexus.ui.screens.newsPopular
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Notifications
@@ -35,18 +35,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.nexus.R
-import com.example.nexus.domain.model.Movie
+import com.example.nexus.domain.model.MovieDetail
 
 @Composable
 fun NewsMovieCard(
-    movie: Movie,
+    movieDetail: MovieDetail,
     modifier: Modifier = Modifier
 ) {
+
     Card(
         modifier = Modifier
             .width(388.dp)
-            .height(500.dp)
-            ,
+            .wrapContentHeight()
+        ,
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background
@@ -54,13 +55,13 @@ fun NewsMovieCard(
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.30f))
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().padding(bottom = 14.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box {
                 AsyncImage(
-                    model = movie.backdropUrl,
-                    contentDescription = movie.title,
+                    model = movieDetail.movie.backdropUrl,
+                    contentDescription = movieDetail.movie.title,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -102,9 +103,11 @@ fun NewsMovieCard(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Image(
-                    painter = painterResource(R.drawable.tron_logos),
-                    contentDescription = "Poster Image",
+                AsyncImage(
+                    model = movieDetail.image?.fileUrl,
+                    placeholder = painterResource(R.drawable.tron_logos),
+                    contentDescription = "Movie Logo",
+                    contentScale = ContentScale.Fit,
                     modifier = Modifier.height(55.dp)
                 )
             }
@@ -117,14 +120,14 @@ fun NewsMovieCard(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = "Estreno el" + " " + movie.releaseDate,
+                    text = "Estreno el" + " " + movieDetail.movie.releaseDate,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
 
                 Text(
-                    text = movie.overview,
+                    text = movieDetail.movie.overview,
                     fontSize = 12.75.sp,
                     lineHeight = 16.sp,
                     maxLines = 5,

@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.collections.toMutableMap
 
 class MoviesViewModel(
     private val moviesUseCase: MoviesUseCase
@@ -20,8 +21,8 @@ class MoviesViewModel(
     private val _uiState = MutableStateFlow(MoviesUiState())
     val uiState: StateFlow<MoviesUiState> = _uiState.asStateFlow()
 
-    private val _featuredMoviesState = MutableStateFlow<MoviesState<Movie>>(MoviesState.Loading)
-    val featuredMoviesState: StateFlow<MoviesState<Movie>> = _featuredMoviesState.asStateFlow()
+    private val _featuredMoviesState = MutableStateFlow<MoviesState>(MoviesState.Loading)
+    val featuredMoviesState: StateFlow<MoviesState> = _featuredMoviesState.asStateFlow()
 
     val moviesCategories = MoviesCategories.moviesCategories
 
