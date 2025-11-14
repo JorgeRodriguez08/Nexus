@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 class GetMovieImageUseCase(private val repository: MovieRepository) {
 
-    operator fun invoke(movieId: Int): Flow<Resource<ImageMovie>> =
+    operator fun invoke(movieId: Int): Flow<Resource<ImageMovie?>> =
         repository.getMovieImages(movieId = movieId)
 
 }

@@ -12,7 +12,7 @@ fun NewsAndPopularScreen(
     newsAndPopularViewModel: NewsAndPopularViewModel,
     modifier: Modifier = Modifier
 ) {
-    LaunchedEffect(Unit) {
+    LaunchedEffect(selectedFilter) {
         newsAndPopularViewModel.setFilter(selectedFilter)
     }
 

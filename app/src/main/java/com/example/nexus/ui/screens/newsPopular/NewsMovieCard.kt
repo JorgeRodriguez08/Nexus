@@ -1,6 +1,7 @@
 package com.example.nexus.ui.screens.newsPopular
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,15 +32,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.nexus.R
-import com.example.nexus.domain.model.MovieDetail
+import com.example.nexus.domain.model.Movie
+import com.example.nexus.domain.model.MovieMultimedia
 
 @Composable
 fun NewsMovieCard(
-    movieDetail: MovieDetail,
+    movie: Movie,
+    movieDetail: MovieMultimedia,
     modifier: Modifier = Modifier
 ) {
 
@@ -59,15 +63,27 @@ fun NewsMovieCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box {
-                AsyncImage(
-                    model = movieDetail.movie.backdropUrl,
-                    contentDescription = movieDetail.movie.title,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(214.dp)
-                        .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
-                )
+                if (movie.backdropUrl.isNotEmpty()) {
+                    AsyncImage(
+                        model = movie.backdropUrl,
+                        contentDescription = movie.title,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(214.dp)
+                            .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
+                    )
+                } else {
+                    Image(
+                        painter = painterResource(R.drawable.tron_logos),
+                        contentDescription = movie.title,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(214.dp)
+                            .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
+                    )
+                }
 
                 Card(
                     shape = RoundedCornerShape(2.dp),
@@ -103,13 +119,23 @@ fun NewsMovieCard(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                AsyncImage(
-                    model = movieDetail.image?.fileUrl,
-                    placeholder = painterResource(R.drawable.tron_logos),
-                    contentDescription = "Movie Logo",
-                    contentScale = ContentScale.Fit,
-                    modifier = Modifier.height(55.dp)
-                )
+                if (movieDetail.image != null && movieDetail.image.fileUrl.isNotEmpty()) {
+                    AsyncImage(
+                        model = movieDetail.image.fileUrl,
+                        contentDescription = "Movie Logo",
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier.height(55.dp)
+                    )
+                } else {
+                    Text(
+                        text = movie.title,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 2,
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
 
             Column(
@@ -120,14 +146,14 @@ fun NewsMovieCard(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = "Estreno el" + " " + movieDetail.movie.releaseDate,
+                    text = "Estreno el" + " " + movie.releaseDate,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
 
                 Text(
-                    text = movieDetail.movie.overview,
+                    text = movie.overview,
                     fontSize = 12.75.sp,
                     lineHeight = 16.sp,
                     maxLines = 5,

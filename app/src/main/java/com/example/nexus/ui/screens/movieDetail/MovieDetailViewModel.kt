@@ -5,11 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.nexus.common.Resource
 import com.example.nexus.domain.usecase.movies.MoviesUseCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 class MovieDetailViewModel(
@@ -30,19 +28,11 @@ class MovieDetailViewModel(
 
     fun loadMovieDetail(movieId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            delay(50)
-            val movieResource = moviesUseCase.getMovieById.invoke(movieId)
-            val videoResource = moviesUseCase.getMovieVideo.invoke(movieId)
-            val castResource = moviesUseCase.getMovieCast.invoke(movieId)
-            val crewResource = moviesUseCase.getMovieCrew.invoke(movieId)
-
-            combine(movieResource, videoResource, castResource, crewResource) { movie, video, cast, crew ->
-                Quadruple(movie, video, cast, crew)
-            }.collect { (movie, video, cast, crew) ->
-                _movieDetailState.value = when {
-                    movie is Resource.Loading || video is Resource.Loading || cast is Resource.Loading || crew is Resource.Loading  -> MovieDetailState.Loading
-                    movie is Resource.Success && video is Resource.Success && cast is Resource.Success && crew is Resource.Success -> MovieDetailState.Success(movie.data, video.data, cast.data, crew.data)
-                    else -> MovieDetailState.Error("Failed to load movie or video")
+            moviesUseCase.getMovieDetail.invoke(movieId).collect { resource ->
+                _movieDetailState.value = when (resource) {
+                    is Resource.Loading -> MovieDetailState.Loading
+                    is Resource.Success -> MovieDetailState.Success(resource.data)
+                    is Resource.Error -> MovieDetailState.Error(resource.message)
                 }
             }
         }

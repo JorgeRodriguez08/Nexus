@@ -16,10 +16,7 @@ fun MovieDetailLayout(
         }
         is MovieDetailState.Success -> {
             MovieDetailCard(
-                movie = movieDetailState.movie,
-                video = movieDetailState.video,
-                cast = movieDetailState.cast,
-                crew = movieDetailState.crew,
+                movieDetail = movieDetailState.movieDetail,
                 movieDetailViewModel = movieDetailViewModel,
                 onFullClick = onFullClick,
                 modifier = modifier

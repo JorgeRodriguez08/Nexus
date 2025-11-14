@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 class GetMovieVideoUseCase(private val repository: MovieRepository) {
 
-    operator fun invoke(movieId: Int): Flow<Resource<VideoMovie>> =
+    operator fun invoke(movieId: Int): Flow<Resource<VideoMovie?>> =
         repository.getMovieVideos(movieId = movieId)
 
 }

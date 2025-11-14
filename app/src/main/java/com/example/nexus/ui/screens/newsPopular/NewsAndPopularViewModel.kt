@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nexus.common.Resource
 import com.example.nexus.data.remote.constants.MoviesGenreIds
-import com.example.nexus.domain.model.Movie
 import com.example.nexus.domain.usecase.movies.MoviesUseCase
 import com.example.nexus.ui.screens.movies.MoviesState
 import kotlinx.coroutines.Dispatchers
@@ -23,8 +22,8 @@ class NewsAndPopularViewModel(
     private val _moviesUiState = MutableStateFlow<MoviesState>(MoviesState.Loading)
     val moviesUiState: StateFlow<MoviesState> = _moviesUiState.asStateFlow()
 
-    private val _moviesDetailStates = MutableStateFlow<Map<Int, MovieDetailState>>(emptyMap())
-    val moviesDetailStates: StateFlow<Map<Int, MovieDetailState>> = _moviesDetailStates.asStateFlow()
+    private val _moviesDetailStates = MutableStateFlow<Map<Int, MovieMultimediaState>>(emptyMap())
+    val moviesDetailStates: StateFlow<Map<Int, MovieMultimediaState>> = _moviesDetailStates.asStateFlow()
 
     fun setFilter(filter: FilterType) {
         _selectedFilter.value = filter
@@ -44,13 +43,17 @@ class NewsAndPopularViewModel(
     fun loadMoviesUpcoming(page: Int = 1) {
         viewModelScope.launch(Dispatchers.IO) {
             moviesUseCase.getMoviesUpComing.invoke(page).collect { resource ->
-                _moviesUiState.value = when (resource) {
-                    is Resource.Loading -> MoviesState.Loading
-                    is Resource.Success -> {
-                        resource.data.forEach { movie -> loadMovieDetail(movie.id) }
-                        MoviesState.Success(resource.data)
+                when (resource) {
+                    is Resource.Loading -> {
+                        _moviesUiState.value = MoviesState.Loading
                     }
-                    is Resource.Error -> MoviesState.Error(resource.message)
+                    is Resource.Success -> {
+                        _moviesUiState.value = MoviesState.Success(resource.data)
+                        resource.data.forEach { movie -> loadMovieMultimedia(movie.id) }
+                    }
+                    is Resource.Error -> {
+                        _moviesUiState.value = MoviesState.Error(resource.message)
+                    }
                 }
             }
         }
@@ -59,13 +62,17 @@ class NewsAndPopularViewModel(
     fun loadMoviesPopular(page: Int = 1) {
         viewModelScope.launch(Dispatchers.IO) {
             moviesUseCase.getMoviesPopular.invoke(page).collect { resource ->
-                _moviesUiState.value = when (resource) {
-                    is Resource.Loading -> MoviesState.Loading
-                    is Resource.Success -> {
-                        resource.data.forEach { movie -> loadMovieDetail(movie.id) }
-                        MoviesState.Success(resource.data)
+                when (resource) {
+                    is Resource.Loading -> {
+                        _moviesUiState.value = MoviesState.Loading
                     }
-                    is Resource.Error -> MoviesState.Error(resource.message)
+                    is Resource.Success -> {
+                        _moviesUiState.value = MoviesState.Success(resource.data)
+                        resource.data.forEach { movie -> loadMovieMultimedia(movie.id) }
+                    }
+                    is Resource.Error -> {
+                        _moviesUiState.value = MoviesState.Error(resource.message)
+                    }
                 }
             }
         }
@@ -74,13 +81,17 @@ class NewsAndPopularViewModel(
     fun loadMobileGames(page: Int = 1) {
         viewModelScope.launch(Dispatchers.IO) {
             moviesUseCase.getMoviesByGenre.invoke(MoviesGenreIds.ANIMATION, page).collect { resource ->
-                _moviesUiState.value = when (resource) {
-                    is Resource.Loading -> MoviesState.Loading
-                    is Resource.Success -> {
-                        resource.data.forEach { movie -> loadMovieDetail(movie.id) }
-                        MoviesState.Success(resource.data)
+                when (resource) {
+                    is Resource.Loading -> {
+                        _moviesUiState.value = MoviesState.Loading
                     }
-                    is Resource.Error -> MoviesState.Error(resource.message)
+                    is Resource.Success -> {
+                        _moviesUiState.value = MoviesState.Success(resource.data)
+                        resource.data.forEach { movie -> loadMovieMultimedia(movie.id) }
+                    }
+                    is Resource.Error -> {
+                        _moviesUiState.value = MoviesState.Error(resource.message)
+                    }
                 }
             }
         }
@@ -93,30 +104,40 @@ class NewsAndPopularViewModel(
     fun loadTop10Movies(page: Int = 1) {
         viewModelScope.launch(Dispatchers.IO) {
             moviesUseCase.getMoviesTopRated.invoke(page).collect { resource ->
-                _moviesUiState.value = when (resource) {
-                    is Resource.Loading -> MoviesState.Loading
-                    is Resource.Success -> {
-                        resource.data.forEach { movie -> loadMovieDetail(movie.id) }
-                        MoviesState.Success(resource.data)
+                when (resource) {
+                    is Resource.Loading -> {
+                        _moviesUiState.value = MoviesState.Loading
                     }
-                    is Resource.Error -> MoviesState.Error(resource.message)
+                    is Resource.Success -> {
+                        _moviesUiState.value = MoviesState.Success(resource.data)
+                        resource.data.forEach { movie -> loadMovieMultimedia(movie.id) }
+                    }
+                    is Resource.Error -> {
+                        _moviesUiState.value = MoviesState.Error(resource.message)
+                    }
                 }
             }
         }
     }
 
-    fun loadMovieDetail(movieId: Int) {
+    fun loadMovieMultimedia(movieId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            val newMap = _moviesDetailStates.value.toMutableMap()
-            moviesUseCase.getMovieDetail.invoke(movieId).collect { resource ->
-                newMap[movieId] = when (resource) {
-                    is Resource.Loading -> MovieDetailState.Loading
-                    is Resource.Success -> MovieDetailState.Success(resource.data)
-                    is Resource.Error -> MovieDetailState.Error(resource.message)
+            updateMovieDetailState(movieId, MovieMultimediaState.Loading)
+
+            moviesUseCase.getMovieMultimedia.invoke(movieId).collect { resource ->
+                when (resource) {
+                    is Resource.Loading -> updateMovieDetailState(movieId, MovieMultimediaState.Loading)
+                    is Resource.Success -> updateMovieDetailState(movieId, MovieMultimediaState.Success(resource.data))
+                    is Resource.Error -> updateMovieDetailState(movieId, MovieMultimediaState.Error(resource.message))
                 }
             }
-            _moviesDetailStates.value = newMap
         }
+    }
+
+    private fun updateMovieDetailState(movieId: Int, state: MovieMultimediaState) {
+        val currentMap = _moviesDetailStates.value.toMutableMap()
+        currentMap[movieId] = state
+        _moviesDetailStates.value = currentMap
     }
     
 }

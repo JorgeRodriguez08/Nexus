@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -42,20 +41,14 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import coil.compose.AsyncImage
 import com.example.nexus.R
-import com.example.nexus.domain.model.Actor
-import com.example.nexus.domain.model.Movie
-import com.example.nexus.domain.model.Producer
-import com.example.nexus.domain.model.VideoMovie
+import com.example.nexus.domain.model.MovieDetail
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
 @Composable
 fun MovieDetailCard(
-    movie: Movie,
-    video: VideoMovie,
-    cast: List<Actor>,
-    crew: List<Producer>,
+    movieDetail: MovieDetail,
     movieDetailViewModel: MovieDetailViewModel,
     onFullClick: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -93,7 +86,9 @@ fun MovieDetailCard(
                     youtubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
                         override fun onReady(youTubePlayer: YouTubePlayer) {
                             movieDetailViewModel.setVideoLoadingState(false)
-                            youTubePlayer.loadVideo(video.key, 3f)
+                            if (movieDetail.video != null && movieDetail.video.key.isNotEmpty()) {
+                                youTubePlayer.loadVideo(movieDetail.video.key, 3f)
+                            }
                         }
                     })
                     onDispose { youtubePlayerView.release() }
@@ -101,8 +96,8 @@ fun MovieDetailCard(
 
                 if (isVideoLoading) {
                     AsyncImage(
-                        model = movie.backdropUrl,
-                        contentDescription = movie.title,
+                        model = movieDetail.movie.backdropUrl,
+                        contentDescription = movieDetail.movie.title,
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop,
                         alignment = Alignment.TopCenter
@@ -117,8 +112,8 @@ fun MovieDetailCard(
                 }
             } else {
                 AsyncImage(
-                    model = movie.backdropUrl,
-                    contentDescription = movie.title,
+                    model = movieDetail.movie.backdropUrl,
+                    contentDescription = movieDetail.movie.title,
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop,
                     alignment = Alignment.TopCenter
@@ -127,7 +122,7 @@ fun MovieDetailCard(
         }
 
         Text(
-            text = movie.title,
+            text = movieDetail.movie.title,
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.ExtraBold,
             fontSize = 33.sp,
@@ -141,7 +136,7 @@ fun MovieDetailCard(
             modifier = Modifier
         ) {
             Text(
-                text = movie.releaseDate.substring(0, 4),
+                text = movieDetail.movie.releaseDate.substring(0, 4),
                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                 fontSize = 12.sp
             )
@@ -155,14 +150,14 @@ fun MovieDetailCard(
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = if (movie.adult) "16+" else "16-",
+                        text = if (movieDetail.movie.adult) "16+" else "16-",
                         color = MaterialTheme.colorScheme.onSecondaryContainer,
                         fontSize = 12.sp
                     )
                 }
             }
             Text(
-                text = "${movie.runtime / 60} h ${movie.runtime % 60} min",
+                text = "${movieDetail.movie.runtime / 60} h ${movieDetail.movie.runtime % 60} min",
                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                 fontSize = 12.sp
             )
@@ -173,7 +168,13 @@ fun MovieDetailCard(
                 movieDetailViewModel.setFullScreenState(true)
                 movieDetailViewModel.setPlayingState(true)
                 movieDetailViewModel.setVideoLoadingState(true)
-                onFullClick(video.key)
+                onFullClick(
+                    if (movieDetail.video != null && movieDetail.video.key.isNotEmpty()) {
+                        movieDetail.video.key
+                    } else {
+                        ""
+                    }
+                )
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.onSurface,
@@ -249,7 +250,7 @@ fun MovieDetailCard(
         Spacer(modifier = Modifier.height(5.dp))
 
         Text(
-            text = movie.overview,
+            text = movieDetail.movie.overview,
             fontSize = 13.sp,
             color = MaterialTheme.colorScheme.onSurface,
             lineHeight = 16.sp,
@@ -257,14 +258,14 @@ fun MovieDetailCard(
         )
 
         Text(
-            text = "Protagonistas: " + cast.joinToString(", ") { it.name },
+            text = "Protagonistas: " + movieDetail.cast.joinToString(", ") { it.name },
             color = MaterialTheme.colorScheme.onSurface,
             fontSize = 11.5.sp,
             lineHeight = 16.sp,
             maxLines = 2
         )
 
-        val director = crew.find { it.job == "Director" }?.name ?: "Desconocido"
+        val director = movieDetail.crew.find { it.job == "Director" }?.name ?: "Desconocido"
 
         Text(
             text = "Dirección: " + director,

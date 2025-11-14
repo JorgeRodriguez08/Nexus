@@ -52,7 +52,7 @@ interface ApiService {
     ): MovieResponse
 
     @GET("movie/{movie_id}")
-    suspend fun getMovieById(
+    suspend fun getMovieDetail(
         @Path("movie_id") movieId: Int,
         @Query("language") language: String = NetworkConstants.DEFAULT_LANGUAGE
     ): MovieDto
