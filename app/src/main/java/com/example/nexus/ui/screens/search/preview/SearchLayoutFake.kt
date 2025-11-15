@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.PlayArrow
@@ -35,6 +36,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.nexus.R
@@ -44,11 +46,12 @@ fun SearchLayoutFake(
     modifier: Modifier = Modifier
 ) {
     var searchText by remember() { mutableStateOf("") }
+
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
             .padding(start = 3.dp, end = 3.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(14.dp),
         horizontalAlignment = Alignment.Start
 
     ) {
@@ -82,88 +85,23 @@ fun SearchLayoutFake(
             
             Text(
                 text = "Juegos móviles recomendados",
-                fontWeight = FontWeight.Bold,
                 fontSize = 25.sp,
+                fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
             )
 
             LazyRow(
-                modifier = Modifier.padding(horizontal = 4.dp, vertical = 10.dp),
-                horizontalArrangement = Arrangement.spacedBy(9.dp)
+                horizontalArrangement = Arrangement.spacedBy(9.dp),
+                modifier = Modifier.padding(horizontal = 4.dp, vertical = 10.dp)
             ) {
-                item {
-                    GameCard(
-                        title = "Football \nManager 26...",
-                        genre = "Deportes",
-                        image = R.drawable.liloystich,
-                        modifier = modifier
+                items(gameList) { gameItem ->
+                    GameRecommended(
+                        imageRes = gameItem.imageRes,
+                        title = gameItem.title,
+                        genre = gameItem.genre,
+                        modifier = Modifier
                     )
                 }
-
-                item {
-                    GameCard(
-                        title = "Toca Boca Hair Salon 4",
-                        genre = "Infantil",
-                        image = R.drawable.sonic,
-                        modifier = modifier
-                    )
-                }
-
-                item {
-                    GameCard(
-                        title = "Blood Line: Un \njuego de Reb...",
-                        genre = "Acción",
-                        image = R.drawable.avengers,
-                        modifier = modifier
-                    )
-                }
-
-                item {
-                    GameCard(
-                        title = "El juego del \ncalamar",
-                        genre = "Acción",
-                        image = R.drawable.squid_game,
-                        modifier = modifier
-                    )
-                }
-
-                item {
-                    GameCard(
-                        title = "Football \nManager 26...",
-                        genre = "Deportes",
-                        image = R.drawable.liloystich,
-                        modifier = modifier
-                    )
-                }
-
-                item {
-                    GameCard(
-                        title = "Toca Boca Hair Salon 4",
-                        genre = "Infantil",
-                        image = R.drawable.sonic,
-                        modifier = modifier
-                    )
-                }
-
-                item {
-                    GameCard(
-                        title = "Blood Line: Un \njuego de Reb...",
-                        genre = "Acción",
-                        image = R.drawable.avengers,
-                        modifier = modifier
-                    )
-                }
-
-                item {
-                    GameCard(
-                        title = "El juego del \ncalamar",
-                        genre = "Acción",
-                        image = R.drawable.squid_game,
-                        modifier = modifier
-                    )
-                }
-
-
             }
         }
 
@@ -176,29 +114,23 @@ fun SearchLayoutFake(
             )
         }
 
-        /*item {
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
+        items(searchList) { searchItem ->
+            SectionRecommended(
+                title = searchItem.title,
+                imageRes = searchItem.imageRes,
                 modifier = Modifier.fillMaxWidth()
-            ) {
-                item {
-                    PowerCard(
-                        modifier = modifier,
-                        title = "Un ninja en Beverly Hills",
-                        image = R.drawable.tron_backdrops
-                    )
-                }
-            }
-        }*/
+            )
+        }
+
+
     }
 }
 
 @Composable
-fun GameCard(
+fun GameRecommended(
+    imageRes: Int,
     title: String,
     genre: String,
-    image: Int,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -218,7 +150,7 @@ fun GameCard(
             border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.30f))
         ) {
             Image(
-                painter = painterResource(image),
+                painter = painterResource(imageRes),
                 contentDescription = "Game Image",
                 contentScale = ContentScale.Crop
             )
@@ -226,10 +158,10 @@ fun GameCard(
         }
         Text(
             text = title,
+            fontSize = 15.sp,
             fontWeight = FontWeight.Bold,
             maxLines = 2,
             lineHeight = 18.sp,
-            fontSize = 15.sp,
             color = MaterialTheme.colorScheme.onSurface
         )
 
@@ -241,35 +173,77 @@ fun GameCard(
     }
 }
 
-/*
+
 @Composable
-fun PowerCard(
+fun SectionRecommended(
+    imageRes: Int,
     title: String,
-    image: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier
 ) {
     Row(
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
+        modifier = Modifier.fillMaxWidth()
     ) {
-        Image(
-            painter = painterResource(image),
-            contentDescription = "Power Card Image",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(width = 130.dp, height = 80.dp)
-                .clip(RectangleShape)
-        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(5.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(imageRes),
+                contentDescription = "Power Card Image",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(width = 140.dp, height = 80.dp)
+                    .clip(RectangleShape)
+            )
 
-        Text(
-            text = title
-        )
+            Text(
+                text = title,
+                fontSize = 21.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Justify,
+                maxLines = 2,
+            )
+        }
 
         Icon(
             imageVector = Icons.Outlined.PlayArrow,
             contentDescription = "Play Icon"
         )
     }
+}
 
-}*/
+data class GameItem(
+    val imageRes: Int,
+    val title: String,
+    val genre: String
+)
+
+val gameList: List <GameItem> = listOf(
+    GameItem(R.drawable.liloystich, "Football Manager 26...", "Deportes"),
+    GameItem(R.drawable.sonic, "Toca Boca Hair Salon 4", "Infantil"),
+    GameItem(R.drawable.avengers, "Blood Line: Un juego de Reb...", "Acción"),
+    GameItem(R.drawable.squid_game, "El juego del calamar", "Acción"),
+    GameItem(R.drawable.liloystich, "Football Manager 26...", "Deportes"),
+    GameItem(R.drawable.sonic, "Toca Boca Hair Salon 4", "Infantil"),
+    GameItem(R.drawable.avengers, "Blood Line: Un juego de Reb...", "Acción"),
+    GameItem(R.drawable.squid_game, "El juego del calamar", "Acción"),
+)
+
+
+data class SearchItem(
+    val imageRes: Int,
+    val title: String
+)
+
+val searchList: List<SearchItem> = listOf(
+    SearchItem(R.drawable.el_ninja_de_berverly_hills, "Un ninja en Beverly Hills"),
+    SearchItem(R.drawable.the_walking_dead, "The Walking Dead"),
+    SearchItem(R.drawable.squid_game_2, "El juego del calamar"),
+    SearchItem(R.drawable.spartacus, "Spartacus"),
+    SearchItem(R.drawable.the_elixir, "El elixir de la inmortalidad"),
+    SearchItem(R.drawable.sonic, "Sonic: La Película"),
+    SearchItem(R.drawable.avengers, "Avengers: Endgame"),
+    SearchItem(R.drawable.tron_backdrops, "Tron: Legacy"),
+)

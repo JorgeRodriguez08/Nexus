@@ -26,6 +26,7 @@ import com.example.nexus.ui.screens.movies.MoviesScreen
 import com.example.nexus.ui.screens.movies.MoviesViewModel
 import com.example.nexus.ui.screens.newsPopular.NewsAndPopularViewModel
 import com.example.nexus.ui.screens.newsPopular.NewsAndPopularScreen
+import com.example.nexus.ui.screens.search.preview.SearchLayoutFake
 import com.example.nexus.ui.screens.series.SeriesScreen
 import com.example.nexus.ui.screens.series.SeriesViewModel
 import com.example.nexus.ui.screens.seriesDetail.SeriesDetailScreen
@@ -142,6 +143,7 @@ fun NavigationHost(
 
             composable(route = Destinations.Search.route) {
                 navigationViewModel.onRouteChanged(Destinations.Search.route)
+                SearchLayoutFake()
             }
 
             composable(route = Destinations.Home.route) {
