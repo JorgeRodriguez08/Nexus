@@ -1,7 +1,10 @@
 package com.example.nexus.ui.screens.movieVideo
 
 import android.app.Activity
+import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.net.Uri
+import android.util.Log
 import android.view.View
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -18,6 +21,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.viewinterop.AndroidView
 import coil.compose.AsyncImage
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 
 @Composable
 fun MovieVideoScreen(
@@ -29,6 +33,8 @@ fun MovieVideoScreen(
     val activity = context as? Activity
 
     LaunchedEffect(Unit) {
+        println("Esta es la url $videoUrl")
+        Log.d("MovieVideoScreen", "Video URL: $videoUrl")
         movieVideoViewModel.setPlayingState(isPlaying = true)
         movieVideoViewModel.setVideoLoadingState(isLoading = true)
     }
@@ -50,7 +56,25 @@ fun MovieVideoScreen(
             youtubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
                 override fun onReady(youTubePlayer: YouTubePlayer) {
                     movieVideoViewModel.setVideoLoadingState(false)
+                    println("Esta es la url $videoUrl")
                     youTubePlayer.loadVideo(videoUrl ?: "", 3f)
+                }
+
+                override fun onError(
+                    youTubePlayer: YouTubePlayer,
+                    error: PlayerConstants.PlayerError
+                ) {
+                    /*
+                    val intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://www.youtube.com/watch?v=$videoUrl")
+                    )
+                    context.startActivity(intent)
+
+                     */
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:$videoUrl"))
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context.startActivity(intent)
                 }
             })
             onDispose {

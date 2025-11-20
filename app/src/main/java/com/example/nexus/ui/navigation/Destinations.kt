@@ -5,12 +5,13 @@ sealed class Destinations(
     val showTopBar: Boolean = true,
     val showBottomBar: Boolean = true,
     val showFilterBar: Boolean = true,
-    val showNewsFilterBar: Boolean = false
+    val showNewsFilterBar: Boolean = false,
+    val showSearchBar: Boolean = false
 ) {
     object Series : Destinations("Series")
     object Movies : Destinations("Películas")
     object Categories : Destinations("Categorías", showFilterBar = false)
-    object Search : Destinations("Busqueda", showFilterBar = false)
+    object Search : Destinations("Busqueda", showFilterBar = false, showBottomBar = false, showSearchBar = true)
     object Home : Destinations("Inicio")
     object Games : Destinations("Juegos", showFilterBar = false)
     object NewsAndPopular : Destinations("Nuevo y popular", showFilterBar = false, showNewsFilterBar = true)
@@ -56,6 +57,10 @@ sealed class Destinations(
 
         fun shouldShowNewsFilterBar(route: String): Boolean {
             return findDestination(route)?.showNewsFilterBar ?: false
+        }
+
+        fun shouldShowSearchBar(route: String): Boolean {
+            return findDestination(route)?.showSearchBar ?: false
         }
 
         fun screens() = listOf(

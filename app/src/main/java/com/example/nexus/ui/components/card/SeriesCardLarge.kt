@@ -30,7 +30,7 @@ fun SeriesCardLarge(
             contentDescription = series.title,
             contentScale = ContentScale.Crop,
             modifier = modifier.fillMaxSize(),
-            alignment = Alignment.Center
+            alignment = Alignment.Center,
         )
     }
 }

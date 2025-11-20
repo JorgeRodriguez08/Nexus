@@ -105,7 +105,7 @@ class MovieRepositoryImpl(private val apiService: ApiService) : MovieRepository 
 
             var video: VideoMovie? = null
             if (videosResponse.results != null && videosResponse.results.isNotEmpty()) {
-                video = videosResponse.results[0].toDomainVideoMovie()
+                video = videosResponse.results.firstOrNull{video -> video.type == "Trailer"}?.toDomainVideoMovie()
             }
 
             val cast = creditsResponse.cast.map { it.toDomainActor() }

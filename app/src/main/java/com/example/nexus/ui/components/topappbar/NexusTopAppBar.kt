@@ -28,6 +28,7 @@ import com.example.nexus.ui.navigation.Destinations
 import com.example.nexus.ui.navigation.Destinations.Companion.findDestination
 import com.example.nexus.ui.screens.newsPopular.FilterType
 import com.example.nexus.ui.screens.newsPopular.NewsFilterBar
+import com.example.nexus.ui.screens.search.SearchBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,7 +57,7 @@ fun NexusTopAppBar(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.titleMedium,
-                    fontSize = 18.sp
+                    fontSize = 20.sp
 
                 )
             },
@@ -113,7 +114,6 @@ fun NexusTopAppBar(
                 onNewFilterSelected = onNewFilterSelected
             )
         }
-
     }
 }
 

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
@@ -35,15 +36,15 @@ fun FilterRowBar(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 5.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+        horizontalArrangement = Arrangement.spacedBy(13.dp)
     ) {
         visibleOptions.forEach { option ->
             FilterChip(
                 selected = option == selectedOption,
                 onClick = { onOptionSelected(option) },
                 label = { Text(text = option, fontSize = 11.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface) },
-                modifier = Modifier.height(50.dp),
-                border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.30f)),
+                modifier = Modifier.width(90.dp).height(50.dp),
+                border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.50f)),
                 colors = FilterChipDefaults.filterChipColors(
                     containerColor = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.20f),
                     selectedContainerColor = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.60f),
