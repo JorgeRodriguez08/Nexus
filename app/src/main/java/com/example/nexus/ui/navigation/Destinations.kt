@@ -8,28 +8,25 @@ sealed class Destinations(
     val showNewsFilterBar: Boolean = false,
     val showSearchBar: Boolean = false
 ) {
-    object Series : Destinations("Series")
-    object Movies : Destinations("Películas")
-    object Categories : Destinations("Categorías", showFilterBar = false)
-    object Search : Destinations("Busqueda", showFilterBar = false, showBottomBar = false, showSearchBar = true)
-    object Home : Destinations("Inicio")
-    object Games : Destinations("Juegos", showFilterBar = false)
-    object NewsAndPopular : Destinations("Nuevo y popular", showFilterBar = false, showNewsFilterBar = true)
-    object MyNexus : Destinations("My Nexus", showFilterBar = false)
-
+    object Movies : Destinations(Route.MOVIES)
+    object Series : Destinations(Route.SERIES)
+    object Home : Destinations(Route.HOME)
+    object Games : Destinations(Route.GAMES, showFilterBar = false)
+    object NewsAndPopular : Destinations(Route.NEWS_AND_POPULAR, showFilterBar = false, showNewsFilterBar = true)
+    object MyNexus : Destinations(Route.MY_NEXUS, showFilterBar = false)
+    object Categories : Destinations(Route.CATEGORIES, showFilterBar = false)
+    object Search : Destinations(Route.SEARCH, showBottomBar = false, showFilterBar = false, showSearchBar = true)
     data object MovieDetail : Destinations("detail/{movieId}", showBottomBar = false, showFilterBar = false) {
         fun create(id: Int) = "detail/$id"
         const val ARGUMENT = "movieId"
     }
-
-    data object MovieVideo : Destinations("video/{videoUrl}", showTopBar = false, showBottomBar = false, showFilterBar = false) {
-        fun create(videoUrl: String) = "video/$videoUrl"
-        const val ARGUMENT = "videoUrl"
-    }
-
     data object SeriesDetail: Destinations("detail/{seriesId}", showFilterBar = false) {
         fun create(id: Int) = "detail/$id"
         const val ARGUMENT = "seriesId"
+    }
+    data object MovieVideo : Destinations("video/{videoUrl}", showTopBar = false, showBottomBar = false, showFilterBar = false) {
+        fun create(videoUrl: String) = "video/$videoUrl"
+        const val ARGUMENT = "videoUrl"
     }
 
     companion object {
@@ -64,7 +61,17 @@ sealed class Destinations(
         }
 
         fun screens() = listOf(
-            Series, Movies, Categories, Search, Home, Games, NewsAndPopular, MyNexus, MovieDetail, MovieVideo, SeriesDetail
+            Movies,
+            Series,
+            Home,
+            Games,
+            NewsAndPopular,
+            MyNexus,
+            Categories,
+            Search,
+            MovieDetail,
+            SeriesDetail,
+            MovieVideo
         )
     }
 }

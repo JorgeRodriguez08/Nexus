@@ -55,7 +55,7 @@ class GamesViewModel(
         when (category) {
             is MoviesCategory.NowPlaying -> loadMoviesNowPlaying(category, 1)
             is MoviesCategory.Popular -> loadMoviesPopular(category, 1)
-            is MoviesCategory.TopRated -> loadMoviesTopRated(category, 1)
+            is MoviesCategory.Trending -> loadMoviesTopRated(category, 1)
             is MoviesCategory.UpComing -> loadMoviesUpComing(category, 1)
             else -> loadMoviesByGenre(category, 1)
         }
@@ -66,7 +66,7 @@ class GamesViewModel(
             is SeriesCategory.AiringToday -> loadSeriesAiringToday(category, 1)
             is SeriesCategory.OnTheAir -> loadSeriesOnTheAir(category, 1)
             is SeriesCategory.Popular -> loadSeriesPopular(category, 1)
-            is SeriesCategory.TopRated -> loadSeriesTopRated(category, 1)
+            is SeriesCategory.Trending -> loadSeriesTrending(category, 1)
             else -> loadSeriesByGenre(category, 1)
         }
     }
@@ -111,7 +111,7 @@ class GamesViewModel(
         val genreId = category.genreId ?: return
         viewModelScope.launch(Dispatchers.IO) {
             delay(100)
-            moviesUseCase.getMoviesByGenre.invoke(genreId, page).collect { resource ->
+            moviesUseCase.discoverMovies.invoke(genreId, page).collect { resource ->
                 updateMoviesState(category, resource)
             }
         }
@@ -157,7 +157,7 @@ class GamesViewModel(
         }
     }
 
-    private fun loadSeriesTopRated(category: SeriesCategory, page: Int) {
+    private fun loadSeriesTrending(category: SeriesCategory, page: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             delay(50)
             seriesUseCase.getSeriesTopRated.invoke(page).collect { resource ->
@@ -170,7 +170,7 @@ class GamesViewModel(
         val genreId = category.genreId ?: return
         viewModelScope.launch(Dispatchers.IO) {
             delay(50)
-            seriesUseCase.getSeriesByGenre.invoke(genreId, page).collect { resource ->
+            seriesUseCase.discoverSeries.invoke(genreId, page, category.originCountry).collect { resource ->
                 updateSeriesState(category, resource)
             }
         }

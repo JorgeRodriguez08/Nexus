@@ -1,4 +1,4 @@
-package com.example.nexus.ui.screens.search
+package com.example.nexus.ui.screens.games
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -39,7 +39,7 @@ fun GamesSection(
     ) {
         Text(
             text = "Juegos móviles recomendados",
-            fontSize = 18.sp,
+            fontSize = 17.5.sp,
             fontWeight = FontWeight.ExtraBold,
             color = MaterialTheme.colorScheme.onSurface
         )
@@ -66,7 +66,7 @@ fun GameRecommended(
 ) {
     Column(
         horizontalAlignment = Alignment.Start,
-        modifier = modifier.width(113.dp)
+        modifier = modifier.width(116.dp)
     ) {
         Card(
             shape = RoundedCornerShape(13.dp),
@@ -77,7 +77,7 @@ fun GameRecommended(
                 width = 1.dp,
                 color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.3f)),
             modifier = Modifier
-                .height(113.dp)
+                .height(116.dp)
                 .fillMaxWidth(),
         ) {
             AsyncImage(
@@ -89,7 +89,7 @@ fun GameRecommended(
 
         }
 
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(6.dp))
 
         Text(
             text = game.title,

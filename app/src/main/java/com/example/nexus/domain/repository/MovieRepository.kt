@@ -11,6 +11,7 @@ import com.example.nexus.domain.model.VideoMovie
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
+    fun getMoviesTrending(): Flow<Resource<List<Movie>>>
 
     fun getMoviesNowPlaying(page: Int): Flow<Resource<List<Movie>>>
 
@@ -20,23 +21,22 @@ interface MovieRepository {
 
     fun getMoviesUpComing(page: Int): Flow<Resource<List<Movie>>>
 
-    fun getMoviesByGenre(genreId: Int, page: Int): Flow<Resource<List<Movie>>>
+    fun discoverMovies(genreId: String, page: Int): Flow<Resource<List<Movie>>>
 
-    fun getMovieById(movieId: Int): Flow<Resource<Movie>>
+    fun searchMovie(query: String, page: Int): Flow<Resource<List<Movie>>>
+
+    fun getMovieDetails(movieId: Int): Flow<Resource<Movie>>
 
     fun getMovieImages(movieId: Int): Flow<Resource<ImageMovie?>>
 
     fun getMovieVideos(movieId: Int): Flow<Resource<VideoMovie?>>
 
-    fun searchMovies(query: String, page: Int): Flow<Resource<List<Movie>>>
-
     fun getMovieCast(movieId: Int): Flow<Resource<List<Actor>>>
 
     fun getMovieCrew(movieId: Int): Flow<Resource<List<Producer>>>
 
-    fun getMovieDetail(movieId: Int): Flow<Resource<MovieDetail>>
+    fun getMovieIntegrate(movieId: Int): Flow<Resource<MovieDetail>>
 
     fun getMovieMultimedia(movieId: Int): Flow<Resource<MovieMultimedia>>
-
 }
 

@@ -10,6 +10,11 @@ import kotlinx.coroutines.flow.Flow
 
 class SeriesRepositoryImpl(private val apiService: ApiService) : SeriesRepository {
 
+    override fun getSeriesTrending(): Flow<Resource<List<Series>>> =
+        safeApiCall {
+            apiService.getSeriesTrending().results.map { it.toDomainSeries()}
+        }
+
     override fun getSeriesAiringToday(page: Int): Flow<Resource<List<Series>>> =
         safeApiCall {
             apiService.getSeriesAiringToday(page = page).results.map { it.toDomainSeries() }
@@ -30,14 +35,9 @@ class SeriesRepositoryImpl(private val apiService: ApiService) : SeriesRepositor
             apiService.getSeriesTopRated(page = page).results.map { it.toDomainSeries() }
         }
 
-    override fun getSeriesByGenre(genreId: Int, page: Int): Flow<Resource<List<Series>>> =
+    override fun discoverSeries(genreId: String, page: Int, originCountry: String): Flow<Resource<List<Series>>> =
         safeApiCall {
-            apiService.getSeriesByGenre(genreId = genreId, page = page).results.map { it.toDomainSeries() }
-        }
-
-    override fun getSeriesById(seriesId: Int): Flow<Resource<Series>> =
-        safeApiCall {
-            apiService.getSeriesById(seriesId = seriesId).toDomainSeries()
+            apiService.discoverSeries(genreId = genreId, page = page, originCountry = originCountry).results.map { it.toDomainSeries() }
         }
 
     override fun searchSeries(query: String, page: Int): Flow<Resource<List<Series>>> =
@@ -45,4 +45,8 @@ class SeriesRepositoryImpl(private val apiService: ApiService) : SeriesRepositor
             apiService.searchSeries(query = query, page = page).results.map { it.toDomainSeries() }
         }
 
+    override fun getSeriesDetails(seriesId: Int): Flow<Resource<Series>> =
+        safeApiCall {
+            apiService.getSeriesDetails(seriesId = seriesId).toDomainSeries()
+        }
 }

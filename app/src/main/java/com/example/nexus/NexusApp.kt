@@ -7,5 +7,5 @@ import com.example.nexus.ui.navigation.NavigationHost
 
 @Composable
 fun NexusApp(navController: NavHostController = rememberNavController()) {
-    NavigationHost(navController = navController)
+    NavigationHost(navController)
 }

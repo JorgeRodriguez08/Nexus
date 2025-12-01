@@ -6,8 +6,6 @@ import com.example.nexus.common.Resource
 import kotlinx.coroutines.flow.Flow
 
 class SearchSeriesUseCase(private val repository: SeriesRepository) {
-
     operator fun invoke(query: String, page: Int): Flow<Resource<List<Series>>> =
-        repository.searchSeries(query = query, page = page)
-
+        repository.searchSeries(query, page)
 }

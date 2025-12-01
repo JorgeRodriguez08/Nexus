@@ -5,9 +5,9 @@ import com.example.nexus.domain.model.Movie
 import com.example.nexus.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 
-class GetMoviesUpComingUseCase(private val repository: MovieRepository) {
+class GetMoviesTrendingUseCase(private val repository: MovieRepository) {
 
-    operator fun invoke(page: Int): Flow<Resource<List<Movie>>> =
-        repository.getMoviesUpComing(page)
+    operator fun invoke(): Flow<Resource<List<Movie>>> =
+        repository.getMoviesTrending()
 
 }

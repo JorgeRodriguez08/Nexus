@@ -22,7 +22,7 @@ class SeriesDetailViewModel(
     fun loadSeriesDetail(page: Int = 1, seriesId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             delay(50)
-            seriesUseCase.getSeriesById.invoke(seriesId).collect { resource ->
+            seriesUseCase.getSeriesDetails.invoke(seriesId).collect { resource ->
                 _seriesDetailState.value = when (resource) {
                     is Resource.Loading -> SeriesState.Loading
                     is Resource.Success -> SeriesState.Success(resource.data)

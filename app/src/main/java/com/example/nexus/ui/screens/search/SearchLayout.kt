@@ -12,6 +12,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.nexus.ui.screens.games.GamesSection
 import com.example.nexus.ui.screens.movies.MoviesState
 
 @Composable

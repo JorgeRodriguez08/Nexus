@@ -17,6 +17,8 @@ import com.example.nexus.ui.components.shimmer.SeriesRowShimmer
 import com.example.nexus.domain.model.Series
 import com.example.nexus.ui.components.card.MovieCardLarge
 import com.example.nexus.ui.components.shimmer.MoviesCardLargeShimmer
+import com.example.nexus.ui.screens.games.GamesSection
+import com.example.nexus.ui.screens.games.GamesTop10Section
 import com.example.nexus.ui.screens.home.HomeRow
 import com.example.nexus.ui.screens.home.HomeState
 import com.example.nexus.ui.screens.movies.MoviesCategory
@@ -36,8 +38,8 @@ fun HomeContentLayout(
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .padding(top = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+            .padding(start = 13.dp, top = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(18.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
@@ -48,6 +50,22 @@ fun HomeContentLayout(
                     MovieCardLarge(featured, onMovieClick =  onMovieClick)
                 }
                 is MoviesState.Error -> { MoviesCardLargeShimmer() }
+            }
+        }
+
+        item {
+            when (featuredState) {
+                is MoviesState.Loading -> {  }
+                is MoviesState.Success -> { GamesSection(games = featuredState.results) }
+                is MoviesState.Error -> { }
+            }
+        }
+
+        item {
+            when (featuredState) {
+                is MoviesState.Loading -> {  }
+                is MoviesState.Success -> { GamesTop10Section(games = featuredState.results) }
+                is MoviesState.Error -> { }
             }
         }
 

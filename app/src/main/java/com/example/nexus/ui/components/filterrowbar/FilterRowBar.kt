@@ -2,6 +2,7 @@ package com.example.nexus.ui.components.filterrowbar
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -42,8 +43,25 @@ fun FilterRowBar(
             FilterChip(
                 selected = option == selectedOption,
                 onClick = { onOptionSelected(option) },
-                label = { Text(text = option, fontSize = 11.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface) },
-                modifier = Modifier.width(90.dp).height(50.dp),
+                label = {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(text = option, fontSize = 12.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
+                    }
+
+                },
+                modifier = if (option == options[2]) {
+                    Modifier
+                        .width(110.dp)
+                        .height(48.dp)
+                } else {
+                    Modifier
+                        .width(88.dp)
+                        .height(48.dp)
+                }
+                    ,
                 border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.50f)),
                 colors = FilterChipDefaults.filterChipColors(
                     containerColor = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.20f),

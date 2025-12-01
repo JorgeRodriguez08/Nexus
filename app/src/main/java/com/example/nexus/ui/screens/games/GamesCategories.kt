@@ -12,7 +12,7 @@ object GamesCategories {
         GamesRow.MoviesRow(MoviesCategory.Fantasy),
         GamesRow.SeriesRow(SeriesCategory.Animation),
         GamesRow.MoviesRow(MoviesCategory.Animation),
-        GamesRow.SeriesRow(SeriesCategory.Soap),
+        GamesRow.SeriesRow(SeriesCategory.RomanticKorea),
         GamesRow.MoviesRow(MoviesCategory.Animation),
         GamesRow.SeriesRow(SeriesCategory.Kids),
         GamesRow.MoviesRow(MoviesCategory.Family),

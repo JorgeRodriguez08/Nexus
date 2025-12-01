@@ -5,9 +5,7 @@ import com.example.nexus.domain.repository.SeriesRepository
 import com.example.nexus.common.Resource
 import kotlinx.coroutines.flow.Flow
 
-class GetSeriesByIdUseCase(private val repository: SeriesRepository)  {
-
+class GetSeriesDetailsUseCase(private val repository: SeriesRepository)  {
     operator fun invoke(seriesId: Int): Flow<Resource<Series>> =
-        repository.getSeriesById(seriesId = seriesId)
-
+        repository.getSeriesDetails(seriesId)
 }

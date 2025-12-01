@@ -8,6 +8,6 @@ import kotlinx.coroutines.flow.Flow
 class GetMoviesNowPlayingUseCase(private val repository: MovieRepository) {
 
     operator fun invoke(page: Int): Flow<Resource<List<Movie>>> =
-        repository.getMoviesNowPlaying(page = page)
+        repository.getMoviesNowPlaying(page)
 
 }

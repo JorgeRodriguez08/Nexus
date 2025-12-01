@@ -32,16 +32,16 @@ class HomeViewModel(
     fun loadHomeContent() {
         HomeCategories.rows.forEach { row ->
             when (row) {
-                is HomeRow.MoviesRow -> loadMoviesRow(row.category, 1)
-                is HomeRow.SeriesRow -> loadSeriesRow(row.category, 1)
+                is HomeRow.MoviesRow -> loadMoviesRow(row.category)
+                is HomeRow.SeriesRow -> loadSeriesRow(row.category)
             }
         }
     }
 
-    fun loadFeaturedMovies(page: Int = 1) {
+    fun loadFeaturedMovies() {
         viewModelScope.launch {
             delay(50)
-            moviesUseCase.getMoviesNowPlaying.invoke(page).collect { resource ->
+            moviesUseCase.getMoviesTrending.invoke().collect { resource ->
                 _featuredState.value = when (resource) {
                     is Resource.Loading -> MoviesState.Loading
                     is Resource.Success -> MoviesState.Success(resource.data)
@@ -51,23 +51,23 @@ class HomeViewModel(
         }
     }
 
-    private fun loadMoviesRow(category: MoviesCategory, page: Int) {
+    private fun loadMoviesRow(category: MoviesCategory) {
         when (category) {
             is MoviesCategory.NowPlaying -> loadMoviesNowPlaying(category, 1)
             is MoviesCategory.Popular -> loadMoviesPopular(category, 1)
-            is MoviesCategory.TopRated -> loadMoviesTopRated(category, 1)
+            is MoviesCategory.Trending -> loadMoviesTrending(category, 1)
             is MoviesCategory.UpComing -> loadMoviesUpComing(category, 1)
             else -> loadMoviesByGenre(category, 1)
         }
     }
 
-    private fun loadSeriesRow(category: SeriesCategory, page: Int) {
+    private fun loadSeriesRow(category: SeriesCategory) {
         when (category) {
             is SeriesCategory.AiringToday -> loadSeriesAiringToday(category, 1)
             is SeriesCategory.OnTheAir -> loadSeriesOnTheAir(category, 1)
             is SeriesCategory.Popular -> loadSeriesPopular(category, 1)
-            is SeriesCategory.TopRated -> loadSeriesTopRated(category, 1)
-            else -> loadSeriesByGenre(category, 1)
+            is SeriesCategory.Trending -> loadSeriesTrending(category, 1)
+            else -> loadSeriesByGenre(category)
         }
     }
 
@@ -89,7 +89,7 @@ class HomeViewModel(
         }
     }
 
-    private fun loadMoviesTopRated(category: MoviesCategory, page: Int) {
+    private fun loadMoviesTrending(category: MoviesCategory, page: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             delay(50)
             moviesUseCase.getMoviesTopRated.invoke(page).collect { resource ->
@@ -110,8 +110,8 @@ class HomeViewModel(
     private fun loadMoviesByGenre(category: MoviesCategory, page: Int) {
         val genreId = category.genreId ?: return
         viewModelScope.launch(Dispatchers.IO) {
-            delay(100)
-            moviesUseCase.getMoviesByGenre.invoke(genreId, page).collect { resource ->
+            delay(50)
+            moviesUseCase.discoverMovies.invoke(genreId, page).collect { resource ->
                 updateMoviesState(category, resource)
             }
         }
@@ -156,20 +156,20 @@ class HomeViewModel(
         }
     }
 
-    private fun loadSeriesTopRated(category: SeriesCategory, page: Int) {
+    private fun loadSeriesTrending(category: SeriesCategory, page: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             delay(50)
-            seriesUseCase.getSeriesTopRated.invoke(page).collect { resource ->
+            seriesUseCase.getSeriesTrending.invoke(page).collect { resource ->
                 updateSeriesState(category, resource)
             }
         }
     }
 
-    private fun loadSeriesByGenre(category: SeriesCategory, page: Int) {
+    private fun loadSeriesByGenre(category: SeriesCategory) {
         val genreId = category.genreId ?: return
         viewModelScope.launch(Dispatchers.IO) {
-            delay(100)
-            seriesUseCase.getSeriesByGenre.invoke(genreId, page).collect { resource ->
+            delay(50)
+            seriesUseCase.discoverSeries.invoke(genreId, category.page, category.originCountry).collect { resource ->
                 updateSeriesState(category, resource)
             }
         }

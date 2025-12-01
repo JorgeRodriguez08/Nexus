@@ -25,8 +25,8 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 
 @Composable
 fun MovieVideoScreen(
-    videoUrl: String?,
     movieVideoViewModel: MovieVideoViewModel,
+    videoUrl: String?,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current

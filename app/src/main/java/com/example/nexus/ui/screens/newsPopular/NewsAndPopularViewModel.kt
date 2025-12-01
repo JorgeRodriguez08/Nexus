@@ -80,7 +80,7 @@ class NewsAndPopularViewModel(
 
     fun loadMobileGames(page: Int = 1) {
         viewModelScope.launch(Dispatchers.IO) {
-            moviesUseCase.getMoviesByGenre.invoke(MoviesGenreIds.ANIMATION, page).collect { resource ->
+            moviesUseCase.discoverMovies.invoke(MoviesGenreIds.ANIMATION, page).collect { resource ->
                 when (resource) {
                     is Resource.Loading -> {
                         _moviesUiState.value = MoviesState.Loading

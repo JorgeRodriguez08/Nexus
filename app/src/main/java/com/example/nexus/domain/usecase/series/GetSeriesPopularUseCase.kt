@@ -6,8 +6,6 @@ import com.example.nexus.common.Resource
 import kotlinx.coroutines.flow.Flow
 
 class GetSeriesPopularUseCase(private val repository: SeriesRepository)  {
-
     operator fun invoke(page: Int): Flow<Resource<List<Series>>> =
-        repository.getSeriesPopular(page = page)
-
+        repository.getSeriesPopular(page)
 }

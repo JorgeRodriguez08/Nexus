@@ -31,8 +31,8 @@ class SeriesViewModel(
                 is SeriesCategory.AiringToday -> loadSeriesAiringToday(category, 1)
                 is SeriesCategory.OnTheAir -> loadSeriesOnTheAir(category, 1)
                 is SeriesCategory.Popular -> loadSeriesPopular(category, 1)
-                is SeriesCategory.TopRated -> loadSeriesTopRated(category, 1)
-                else -> loadSeriesByGenre(category, 1)
+                is SeriesCategory.Trending -> loadSeriesTrending(category, 1)
+                else -> loadSeriesByGenre(category)
             }
         }
     }
@@ -77,7 +77,7 @@ class SeriesViewModel(
         }
     }
 
-    private fun loadSeriesTopRated(category: SeriesCategory, page: Int) {
+    private fun loadSeriesTrending(category: SeriesCategory, page: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             delay(50)
             seriesUseCase.getSeriesTopRated.invoke(page).collect { resource ->
@@ -86,11 +86,11 @@ class SeriesViewModel(
         }
     }
 
-    private fun loadSeriesByGenre(category: SeriesCategory, page: Int) {
+    private fun loadSeriesByGenre(category: SeriesCategory) {
         val genreId = category.genreId ?: return
         viewModelScope.launch(Dispatchers.IO) {
             delay(100)
-            seriesUseCase.getSeriesByGenre.invoke(genreId, page).collect { resource ->
+            seriesUseCase.discoverSeries.invoke(genreId, category.page, category.originCountry).collect { resource ->
                 updateUiState(category, resource)
             }
         }

@@ -21,6 +21,11 @@ import kotlinx.coroutines.flow.flow
 
 class MovieRepositoryImpl(private val apiService: ApiService) : MovieRepository {
 
+    override fun getMoviesTrending(): Flow<Resource<List<Movie>>> =
+        safeApiCall {
+            apiService.getMoviesTrending().results.map { it.toDomainMovie() }
+        }
+
     override fun getMoviesNowPlaying(page: Int): Flow<Resource<List<Movie>>> =
         safeApiCall  {
             apiService.getMoviesNowPlaying(page = page).results.map { it.toDomainMovie() }
@@ -41,14 +46,19 @@ class MovieRepositoryImpl(private val apiService: ApiService) : MovieRepository 
             apiService.getMoviesUpComing(page = page).results.map { it.toDomainMovie() }
         }
 
-    override fun getMoviesByGenre(genreId: Int, page: Int): Flow<Resource<List<Movie>>> =
+    override fun discoverMovies(genreId: String, page: Int): Flow<Resource<List<Movie>>> =
         safeApiCall {
-            apiService.getMoviesByGenre(genreId = genreId, page = page).results.map { it.toDomainMovie()}
+            apiService.discoverMovies(genreId = genreId, page = page).results.map { it.toDomainMovie()}
         }
 
-    override fun getMovieById(movieId: Int): Flow<Resource<Movie>> =
+    override fun searchMovie(query: String, page: Int): Flow<Resource<List<Movie>>> =
         safeApiCall {
-            apiService.getMovieDetail(movieId = movieId).toDomainMovie()
+            apiService.searchMovie(query = query, page = page).results.map { it.toDomainMovie() }
+        }
+
+    override fun getMovieDetails(movieId: Int): Flow<Resource<Movie>> =
+        safeApiCall {
+            apiService.getMovieDetails(movieId = movieId).toDomainMovie()
         }
 
     override fun getMovieImages(movieId: Int): Flow<Resource<ImageMovie?>> = flow {
@@ -79,11 +89,6 @@ class MovieRepositoryImpl(private val apiService: ApiService) : MovieRepository 
         }
     }
 
-    override fun searchMovies(query: String, page: Int): Flow<Resource<List<Movie>>> =
-        safeApiCall {
-            apiService.searchMovies(query = query, page = page).results.map { it.toDomainMovie() }
-        }
-
     override fun getMovieCast(movieId: Int): Flow<Resource<List<Actor>>> =
         safeApiCall {
             apiService.getMovieCredits(movieId = movieId).cast.map { it.toDomainActor() }
@@ -94,36 +99,32 @@ class MovieRepositoryImpl(private val apiService: ApiService) : MovieRepository 
             apiService.getMovieCredits(movieId = movieId).crew.map { it.toDomainProducer()}
         }
 
-    override fun getMovieDetail(movieId: Int): Flow<Resource<MovieDetail>> = flow {
+    override fun getMovieIntegrate(movieId: Int): Flow<Resource<MovieDetail>> = flow {
         emit(Resource.Loading)
         try {
-            val movieResponse = apiService.getMovieDetail(movieId)
+            val movieResponse = apiService.getMovieDetails(movieId)
             val videosResponse = apiService.getMovieVideos(movieId)
             val creditsResponse = apiService.getMovieCredits(movieId)
-
             val movie = movieResponse.toDomainMovie()
-
             var video: VideoMovie? = null
+
             if (videosResponse.results != null && videosResponse.results.isNotEmpty()) {
                 video = videosResponse.results.firstOrNull{video -> video.type == "Trailer"}?.toDomainVideoMovie()
             }
 
             val cast = creditsResponse.cast.map { it.toDomainActor() }
             val crew = creditsResponse.crew.map { it.toDomainProducer() }
-
             val movieDetail = MovieDetail(
                 movie = movieResponse.toDomainMovie(),
                 video = video,
                 cast = cast,
                 crew = crew
             )
-
             emit(Resource.Success(movieDetail))
         } catch (e: Exception) {
             emit(Resource.Error("Error loading movie details"))
         }
     }
-
 
     override fun getMovieMultimedia(movieId: Int): Flow<Resource<MovieMultimedia>> = flow {
         emit(Resource.Loading)
@@ -145,7 +146,6 @@ class MovieRepositoryImpl(private val apiService: ApiService) : MovieRepository 
                 image = image,
                 video = video
             )
-
             emit(Resource.Success(movieDetail))
         } catch (e: Exception) {
             emit(Resource.Error("Error loading movie"))

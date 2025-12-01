@@ -5,6 +5,7 @@ import com.example.nexus.common.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface SeriesRepository {
+    fun getSeriesTrending(): Flow<Resource<List<Series>>>
 
     fun getSeriesAiringToday(page: Int): Flow<Resource<List<Series>>>
 
@@ -14,10 +15,9 @@ interface SeriesRepository {
 
     fun getSeriesTopRated(page: Int): Flow<Resource<List<Series>>>
 
-    fun getSeriesByGenre(genreId: Int, page: Int): Flow<Resource<List<Series>>>
-
-    fun getSeriesById(seriesId: Int): Flow<Resource<Series>>
+    fun discoverSeries(genreId: String, page: Int, originCountry: String): Flow<Resource<List<Series>>>
 
     fun searchSeries(query: String, page: Int): Flow<Resource<List<Series>>>
 
+    fun getSeriesDetails(seriesId: Int): Flow<Resource<Series>>
 }

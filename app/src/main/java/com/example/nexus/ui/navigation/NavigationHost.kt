@@ -1,7 +1,6 @@
 package com.example.nexus.ui.navigation
 
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -9,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -27,17 +28,15 @@ import com.example.nexus.ui.screens.movieVideo.MovieVideoScreen
 import com.example.nexus.ui.screens.movieVideo.MovieVideoViewModel
 import com.example.nexus.ui.screens.movies.MoviesScreen
 import com.example.nexus.ui.screens.movies.MoviesViewModel
-import com.example.nexus.ui.screens.newsPopular.NewsAndPopularViewModel
 import com.example.nexus.ui.screens.newsPopular.NewsAndPopularScreen
+import com.example.nexus.ui.screens.newsPopular.NewsAndPopularViewModel
 import com.example.nexus.ui.screens.search.SearchScreen
 import com.example.nexus.ui.screens.search.SearchViewModel
-import com.example.nexus.ui.screens.search.preview.SearchLayoutFake
 import com.example.nexus.ui.screens.series.SeriesScreen
 import com.example.nexus.ui.screens.series.SeriesViewModel
 import com.example.nexus.ui.screens.seriesDetail.SeriesDetailScreen
 import com.example.nexus.ui.screens.seriesDetail.SeriesDetailViewModel
 import org.koin.androidx.compose.koinViewModel
-import androidx.core.net.toUri
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -89,14 +88,6 @@ fun NavigationHost(
             startDestination = Destinations.Home.route,
             modifier = modifier.padding(innerPadding)
         ) {
-            composable(route = Destinations.Series.route) {
-                navigationViewModel.onRouteChanged(Destinations.Series.route)
-                val seriesViewModel: SeriesViewModel = koinViewModel()
-                SeriesScreen(
-                    seriesViewModel,
-                    onSeriesClick = { id -> navController.navigate(Destinations.SeriesDetail.create(id)) }
-                )
-            }
 
             composable(route = Destinations.Movies.route) {
                 navigationViewModel.onRouteChanged(Destinations.Movies.route)
@@ -104,6 +95,15 @@ fun NavigationHost(
                 MoviesScreen(
                     moviesViewModel,
                     onMovieClick = { id -> navController.navigate(Destinations.MovieDetail.create(id)) }
+                )
+            }
+
+            composable(route = Destinations.Series.route) {
+                navigationViewModel.onRouteChanged(Destinations.Series.route)
+                val seriesViewModel: SeriesViewModel = koinViewModel()
+                SeriesScreen(
+                    seriesViewModel,
+                    onSeriesClick = { id -> navController.navigate(Destinations.SeriesDetail.create(id)) }
                 )
             }
 
@@ -127,11 +127,9 @@ fun NavigationHost(
                 navigationViewModel.onRouteChanged(Destinations.MovieDetail.create(movieId))
                 val movieDetailViewModel: MovieDetailViewModel = koinViewModel()
                 MovieDetailScreen(
-                    movieDetailViewModel,
-                    movieId,
+                    movieDetailViewModel = movieDetailViewModel,
+                    movieId = movieId,
                     onFullClick = { videoUrl ->
-                        println("Esta es la url $videoUrl")
-
                         val intent = Intent(Intent.ACTION_VIEW, "vnd.youtube:$videoUrl".toUri())
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         intent.putExtra("force_fullscreen", true)
@@ -146,30 +144,37 @@ fun NavigationHost(
                 arguments = listOf(navArgument(Destinations.MovieVideo.ARGUMENT) { type = NavType.StringType })
             ) { backStackEntry ->
                 val videoUrl = backStackEntry.arguments?.getString(Destinations.MovieVideo.ARGUMENT) ?: return@composable
-                println("Esta es la url $videoUrl")
                 navigationViewModel.onRouteChanged(Destinations.MovieVideo.create(videoUrl))
                 val movieVideoViewModel: MovieVideoViewModel = koinViewModel()
-                MovieVideoScreen(videoUrl = videoUrl, movieVideoViewModel)
+                MovieVideoScreen(
+                    videoUrl = videoUrl,
+                    movieVideoViewModel = movieVideoViewModel
+                )
             }
 
             composable(route = Destinations.Categories.route) {
                 navigationViewModel.onRouteChanged(Destinations.Categories.route)
-                CategoriesScreen()
+                CategoriesScreen(
+
+                )
             }
 
             composable(route = Destinations.Search.route) {
                 navigationViewModel.onRouteChanged(Destinations.Search.route)
                 val searchViewModel: SearchViewModel = koinViewModel()
-                SearchScreen(searchViewModel)
+                SearchScreen(
+                    searchViewModel = searchViewModel
+                )
             }
 
             composable(route = Destinations.Home.route) {
                 navigationViewModel.onRouteChanged(Destinations.Home.route)
                 val homeViewModel: HomeViewModel = koinViewModel()
                 HomeScreen(
-                    homeViewModel,
+                    homeViewModel = homeViewModel,
                     onMovieClick = { id -> navController.navigate(Destinations.MovieDetail.create(id)) },
-                    onSeriesClick = { id -> navController.navigate(Destinations.SeriesDetail.create(id)) }
+                    onSeriesClick = { id -> navController.navigate(Destinations.SeriesDetail.create(id)) },
+                    modifier = modifier.padding(top = 7.dp)
                 )
             }
 
@@ -177,7 +182,7 @@ fun NavigationHost(
                 navigationViewModel.onRouteChanged(Destinations.Games.route)
                 val gamesViewModel: GamesViewModel = koinViewModel()
                 GamesScreen(
-                    gamesViewModel,
+                    gamesViewModel = gamesViewModel,
                     onMovieClick = { id -> navController.navigate(Destinations.MovieDetail.create(id)) },
                     onSeriesClick = { id -> navController.navigate(Destinations.SeriesDetail.create(id)) }
                 )
@@ -186,8 +191,8 @@ fun NavigationHost(
             composable(route = Destinations.NewsAndPopular.route) {
                 navigationViewModel.onRouteChanged(Destinations.NewsAndPopular.route)
                 NewsAndPopularScreen(
-                    selectedFilter = selectedFilter,
-                    newsAndPopularViewModel = newsAndPopularViewModel
+                    newsAndPopularViewModel = newsAndPopularViewModel,
+                    selectedFilter = selectedFilter
                 )
             }
 

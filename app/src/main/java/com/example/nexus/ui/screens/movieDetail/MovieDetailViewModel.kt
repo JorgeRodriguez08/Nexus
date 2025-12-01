@@ -28,7 +28,7 @@ class MovieDetailViewModel(
 
     fun loadMovieDetail(movieId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            moviesUseCase.getMovieDetail.invoke(movieId).collect { resource ->
+            moviesUseCase.getMovieIntegrate.invoke(movieId).collect { resource ->
                 _movieDetailState.value = when (resource) {
                     is Resource.Loading -> MovieDetailState.Loading
                     is Resource.Success -> MovieDetailState.Success(resource.data)

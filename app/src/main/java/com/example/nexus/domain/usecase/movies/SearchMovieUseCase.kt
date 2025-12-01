@@ -5,9 +5,9 @@ import com.example.nexus.domain.model.Movie
 import com.example.nexus.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 
-class SearchMoviesUseCase(private val repository: MovieRepository) {
+class SearchMovieUseCase(private val repository: MovieRepository) {
 
     operator fun invoke(query: String, page: Int): Flow<Resource<List<Movie>>> =
-        repository.searchMovies(query = query, page = page)
+        repository.searchMovie(query, page)
 
 }

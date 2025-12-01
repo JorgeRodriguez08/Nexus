@@ -23,14 +23,14 @@ fun MoviesContentLayout(
     moviesUiState: Map<MoviesCategory, MoviesState>,
     categories: List<MoviesCategory>,
     onMovieClick: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier
 ) {
     LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxSize()
-            .padding(top = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(top = 50.dp),
     ) {
         item {
             when (featuredState) {

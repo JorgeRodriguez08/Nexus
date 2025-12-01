@@ -6,7 +6,6 @@ import com.example.nexus.common.Resource
 import com.example.nexus.domain.model.Movie
 import com.example.nexus.domain.usecase.movies.MoviesUseCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,9 +28,10 @@ class MoviesViewModel(
     fun loadMoviesContent() {
         moviesCategories.forEach { category ->
             when (category) {
+                is MoviesCategory.Trending -> loadMoviesTrending(category)
                 is MoviesCategory.NowPlaying -> loadMoviesNowPlaying(category, 1)
                 is MoviesCategory.Popular -> loadMoviesPopular(category, 1)
-                is MoviesCategory.TopRated -> loadMoviesTopRated(category, 1)
+
                 is MoviesCategory.UpComing -> loadMoviesUpComing(category, 1)
                 else -> loadMoviesByGenre(category,1)
             }
@@ -40,7 +40,6 @@ class MoviesViewModel(
 
     fun loadFeaturedMovies(page: Int = 1) {
         viewModelScope.launch {
-            delay(50)
             moviesUseCase.getMoviesNowPlaying.invoke(page).collect { resource ->
                 _featuredMoviesState.value = when (resource) {
                     is Resource.Loading -> MoviesState.Loading
@@ -51,9 +50,16 @@ class MoviesViewModel(
         }
     }
 
+    private fun loadMoviesTrending(category: MoviesCategory) {
+        viewModelScope.launch(Dispatchers.IO) {
+            moviesUseCase.getMoviesTrending.invoke().collect { resource ->
+                updateUiState(category, resource)
+            }
+        }
+    }
+
     private fun loadMoviesNowPlaying(category: MoviesCategory, page: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            delay(50)
             moviesUseCase.getMoviesNowPlaying.invoke(page).collect { resource ->
                 updateUiState(category, resource)
             }
@@ -62,17 +68,7 @@ class MoviesViewModel(
 
     private fun loadMoviesPopular(category: MoviesCategory, page: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            delay(50)
             moviesUseCase.getMoviesPopular.invoke(page).collect { resource ->
-                updateUiState(category, resource)
-            }
-        }
-    }
-
-    private fun loadMoviesTopRated(category: MoviesCategory, page: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            delay(50)
-            moviesUseCase.getMoviesTopRated.invoke(page).collect { resource ->
                 updateUiState(category, resource)
             }
         }
@@ -80,7 +76,6 @@ class MoviesViewModel(
 
     private fun loadMoviesUpComing(category: MoviesCategory, page: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            delay(50)
             moviesUseCase.getMoviesUpComing.invoke(page).collect { resource ->
                 updateUiState(category, resource)
             }
@@ -90,8 +85,7 @@ class MoviesViewModel(
     private fun loadMoviesByGenre(category: MoviesCategory, page: Int) {
         val genreId = category.genreId ?: return
         viewModelScope.launch(Dispatchers.IO) {
-            delay(100)
-            moviesUseCase.getMoviesByGenre.invoke(genreId, page).collect { resource ->
+            moviesUseCase.discoverMovies.invoke(genreId, page).collect { resource ->
                 updateUiState(category, resource)
             }
         }

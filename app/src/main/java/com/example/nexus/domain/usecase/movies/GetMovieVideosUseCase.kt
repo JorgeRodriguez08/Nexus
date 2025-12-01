@@ -5,9 +5,9 @@ import com.example.nexus.domain.model.VideoMovie
 import com.example.nexus.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 
-class GetMovieVideoUseCase(private val repository: MovieRepository) {
+class GetMovieVideosUseCase(private val repository: MovieRepository) {
 
     operator fun invoke(movieId: Int): Flow<Resource<VideoMovie?>> =
-        repository.getMovieVideos(movieId = movieId)
+        repository.getMovieVideos(movieId)
 
 }

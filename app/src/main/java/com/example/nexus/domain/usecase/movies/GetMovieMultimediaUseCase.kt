@@ -8,6 +8,6 @@ import kotlinx.coroutines.flow.Flow
 class GetMovieMultimediaUseCase(private val repository: MovieRepository) {
 
     operator fun invoke(movieId: Int): Flow<Resource<MovieMultimedia>> =
-        repository.getMovieMultimedia(movieId = movieId)
+        repository.getMovieMultimedia(movieId)
 
 }
