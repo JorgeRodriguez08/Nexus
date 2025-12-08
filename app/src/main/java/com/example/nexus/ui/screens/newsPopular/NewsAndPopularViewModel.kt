@@ -3,7 +3,7 @@ package com.example.nexus.ui.screens.newsPopular
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nexus.common.Resource
-import com.example.nexus.data.remote.constants.MoviesGenreIds
+import com.example.nexus.constants.MovieGenreId
 import com.example.nexus.domain.usecase.movies.MoviesUseCase
 import com.example.nexus.ui.screens.movies.MoviesState
 import kotlinx.coroutines.Dispatchers
@@ -80,7 +80,7 @@ class NewsAndPopularViewModel(
 
     fun loadMobileGames(page: Int = 1) {
         viewModelScope.launch(Dispatchers.IO) {
-            moviesUseCase.discoverMovies.invoke(MoviesGenreIds.ANIMATION, page).collect { resource ->
+            moviesUseCase.discoverMovies.invoke(MovieGenreId.ANIMATION, page).collect { resource ->
                 when (resource) {
                     is Resource.Loading -> {
                         _moviesUiState.value = MoviesState.Loading

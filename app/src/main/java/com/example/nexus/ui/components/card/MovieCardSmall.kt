@@ -8,22 +8,22 @@ import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.nexus.domain.model.Movie
+import com.example.nexus.domain.models.Movie
+import com.example.nexus.ui.theme.Dimens
 
 @Composable
 fun MovieCardSmall(
     movie: Movie,
-    modifier: Modifier = Modifier,
-    onMovieClick: (Int) -> Unit
+    onMovieClick: (Int) -> Unit,
+    modifier: Modifier = Modifier
 ) {
+    val posterSmall = Dimens.Poster.small
     Card(
-        shape = RoundedCornerShape(4.dp),
+        shape = RoundedCornerShape(Dimens.Radius.small),
         modifier = modifier
-            .width(116.dp)
-            .height(162.dp)
+            .width(posterSmall.width)
+            .height(posterSmall.height)
             .clickable(onClick = { onMovieClick(movie.id) })
     ) {
         AsyncImage(

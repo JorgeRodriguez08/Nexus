@@ -13,20 +13,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.nexus.R
 import com.example.nexus.ui.navigation.Destinations
+import com.example.nexus.ui.theme.Dimens
+import com.example.nexus.ui.theme.FontSize
 
 @Composable
 fun NexusBottomAppBar(
-    modifier: Modifier = Modifier,
     currentRoute: String,
-    onNavigate: (String) -> Unit
+    onNavigate: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     if (Destinations.shouldShowBottomBar(currentRoute)) {
         NavigationBar(
-            modifier = modifier.height(110.dp)
+            modifier = modifier.height(Dimens.BarSize.large)
         ) {
             val items = listOf(
                 Triple(Destinations.Home.route, R.drawable.outlined_home, R.drawable.filled_home),
@@ -35,31 +35,42 @@ fun NexusBottomAppBar(
                 Triple(Destinations.MyNexus.route, R.drawable.outlined_profile, R.drawable.filled_profile)
             )
 
-            items.forEachIndexed { index, (destination, outlinedIcon, filledIcon) ->
+            items.forEachIndexed { index, (route, outlinedIcon, filledIcon) ->
                 NavigationBarItem(
-                    selected = currentRoute == destination,
-                    onClick = { onNavigate(destination) },
+                    selected = currentRoute == route,
+                    onClick = { onNavigate(route) },
                     icon = {
                         Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Icon(
-                                painter = painterResource(if (currentRoute == destination) filledIcon else outlinedIcon),
-                                modifier = Modifier.size(27.dp),
-                                contentDescription = destination,
-                                tint = if (currentRoute == destination) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSecondaryContainer
+                                painter = painterResource(
+                                    if (currentRoute == route)
+                                        filledIcon
+                                    else
+                                        outlinedIcon
+                                ),
+                                contentDescription = route,
+                                modifier = Modifier.size(Dimens.IconSize.medium),
+                                tint =
+                                    if (currentRoute == route)
+                                        MaterialTheme.colorScheme.onSurface
+                                    else
+                                        MaterialTheme.colorScheme.onSecondaryContainer
                             )
 
                             Text(
-                                text = destination,
-                                style = MaterialTheme.typography.labelSmall,
-                                fontSize = 7.sp,
-                                color = if (currentRoute == destination) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSecondaryContainer
+                                text = route,
+                                color =
+                                    if (currentRoute == route)
+                                        MaterialTheme.colorScheme.onSurface
+                                    else
+                                        MaterialTheme.colorScheme.onSecondaryContainer,
+                                fontSize = FontSize.tiny
                             )
                         }
                     },
-                    label = {},
                     alwaysShowLabel = false
                 )
             }

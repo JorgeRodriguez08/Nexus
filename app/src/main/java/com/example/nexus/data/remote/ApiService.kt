@@ -1,13 +1,12 @@
 package com.example.nexus.data.remote
 
-import com.example.nexus.data.remote.constants.NetworkConstants
+import com.example.nexus.constants.NetworkConstants
 import com.example.nexus.data.remote.models.CreditsResponse
 import com.example.nexus.data.remote.models.ImagesMovieResponse
 import com.example.nexus.data.remote.models.MovieDto
-import com.example.nexus.data.remote.models.MovieResponse
-import com.example.nexus.data.remote.models.SeriesDto
+import com.example.nexus.data.remote.models.MoviesResponse
+import com.example.nexus.data.remote.models.SerieDto
 import com.example.nexus.data.remote.models.SeriesResponse
-import com.example.nexus.data.remote.models.VideosMovieResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -18,35 +17,35 @@ interface ApiService {
     suspend fun getMoviesTrending(
         @Path("time_window") timeWindow: String = "day",
         @Query("language") language: String = NetworkConstants.LANGUAGE_SPANISH
-    ): MovieResponse
+    ): MoviesResponse
 
     @GET("movie/now_playing")
     suspend fun getMoviesNowPlaying(
         @Query("language") language: String = NetworkConstants.LANGUAGE_SPANISH,
         @Query("page") page: Int = NetworkConstants.PAGE_1,
         @Query("region") region: String = NetworkConstants.REGION_US
-    ): MovieResponse
+    ): MoviesResponse
 
     @GET("movie/popular")
     suspend fun getMoviesPopular(
         @Query("language") language: String = NetworkConstants.LANGUAGE_SPANISH,
         @Query("page") page: Int = NetworkConstants.PAGE_1,
         @Query("region") region: String = NetworkConstants.REGION_US
-    ): MovieResponse
+    ): MoviesResponse
 
     @GET("movie/top_rated")
     suspend fun getMoviesTopRated(
         @Query("language") language: String = NetworkConstants.LANGUAGE_SPANISH,
         @Query("page") page: Int = NetworkConstants.PAGE_1,
         @Query("region") region: String = NetworkConstants.REGION_US
-    ): MovieResponse
+    ): MoviesResponse
 
     @GET("movie/upcoming")
     suspend fun getMoviesUpComing(
         @Query("language") language: String = NetworkConstants.LANGUAGE_SPANISH,
         @Query("page") page: Int = NetworkConstants.PAGE_1,
         @Query("region") region: String = NetworkConstants.REGION_US
-    ): MovieResponse
+    ): MoviesResponse
 
     @GET("discover/movie")
     suspend fun discoverMovies(
@@ -61,7 +60,7 @@ interface ApiService {
         @Query("vote_average.lte") voteAverageLte: Float = NetworkConstants.VOTE_AVERAGE_LTE,
         @Query("with_genres") genreId: String,
         @Query("with_origin_country") originCountry: String = NetworkConstants.ORIGIN_COUNTRY_US
-    ): MovieResponse
+    ): MoviesResponse
 
     @GET("search/movie")
     suspend fun searchMovie(
@@ -70,7 +69,7 @@ interface ApiService {
         @Query("language") language: String = NetworkConstants.LANGUAGE_SPANISH,
         @Query("page") page: Int = NetworkConstants.PAGE_1,
         @Query("region") region: String = NetworkConstants.REGION_US
-    ): MovieResponse
+    ): MoviesResponse
 
     @GET("movie/{movie_id}")
     suspend fun getMovieDetails(
@@ -83,12 +82,6 @@ interface ApiService {
         @Path("movie_id") movieId: Int,
         @Query("language") language: String = NetworkConstants.LANGUAGE_SPANISH
     ): ImagesMovieResponse
-
-    @GET("movie/{movie_id}/videos")
-    suspend fun getMovieVideos(
-        @Path("movie_id") movieId: Int,
-        @Query("language") language: String = NetworkConstants.LANGUAGE_SPANISH
-    ): VideosMovieResponse
 
     @GET("movie/{movie_id}/credits")
     suspend fun getMovieCredits(
@@ -152,9 +145,15 @@ interface ApiService {
     ): SeriesResponse
 
     @GET("tv/{series_id}")
-    suspend fun getSeriesDetails(
+    suspend fun getSerieDetails(
         @Path("series_id") seriesId: Int,
         @Query("language") language: String = NetworkConstants.LANGUAGE_SPANISH
-    ): SeriesDto
+    ): SerieDto
+
+    @GET("tv/{series_id}/credits")
+    suspend fun getSerieCredits(
+        @Path("series_id") seriesId: Int,
+        @Query("language") language: String = NetworkConstants.LANGUAGE_SPANISH
+    ): CreditsResponse
 }
 

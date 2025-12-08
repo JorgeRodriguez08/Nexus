@@ -37,8 +37,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.nexus.R
-import com.example.nexus.domain.model.Movie
-import com.example.nexus.domain.model.MovieMultimedia
+import com.example.nexus.domain.models.Movie
+import com.example.nexus.domain.models.MovieMultimedia
 
 @Composable
 fun NewsMovieCard(

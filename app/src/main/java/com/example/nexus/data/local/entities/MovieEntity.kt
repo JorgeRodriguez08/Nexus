@@ -14,4 +14,15 @@ data class MovieEntity(
     val voteAverage: Double,
     val releaseDate: String,
     val timestamp: Long
-)
+) {
+    constructor() : this(
+        id = 0,
+        title = "",
+        overview = "",
+        posterUrl = "",
+        backdropUrl = "",
+        voteAverage = 0.0,
+        releaseDate = "",
+        timestamp = 0L
+    )
+}

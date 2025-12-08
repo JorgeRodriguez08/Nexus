@@ -1,9 +1,9 @@
 package com.example.nexus.ui.screens.series
 
-sealed class SeriesState<out Series> {
+import com.example.nexus.domain.models.Serie
 
-    object Loading : SeriesState<Nothing>()
-    data class Success<Series>(val items: List<Series>) : SeriesState<Series>()
-    data class Error(val message: String) : SeriesState<Nothing>()
-
+sealed class SeriesState {
+    object Loading : SeriesState()
+    data class Success(val results : List<Serie>) : SeriesState()
+    data class Error(val message: String) : SeriesState()
 }

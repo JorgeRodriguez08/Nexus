@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.nexus.domain.model.Movie
+import com.example.nexus.domain.models.Movie
 import com.example.nexus.ui.components.lazyrow.MoviesLazyRow
 import com.example.nexus.ui.screens.movies.MoviesState
 

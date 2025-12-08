@@ -17,5 +17,4 @@ class NavigationViewModel : ViewModel() {
     fun canNavigateBack(): Boolean {
         return _currentRoute.value != Destinations.Home.route
     }
-
 }

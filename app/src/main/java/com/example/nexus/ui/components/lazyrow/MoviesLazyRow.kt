@@ -2,7 +2,6 @@ package com.example.nexus.ui.components.lazyrow
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,10 +13,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.nexus.domain.model.Movie
+import com.example.nexus.domain.models.Movie
 import com.example.nexus.ui.components.card.MovieCardSmall
+import com.example.nexus.ui.theme.Dimens
+import com.example.nexus.ui.theme.FontSize
 
 @Composable
 fun MoviesLazyRow(
@@ -29,24 +28,26 @@ fun MoviesLazyRow(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 3.dp)
+            .padding(top = Dimens.Padding.extraSmall)
     ) {
         Text(
             text = title,
-            style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onSurface,
-            fontSize = 17.5.sp,
+            fontSize = FontSize.regular,
             fontWeight = FontWeight.ExtraBold,
-            maxLines = 1,
+            maxLines = 1
         )
 
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(Dimens.Spacing.extraSmall))
 
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(Dimens.Spacing.medium)
         ) {
             items(movies) { movie ->
-                MovieCardSmall(movie = movie, onMovieClick = onMovieClick)
+                MovieCardSmall(
+                    movie = movie,
+                    onMovieClick = onMovieClick
+                )
             }
         }
     }

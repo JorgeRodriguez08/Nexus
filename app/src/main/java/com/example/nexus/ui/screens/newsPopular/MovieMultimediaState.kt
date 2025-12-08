@@ -1,6 +1,6 @@
 package com.example.nexus.ui.screens.newsPopular
 
-import com.example.nexus.domain.model.MovieMultimedia
+import com.example.nexus.domain.models.MovieMultimedia
 
 sealed class MovieMultimediaState {
 

@@ -1,13 +1,13 @@
 package com.example.nexus.di
 
-import com.example.nexus.domain.usecase.series.GetSeriesAiringTodayUseCase
 import com.example.nexus.domain.usecase.series.DiscoverSeriesUseCase
-import com.example.nexus.domain.usecase.series.GetSeriesDetailsUseCase
+import com.example.nexus.domain.usecase.series.GetSerieDetailsUseCase
+import com.example.nexus.domain.usecase.series.GetSeriesAiringTodayUseCase
 import com.example.nexus.domain.usecase.series.GetSeriesOnTheAirUseCase
 import com.example.nexus.domain.usecase.series.GetSeriesPopularUseCase
 import com.example.nexus.domain.usecase.series.GetSeriesTopRatedUseCase
 import com.example.nexus.domain.usecase.series.GetSeriesTrendingUseCase
-import com.example.nexus.domain.usecase.series.SearchSeriesUseCase
+import com.example.nexus.domain.usecase.series.SearchSerieUseCase
 import com.example.nexus.domain.usecase.series.SeriesUseCase
 import org.koin.dsl.module
 
@@ -18,8 +18,8 @@ val seriesDomainModule = module {
     factory { GetSeriesPopularUseCase(get()) }
     factory { GetSeriesTopRatedUseCase(get()) }
     factory { DiscoverSeriesUseCase(get()) }
-    factory { GetSeriesDetailsUseCase(get()) }
-    factory { SearchSeriesUseCase(get()) }
+    factory { SearchSerieUseCase(get()) }
+    factory { GetSerieDetailsUseCase(get()) }
 
     factory {
         SeriesUseCase(
@@ -29,8 +29,8 @@ val seriesDomainModule = module {
             getSeriesPopular = get(),
             getSeriesTopRated = get(),
             discoverSeries = get(),
-            getSeriesDetails = get(),
-            searchSeries = get()
+            searchSeries = get(),
+            getSerieDetails = get()
         )
     }
 }

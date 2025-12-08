@@ -9,9 +9,5 @@ data class MoviesUseCase(
     val discoverMovies: DiscoverMoviesUseCase,
     val searchMovie: SearchMovieUseCase,
     val getMovieDetails: GetMovieDetailsUseCase,
-    val getMovieVideos: GetMovieVideosUseCase,
-    val getMovieCast: GetMovieCastUseCase,
-    val getMovieCrew: GetMovieCrewUseCase,
-    val getMovieIntegrate: GetMovieIntegrateUseCase,
-    val getMovieMultimedia: GetMovieMultimediaUseCase
+    val getMovieImage: GetMovieImageUseCase
 )

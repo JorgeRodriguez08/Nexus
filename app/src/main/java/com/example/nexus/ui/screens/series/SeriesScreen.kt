@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import com.example.nexus.ui.screens.series.layout.SeriesContentLayout
 
 @Composable
 fun SeriesScreen(
@@ -12,20 +11,19 @@ fun SeriesScreen(
     onSeriesClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val featuredSeriesState = seriesViewModel.featuredSeriesState.collectAsState()
-    val uiState = seriesViewModel.uiState.collectAsState()
-    val seriesUiState = uiState.value.seriesUiState
+    val featuredSerieState = seriesViewModel.featuredSeriesState.collectAsState().value
+    val seriesUiState = seriesViewModel.seriesUiState.collectAsState().value
 
     LaunchedEffect(Unit) {
         seriesViewModel.loadFeaturedSeries()
         seriesViewModel.loadSeriesContent()
     }
 
-    SeriesContentLayout(
-        featuredState = featuredSeriesState.value,
+    SeriesLayout(
+        featuredSerieState = featuredSerieState,
         seriesUiState = seriesUiState,
         categories = seriesViewModel.seriesCategories,
-        onSeriesClick = onSeriesClick,
+        onSerieClick = onSeriesClick,
         modifier = modifier
     )
 }

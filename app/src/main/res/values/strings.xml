@@ -1,25 +1,8 @@
 <resources>
     <string name="app_name">Nexus</string>
-    <string name="home">Home</string>
-    <string name="movies">Movies</string>
-    <string name="movies_details">Movies Details</string>
-    <string name="series">Series</string>
-    <string name="series_details">Series Details</string>
-    <string name="search">Search</string>
-    <string name="categories">Categories</string>
-    <string name="movies_categories">Movies Categories</string>
-    <string name="series_categories">Series Categories</string>
-    <string name="my_nexus">My Nexus</string>
-    <string name="release">Release</string>
-    <string name="popular_movies">Popular Movies</string>
-    <string name="popular_series">Popular Series</string>
-    <string name="new_and_popular">New and Popular</string>
-    <string name="search_icon">Search Icon</string>
+    <string name="app_icon">App Icon</string>
     <string name="back_icon">Back Icon</string>
-    <string name="nexus_icon">Nexus Icon</string>
-    <string name="home_screen">Home Screen</string>
-    <string name="news_screen">News Screen</string>
-    <string name="popular_screen">Popular Screen</string>
-    <string name="search_screen">Search Screen</string>
-    <string name="my_nexus_screen">MyNexus Screen</string>
+    <string name="cast_icon">Search Icon</string>
+    <string name="download_icon">Search Icon</string>
+    <string name="search_icon">Search Icon</string>
 </resources>

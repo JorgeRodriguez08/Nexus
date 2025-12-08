@@ -17,7 +17,7 @@ interface MovieDao {
     suspend fun insertAllMovie(movies: List<MovieEntity>)
 
     @Query("SELECT * FROM movies WHERE id = :movieId")
-    fun getMovieById(movieId: Int): Flow<MovieEntity>
+    fun getMovieById(movieId: Int): Flow<MovieEntity?>
 
     @Query("SELECT * FROM movies ORDER BY timestamp DESC")
     fun getAllMovies(): Flow<List<MovieEntity>>

@@ -7,8 +7,6 @@ data class ProducerDto(
     val id: Int,
     @SerializedName("name")
     val name: String?,
-    @SerializedName("profile_path")
-    val profilePath: String?,
     @SerializedName("job")
     val job: String?
 )

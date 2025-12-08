@@ -4,8 +4,9 @@ import androidx.room.Room
 import com.example.nexus.BuildConfig
 import com.example.nexus.data.local.database.AppDatabase
 import com.example.nexus.data.remote.ApiService
-import com.example.nexus.data.remote.constants.ApiConstants
-import com.example.nexus.data.remote.constants.NetworkConstants
+import com.example.nexus.constants.ApiConstants
+import com.example.nexus.constants.DatabaseConstants
+import com.example.nexus.constants.NetworkConstants
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -59,7 +60,7 @@ val appModule = module {
         Room.databaseBuilder(
             androidApplication(),
             AppDatabase::class.java,
-            "nexus_database"
+            DatabaseConstants.DATABASE_NAME
         ).build()
     }
 

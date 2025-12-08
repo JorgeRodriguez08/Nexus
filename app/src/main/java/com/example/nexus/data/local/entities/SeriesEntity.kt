@@ -14,4 +14,15 @@ data class SeriesEntity(
     val voteAverage: Double,
     val firstAirDate: String,
     val timestamp: Long
-)
+) {
+    constructor() : this(
+        id = 0,
+        name = "",
+        overview = "",
+        posterUrl = "",
+        backdropUrl = "",
+        voteAverage = 0.0,
+        firstAirDate = "",
+        timestamp = 0L
+    )
+}

@@ -1,6 +1,6 @@
 package com.example.nexus.common
 
-import com.example.nexus.data.remote.constants.ErrorMessages
+import com.example.nexus.constants.ErrorMessages
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException

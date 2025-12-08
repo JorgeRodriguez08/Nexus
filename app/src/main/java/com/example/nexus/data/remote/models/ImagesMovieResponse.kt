@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ImagesMovieResponse(
     @SerializedName("id")
-    val id: Int = 0,
+    val id: Int,
     @SerializedName("logos")
-    val logos: List<ImageMovieDto>?
+    val logos: List<ImageMovieDto>
 )

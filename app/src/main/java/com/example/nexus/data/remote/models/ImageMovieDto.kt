@@ -7,8 +7,8 @@ data class ImageMovieDto(
     val aspectRatio: Double?,
     @SerializedName("height")
     val height: Int?,
-    @SerializedName("width")
-    val width: Int?,
     @SerializedName("file_path")
-    val filePath: String?
+    val filePath: String?,
+    @SerializedName("width")
+    val width: Int?
 )

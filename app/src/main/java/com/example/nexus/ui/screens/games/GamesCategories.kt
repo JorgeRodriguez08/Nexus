@@ -1,21 +1,21 @@
 package com.example.nexus.ui.screens.games
 
-import com.example.nexus.ui.screens.movies.MoviesCategory
-import com.example.nexus.ui.screens.series.SeriesCategory
+import com.example.nexus.ui.screens.movies.MovieCategory
+import com.example.nexus.ui.screens.series.SerieCategory
 
 object GamesCategories {
     val rows = listOf(
-        GamesRow.SeriesRow(SeriesCategory.Kids),
-        GamesRow.SeriesRow(SeriesCategory.Family),
-        GamesRow.MoviesRow(MoviesCategory.Family),
-        GamesRow.SeriesRow(SeriesCategory.Kids),
-        GamesRow.MoviesRow(MoviesCategory.Fantasy),
-        GamesRow.SeriesRow(SeriesCategory.Animation),
-        GamesRow.MoviesRow(MoviesCategory.Animation),
-        GamesRow.SeriesRow(SeriesCategory.RomanticKorea),
-        GamesRow.MoviesRow(MoviesCategory.Animation),
-        GamesRow.SeriesRow(SeriesCategory.Kids),
-        GamesRow.MoviesRow(MoviesCategory.Family),
-        GamesRow.SeriesRow(SeriesCategory.Animation),
+        GamesRow.SeriesRow(SerieCategory.Kids),
+        GamesRow.SeriesRow(SerieCategory.Family),
+        GamesRow.MoviesRow(MovieCategory.Family),
+        GamesRow.SeriesRow(SerieCategory.Kids),
+        GamesRow.MoviesRow(MovieCategory.Fantasy),
+        GamesRow.SeriesRow(SerieCategory.Animation),
+        GamesRow.MoviesRow(MovieCategory.Animation),
+        GamesRow.SeriesRow(SerieCategory.RomanticKorea),
+        GamesRow.MoviesRow(MovieCategory.Animation),
+        GamesRow.SeriesRow(SerieCategory.Kids),
+        GamesRow.MoviesRow(MovieCategory.Family),
+        GamesRow.SeriesRow(SerieCategory.Animation),
     )
 }

@@ -1,5 +1,7 @@
 package com.example.nexus.ui.navigation
 
+import com.example.nexus.constants.Routes
+
 sealed class Destinations(
     val route: String,
     val showTopBar: Boolean = true,
@@ -8,19 +10,19 @@ sealed class Destinations(
     val showNewsFilterBar: Boolean = false,
     val showSearchBar: Boolean = false
 ) {
-    object Movies : Destinations(Route.MOVIES)
-    object Series : Destinations(Route.SERIES)
-    object Home : Destinations(Route.HOME)
-    object Games : Destinations(Route.GAMES, showFilterBar = false)
-    object NewsAndPopular : Destinations(Route.NEWS_AND_POPULAR, showFilterBar = false, showNewsFilterBar = true)
-    object MyNexus : Destinations(Route.MY_NEXUS, showFilterBar = false)
-    object Categories : Destinations(Route.CATEGORIES, showFilterBar = false)
-    object Search : Destinations(Route.SEARCH, showBottomBar = false, showFilterBar = false, showSearchBar = true)
+    object Movies : Destinations(Routes.MOVIES)
+    object Series : Destinations(Routes.SERIES)
+    object Home : Destinations(Routes.HOME)
+    object Games : Destinations(Routes.GAMES, showFilterBar = false)
+    object NewsAndPopular : Destinations(Routes.NEWS_AND_POPULAR, showFilterBar = false, showNewsFilterBar = true)
+    object MyNexus : Destinations(Routes.MY_NEXUS, showFilterBar = false)
+    object Categories : Destinations(Routes.CATEGORIES, showFilterBar = false)
+    object Search : Destinations(Routes.SEARCH, showBottomBar = false, showFilterBar = false, showSearchBar = true)
     data object MovieDetail : Destinations("detail/{movieId}", showBottomBar = false, showFilterBar = false) {
         fun create(id: Int) = "detail/$id"
         const val ARGUMENT = "movieId"
     }
-    data object SeriesDetail: Destinations("detail/{seriesId}", showFilterBar = false) {
+    data object SerieDetail: Destinations("detail/{seriesId}", showFilterBar = false) {
         fun create(id: Int) = "detail/$id"
         const val ARGUMENT = "seriesId"
     }
@@ -30,7 +32,6 @@ sealed class Destinations(
     }
 
     companion object {
-
         val screensFilter = listOf(Series.route, Movies.route, Categories.route)
 
         fun findDestination(route: String): Destinations? {
@@ -70,7 +71,7 @@ sealed class Destinations(
             Categories,
             Search,
             MovieDetail,
-            SeriesDetail,
+            SerieDetail,
             MovieVideo
         )
     }
