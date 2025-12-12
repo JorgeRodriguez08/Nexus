@@ -4,8 +4,8 @@ import com.example.nexus.data.remote.mappers.toDomainSeries
 import com.example.nexus.data.remote.ApiService
 import com.example.nexus.domain.model.Series
 import com.example.nexus.domain.repository.SeriesRepository
-import com.example.nexus.common.Resource
-import com.example.nexus.common.safeApiCall
+import com.example.nexus.common.core.Resource
+import com.example.nexus.common.utils.safeApiCall
 import kotlinx.coroutines.flow.Flow
 
 class SeriesRepositoryImpl(private val apiService: ApiService) : SeriesRepository {
@@ -30,7 +30,7 @@ class SeriesRepositoryImpl(private val apiService: ApiService) : SeriesRepositor
             apiService.getSeriesTopRated(page = page).results.map { it.toDomainSeries() }
         }
 
-    override fun getSeriesByGenre(genreId: Int, page: Int): Flow<Resource<List<Series>>> =
+    override fun getSeriesByGenre(genreId: String, page: Int): Flow<Resource<List<Series>>> =
         safeApiCall {
             apiService.getSeriesByGenre(genreId = genreId, page = page).results.map { it.toDomainSeries() }
         }

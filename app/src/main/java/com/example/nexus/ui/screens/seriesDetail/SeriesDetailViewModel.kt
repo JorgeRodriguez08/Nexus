@@ -2,7 +2,7 @@ package com.example.nexus.ui.screens.seriesDetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.nexus.common.Resource
+import com.example.nexus.common.core.Resource
 import com.example.nexus.domain.model.Series
 import com.example.nexus.domain.usecase.series.SeriesUseCase
 import kotlinx.coroutines.Dispatchers

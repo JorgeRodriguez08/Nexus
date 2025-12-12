@@ -2,7 +2,7 @@ package com.example.nexus.domain.usecase.series
 
 import com.example.nexus.domain.repository.SeriesRepository
 import com.example.nexus.domain.model.Series
-import com.example.nexus.common.Resource
+import com.example.nexus.common.core.Resource
 import kotlinx.coroutines.flow.Flow
 
 class GetSeriesTopRatedUseCase(private val repository: SeriesRepository) {

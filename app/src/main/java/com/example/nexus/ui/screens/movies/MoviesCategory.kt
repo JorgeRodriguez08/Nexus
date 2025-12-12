@@ -1,8 +1,8 @@
 package com.example.nexus.ui.screens.movies
 
-import com.example.nexus.data.remote.constants.MoviesGenreIds
+import com.example.nexus.common.constants.MoviesGenreIds
 
-sealed class MoviesCategory(val title: String, val genreId: Int? = null) {
+sealed class MoviesCategory(val title: String, val genreId: String? = null) {
     object NowPlaying : MoviesCategory("Las películas de estreno")
     object Popular : MoviesCategory("Las películas más populares")
     object TopRated : MoviesCategory("Las 10 mejores películas")

@@ -2,7 +2,7 @@ package com.example.nexus.ui.screens.movies
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.nexus.common.Resource
+import com.example.nexus.common.core.Resource
 import com.example.nexus.domain.model.Movie
 import com.example.nexus.domain.usecase.movies.MoviesUseCase
 import kotlinx.coroutines.Dispatchers

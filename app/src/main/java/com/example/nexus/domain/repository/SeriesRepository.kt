@@ -1,7 +1,7 @@
 package com.example.nexus.domain.repository
 
 import com.example.nexus.domain.model.Series
-import com.example.nexus.common.Resource
+import com.example.nexus.common.core.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface SeriesRepository {
@@ -14,7 +14,7 @@ interface SeriesRepository {
 
     fun getSeriesTopRated(page: Int): Flow<Resource<List<Series>>>
 
-    fun getSeriesByGenre(genreId: Int, page: Int): Flow<Resource<List<Series>>>
+    fun getSeriesByGenre(genreId: String, page: Int): Flow<Resource<List<Series>>>
 
     fun getSeriesById(seriesId: Int): Flow<Resource<Series>>
 

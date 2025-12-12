@@ -1,6 +1,6 @@
 package com.example.nexus.ui.screens.categories
 
-import com.example.nexus.data.remote.constants.CategoriesGenreIds
+import com.example.nexus.common.constants.CategoriesGenreIds
 
 sealed class Category(val title: String, val genreId: Int) {
     object Action : Category("Action", CategoriesGenreIds.ACTION)

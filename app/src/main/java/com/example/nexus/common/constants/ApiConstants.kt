@@ -1,4 +1,4 @@
-package com.example.nexus.data.remote.constants
+package com.example.nexus.common.constants
 
 object ApiConstants {
     const val HEADER_ACCEPT = "Accept"

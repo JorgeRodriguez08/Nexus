@@ -1,6 +1,6 @@
 package com.example.nexus.domain.repository
 
-import com.example.nexus.common.Resource
+import com.example.nexus.common.core.Resource
 import com.example.nexus.domain.model.Actor
 import com.example.nexus.domain.model.ImageMovie
 import com.example.nexus.domain.model.Movie
@@ -20,7 +20,7 @@ interface MovieRepository {
 
     fun getMoviesUpComing(page: Int): Flow<Resource<List<Movie>>>
 
-    fun getMoviesByGenre(genreId: Int, page: Int): Flow<Resource<List<Movie>>>
+    fun getMoviesByGenre(genreId: String, page: Int): Flow<Resource<List<Movie>>>
 
     fun getMovieById(movieId: Int): Flow<Resource<Movie>>
 

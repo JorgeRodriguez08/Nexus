@@ -2,8 +2,8 @@ package com.example.nexus.ui.screens.newsPopular
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.nexus.common.Resource
-import com.example.nexus.data.remote.constants.MoviesGenreIds
+import com.example.nexus.common.core.Resource
+import com.example.nexus.common.constants.MoviesGenreIds
 import com.example.nexus.domain.usecase.movies.MoviesUseCase
 import com.example.nexus.ui.screens.movies.MoviesState
 import kotlinx.coroutines.Dispatchers

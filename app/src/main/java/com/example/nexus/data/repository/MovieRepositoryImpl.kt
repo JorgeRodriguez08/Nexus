@@ -1,7 +1,7 @@
 package com.example.nexus.data.repository
 
-import com.example.nexus.common.Resource
-import com.example.nexus.common.safeApiCall
+import com.example.nexus.common.core.Resource
+import com.example.nexus.common.utils.safeApiCall
 import com.example.nexus.data.remote.ApiService
 import com.example.nexus.data.remote.mappers.toDomainActor
 import com.example.nexus.data.remote.mappers.toDomainImageMovie
@@ -41,7 +41,7 @@ class MovieRepositoryImpl(private val apiService: ApiService) : MovieRepository 
             apiService.getMoviesUpComing(page = page).results.map { it.toDomainMovie() }
         }
 
-    override fun getMoviesByGenre(genreId: Int, page: Int): Flow<Resource<List<Movie>>> =
+    override fun getMoviesByGenre(genreId: String, page: Int): Flow<Resource<List<Movie>>> =
         safeApiCall {
             apiService.getMoviesByGenre(genreId = genreId, page = page).results.map { it.toDomainMovie()}
         }
