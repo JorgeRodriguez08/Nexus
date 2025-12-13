@@ -15,5 +15,5 @@ interface MoviesRepository {
     fun discoverMovies(genreId: String, page: Int, originCountry: String): Flow<Resource<List<Movie>>>
     fun searchMovie(query: String, page: Int): Flow<Resource<List<Movie>>>
     fun getMovieDetails(movieId: Int): Flow<Resource<MovieDetails>>
-    fun getMovieImage(movieId: Int): Flow<Resource<ImageMovie?>>
+    fun getMovieImage(movieId: Int): Flow<Resource<ImageMovie>>
 }

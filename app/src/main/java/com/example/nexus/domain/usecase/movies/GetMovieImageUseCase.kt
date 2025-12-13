@@ -6,6 +6,6 @@ import com.example.nexus.domain.repository.movies.MoviesRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetMovieImageUseCase(private val repository: MoviesRepository) {
-    operator fun invoke(movieId: Int): Flow<Resource<ImageMovie?>> =
+    operator fun invoke(movieId: Int): Flow<Resource<ImageMovie>> =
         repository.getMovieImage(movieId = movieId)
 }

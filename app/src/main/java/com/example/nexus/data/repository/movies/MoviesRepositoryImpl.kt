@@ -1,4 +1,4 @@
-package com.example.nexus.data.repository.impl
+package com.example.nexus.data.repository.movies
 
 import com.example.nexus.common.constants.ErrorMessages
 import com.example.nexus.common.core.Resource

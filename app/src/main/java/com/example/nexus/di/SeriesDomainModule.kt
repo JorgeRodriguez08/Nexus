@@ -34,4 +34,3 @@ val seriesDomainModule = module {
         )
     }
 }
-
