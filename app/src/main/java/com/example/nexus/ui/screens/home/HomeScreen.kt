@@ -10,7 +10,7 @@ import com.example.nexus.ui.screens.home.layout.HomeContentLayout
 fun HomeScreen(
     homeViewModel: HomeViewModel,
     onMovieClick: (Int) -> Unit,
-    onSeriesClick: (Int) -> Unit,
+    onSerieClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val featuredState = homeViewModel.featuredState.collectAsState()
@@ -27,7 +27,7 @@ fun HomeScreen(
         moviesMap = homeUiState.moviesMap,
         serieMap = homeUiState.serieMap,
         onMovieClick = onMovieClick,
-        onSeriesClick = onSeriesClick,
+        onSeriesClick = onSerieClick,
         modifier = modifier
     )
 

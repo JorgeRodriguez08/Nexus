@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class MovieDetailViewModel(
+class MovieDetailsViewModel(
     private val moviesUseCase: MoviesUseCase
 ) : ViewModel() {
 

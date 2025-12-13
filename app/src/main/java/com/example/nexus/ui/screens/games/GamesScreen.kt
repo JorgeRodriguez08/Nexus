@@ -10,7 +10,7 @@ import com.example.nexus.ui.screens.games.layout.GamesContentLayout
 fun GamesScreen(
     gamesViewModel: GamesViewModel,
     onMovieClick: (Int) -> Unit,
-    onSeriesClick: (Int) -> Unit,
+    onSerieClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val gamesUiState = gamesViewModel.gamesUiState.collectAsState().value
@@ -25,7 +25,7 @@ fun GamesScreen(
         moviesMap = gamesUiState.moviesMap,
         serieMap = gamesUiState.serieMap,
         onMovieClick = onMovieClick,
-        onSeriesClick = onSeriesClick,
+        onSeriesClick = onSerieClick,
         featuredState = featuredState,
         modifier = modifier
     )

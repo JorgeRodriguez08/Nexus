@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class SeriesDetailViewModel(
+class SerieDetailsViewModel(
     private val seriesUseCase: SeriesUseCase
 ) : ViewModel() {
 

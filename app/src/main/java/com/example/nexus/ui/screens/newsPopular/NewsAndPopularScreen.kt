@@ -8,8 +8,8 @@ import com.example.nexus.ui.screens.movies.MoviesState
 
 @Composable
 fun NewsAndPopularScreen(
-    selectedFilter: FilterType,
     newsAndPopularViewModel: NewsAndPopularViewModel,
+    selectedFilter: FilterType,
     modifier: Modifier = Modifier
 ) {
     LaunchedEffect(selectedFilter) {

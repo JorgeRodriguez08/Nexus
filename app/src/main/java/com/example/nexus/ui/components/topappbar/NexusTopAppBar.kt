@@ -33,15 +33,15 @@ import com.example.nexus.ui.screens.search.SearchBar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NexusTopAppBar(
-    modifier: Modifier = Modifier,
     currentRoute: String,
+    selectedFilter: FilterType,
     canNavigateBack: Boolean,
-    onSearchClick: () -> Unit,
     onBackClick: () -> Unit,
     onDownloadClick: () -> Unit,
+    onSearchClick: () -> Unit,
     onFilterSelected: (String) -> Unit,
-    selectedFilter: FilterType,
-    onNewFilterSelected: (FilterType) -> Unit
+    onNewFilterSelected: (FilterType) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
         verticalArrangement = Arrangement.SpaceEvenly
@@ -51,7 +51,7 @@ fun NexusTopAppBar(
                 Text(
                     text = when (findDestination(currentRoute)) {
                         Destinations.MovieDetail -> ""
-                        Destinations.SeriesDetail -> ""
+                        Destinations.SerieDetail -> ""
                         else -> currentRoute
                     },
                     fontWeight = FontWeight.Bold,

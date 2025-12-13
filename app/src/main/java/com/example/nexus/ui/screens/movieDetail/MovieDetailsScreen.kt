@@ -6,16 +6,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 
 @Composable
-fun MovieDetailScreen(
-    movieDetailViewModel: MovieDetailViewModel,
+fun MovieDetailsScreen(
+    movieDetailsViewModel: MovieDetailsViewModel,
     movieId: Int,
     modifier: Modifier = Modifier
 ) {
     LaunchedEffect(movieId) {
-        movieDetailViewModel.loadMovieDetail(movieId = movieId)
+        movieDetailsViewModel.loadMovieDetail(movieId = movieId)
     }
 
-    val movieDetailState = movieDetailViewModel.movieDetailState.collectAsState().value
+    val movieDetailState = movieDetailsViewModel.movieDetailState.collectAsState().value
     MovieDetailLayout(
         movieDetailState = movieDetailState,
         modifier = modifier

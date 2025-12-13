@@ -1,7 +1,7 @@
 package com.example.nexus.di
 
 import com.example.nexus.ui.navigation.NavigationViewModel
-import com.example.nexus.ui.screens.movieDetail.MovieDetailViewModel
+import com.example.nexus.ui.screens.movieDetail.MovieDetailsViewModel
 import com.example.nexus.ui.screens.games.GamesViewModel
 import com.example.nexus.ui.screens.movies.MoviesViewModel
 import com.example.nexus.ui.screens.series.SeriesViewModel
@@ -18,6 +18,6 @@ val viewModelModule = module {
     viewModel { HomeViewModel(moviesUseCase = get(), seriesUseCase = get()) }
     viewModel { GamesViewModel(moviesUseCase = get(), seriesUseCase = get()) }
     viewModel { NewsAndPopularViewModel(moviesUseCase = get()) }
-    viewModel { MovieDetailViewModel(moviesUseCase = get()) }
+    viewModel { MovieDetailsViewModel(moviesUseCase = get()) }
     viewModel { SearchViewModel(moviesUseCase = get()) }
 }

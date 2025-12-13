@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class NavigationViewModel : ViewModel() {
-
     private val _currentRoute = MutableStateFlow(Destinations.Home.route)
     val currentRoute: StateFlow<String> = _currentRoute.asStateFlow()
 
@@ -17,5 +16,4 @@ class NavigationViewModel : ViewModel() {
     fun canNavigateBack(): Boolean {
         return _currentRoute.value != Destinations.Home.route
     }
-
 }

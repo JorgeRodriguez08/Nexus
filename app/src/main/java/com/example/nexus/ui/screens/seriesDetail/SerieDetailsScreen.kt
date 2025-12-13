@@ -6,16 +6,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 
 @Composable
-fun SeriesDetailScreen(
-    seriesDetailViewModel: SeriesDetailViewModel,
-    seriesId: Int,
+fun SerieDetailsScreen(
+    serieDetailsViewModel: SerieDetailsViewModel,
+    serieId: Int,
     modifier: Modifier = Modifier
 ) {
     LaunchedEffect(Unit) {
-        seriesDetailViewModel.loadSeriesDetail(seriesId = seriesId)
+        serieDetailsViewModel.loadSeriesDetail(seriesId = serieId)
     }
 
-    val seriesDetailState = seriesDetailViewModel.serieDetailState.collectAsState().value
+    val seriesDetailState = serieDetailsViewModel.serieDetailState.collectAsState().value
     SeriesDetailLayout(seriesDetailState, modifier = modifier)
 }
 
