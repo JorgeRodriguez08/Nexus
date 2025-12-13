@@ -15,11 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.nexus.domain.model.Series
+import com.example.nexus.domain.model.SerieDetails
 
 @Composable
 fun SeriesDetailCard(
-    series: Series,
+    serieDetails: SerieDetails,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -35,8 +35,8 @@ fun SeriesDetailCard(
                 .height(500.dp)
         ) {
             AsyncImage(
-                model = series.posterUrl,
-                contentDescription = series.title,
+                model = serieDetails.serie.posterUrl,
+                contentDescription = serieDetails.serie.title,
                 contentScale = ContentScale.Crop,
                 modifier = modifier.fillMaxSize(),
                 alignment = Alignment.Center
@@ -44,9 +44,9 @@ fun SeriesDetailCard(
         }
 
         Row {
-            Text(text = series.title)
-            Text(text = series.overview)
-            Text(text = series.id.toString())
+            Text(text = serieDetails.serie.title)
+            Text(text = serieDetails.serie.overview)
+            Text(text = serieDetails.serie.id.toString())
         }
     }
 }

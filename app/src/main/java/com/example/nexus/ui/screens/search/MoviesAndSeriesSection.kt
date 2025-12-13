@@ -33,7 +33,7 @@ fun MoviesAndSeriesSection(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
-            text = "Series y películas recomendadas",
+            text = "Serie y películas recomendadas",
             fontWeight = FontWeight.ExtraBold,
             fontSize = 18.sp,
             color = MaterialTheme.colorScheme.onSurface

@@ -1,7 +1,7 @@
 package com.example.nexus.ui.screens.series
 
-import com.example.nexus.domain.model.Series
+import com.example.nexus.domain.model.Serie
 
 data class SeriesUiState(
-    val seriesUiState: Map<SeriesCategory, SeriesState<Series>> = emptyMap()
+    val serieUiState: Map<SeriesCategory, SeriesState<Serie>> = emptyMap()
 )

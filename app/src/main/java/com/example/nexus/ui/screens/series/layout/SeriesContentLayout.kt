@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.nexus.domain.model.Series
+import com.example.nexus.domain.model.Serie
 import com.example.nexus.ui.components.card.SeriesCardLarge
 import com.example.nexus.ui.components.lazyrow.SeriesLazyRow
 import com.example.nexus.ui.components.shimmer.SeriesCardLargeShimmer
@@ -19,8 +19,8 @@ import com.example.nexus.ui.screens.series.SeriesState
 
 @Composable
 fun SeriesContentLayout(
-    featuredState: SeriesState<Series>,
-    seriesUiState: Map<SeriesCategory, SeriesState<Series>>,
+    featuredState: SeriesState<Serie>,
+    serieUiState: Map<SeriesCategory, SeriesState<Serie>>,
     categories: List<SeriesCategory>,
     onSeriesClick: (Int) -> Unit,
     modifier: Modifier = Modifier
@@ -44,7 +44,7 @@ fun SeriesContentLayout(
         }
 
         items(categories) { category ->
-            val seriesState = seriesUiState[category]
+            val seriesState = serieUiState[category]
             when (seriesState) {
                 null, is SeriesState.Loading -> { SeriesRowShimmer(category.title)}
                 is SeriesState.Success -> { SeriesLazyRow(category.title, seriesState.items, onSeriesClick = onSeriesClick) }

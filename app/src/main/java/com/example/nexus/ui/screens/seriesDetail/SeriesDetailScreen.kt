@@ -15,7 +15,7 @@ fun SeriesDetailScreen(
         seriesDetailViewModel.loadSeriesDetail(seriesId = seriesId)
     }
 
-    val seriesDetailState = seriesDetailViewModel.seriesDetailState.collectAsState().value
+    val seriesDetailState = seriesDetailViewModel.serieDetailState.collectAsState().value
     SeriesDetailLayout(seriesDetailState, modifier = modifier)
 }
 

@@ -2,8 +2,8 @@ package com.example.nexus.data.local.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.nexus.data.local.entities.MovieEntity
-import com.example.nexus.data.local.entities.SeriesEntity
+import com.example.nexus.data.local.entity.MovieEntity
+import com.example.nexus.data.local.entity.SeriesEntity
 import com.example.nexus.data.local.dao.MovieDao
 import com.example.nexus.data.local.dao.SeriesDao
 

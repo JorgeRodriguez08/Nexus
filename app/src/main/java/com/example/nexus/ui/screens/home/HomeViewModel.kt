@@ -2,9 +2,10 @@ package com.example.nexus.ui.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.nexus.common.constants.NetworkConstants
 import com.example.nexus.common.core.Resource
 import com.example.nexus.domain.model.Movie
-import com.example.nexus.domain.model.Series
+import com.example.nexus.domain.model.Serie
 import com.example.nexus.domain.usecase.movies.MoviesUseCase
 import com.example.nexus.domain.usecase.series.SeriesUseCase
 import com.example.nexus.ui.screens.movies.MoviesCategory
@@ -111,7 +112,7 @@ class HomeViewModel(
         val genreId = category.genreId ?: return
         viewModelScope.launch(Dispatchers.IO) {
             delay(100)
-            moviesUseCase.getMoviesByGenre.invoke(genreId, page).collect { resource ->
+            moviesUseCase.discoverMovies.invoke(genreId, page, NetworkConstants.ORIGIN_COUNTRY_US).collect { resource ->
                 updateMoviesState(category, resource)
             }
         }
@@ -169,21 +170,21 @@ class HomeViewModel(
         val genreId = category.genreId ?: return
         viewModelScope.launch(Dispatchers.IO) {
             delay(100)
-            seriesUseCase.getSeriesByGenre.invoke(genreId, page).collect { resource ->
+            seriesUseCase.discoverSeries.invoke(genreId, page, NetworkConstants.ORIGIN_COUNTRY_US).collect { resource ->
                 updateSeriesState(category, resource)
             }
         }
     }
 
-    private fun updateSeriesState(category: SeriesCategory, resource: Resource<List<Series>>) {
+    private fun updateSeriesState(category: SeriesCategory, resource: Resource<List<Serie>>) {
         _homeUiState.update { currentUiState ->
-            val seriesMap = currentUiState.seriesMap.toMutableMap()
+            val seriesMap = currentUiState.serieMap.toMutableMap()
             seriesMap[category] = when (resource) {
                 is Resource.Loading -> HomeState.Loading
                 is Resource.Success -> HomeState.Success(items = resource.data)
                 is Resource.Error -> HomeState.Error(message = resource.message)
             }
-            currentUiState.copy(seriesMap = seriesMap)
+            currentUiState.copy(serieMap = seriesMap)
         }
     }
 

@@ -1,14 +1,11 @@
 package com.example.nexus.ui.navigation
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -23,21 +20,17 @@ import com.example.nexus.ui.screens.home.HomeScreen
 import com.example.nexus.ui.screens.home.HomeViewModel
 import com.example.nexus.ui.screens.movieDetail.MovieDetailScreen
 import com.example.nexus.ui.screens.movieDetail.MovieDetailViewModel
-import com.example.nexus.ui.screens.movieVideo.MovieVideoScreen
-import com.example.nexus.ui.screens.movieVideo.MovieVideoViewModel
 import com.example.nexus.ui.screens.movies.MoviesScreen
 import com.example.nexus.ui.screens.movies.MoviesViewModel
-import com.example.nexus.ui.screens.newsPopular.NewsAndPopularViewModel
 import com.example.nexus.ui.screens.newsPopular.NewsAndPopularScreen
+import com.example.nexus.ui.screens.newsPopular.NewsAndPopularViewModel
 import com.example.nexus.ui.screens.search.SearchScreen
 import com.example.nexus.ui.screens.search.SearchViewModel
-import com.example.nexus.ui.screens.search.preview.SearchLayoutFake
 import com.example.nexus.ui.screens.series.SeriesScreen
 import com.example.nexus.ui.screens.series.SeriesViewModel
 import com.example.nexus.ui.screens.seriesDetail.SeriesDetailScreen
 import com.example.nexus.ui.screens.seriesDetail.SeriesDetailViewModel
 import org.koin.androidx.compose.koinViewModel
-import androidx.core.net.toUri
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -83,7 +76,6 @@ fun NavigationHost(
         }
     ) { innerPadding ->
 
-        val context = LocalContext.current
         NavHost(
             navController = navController,
             startDestination = Destinations.Home.route,
@@ -128,28 +120,8 @@ fun NavigationHost(
                 val movieDetailViewModel: MovieDetailViewModel = koinViewModel()
                 MovieDetailScreen(
                     movieDetailViewModel,
-                    movieId,
-                    onFullClick = { videoUrl ->
-                        println("Esta es la url $videoUrl")
-
-                        val intent = Intent(Intent.ACTION_VIEW, "vnd.youtube:$videoUrl".toUri())
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        intent.putExtra("force_fullscreen", true)
-                        intent.putExtra("finish_on_ended", true)
-                        context.startActivity(intent)
-                    }
+                    movieId
                 )
-            }
-
-            composable(
-                route = Destinations.MovieVideo.route,
-                arguments = listOf(navArgument(Destinations.MovieVideo.ARGUMENT) { type = NavType.StringType })
-            ) { backStackEntry ->
-                val videoUrl = backStackEntry.arguments?.getString(Destinations.MovieVideo.ARGUMENT) ?: return@composable
-                println("Esta es la url $videoUrl")
-                navigationViewModel.onRouteChanged(Destinations.MovieVideo.create(videoUrl))
-                val movieVideoViewModel: MovieVideoViewModel = koinViewModel()
-                MovieVideoScreen(videoUrl = videoUrl, movieVideoViewModel)
             }
 
             composable(route = Destinations.Categories.route) {

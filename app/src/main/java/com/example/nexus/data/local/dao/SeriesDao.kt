@@ -5,11 +5,10 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import com.example.nexus.data.local.entities.SeriesEntity
+import com.example.nexus.data.local.entity.SeriesEntity
 
 @Dao
 interface SeriesDao {
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSeries(series: SeriesEntity)
 

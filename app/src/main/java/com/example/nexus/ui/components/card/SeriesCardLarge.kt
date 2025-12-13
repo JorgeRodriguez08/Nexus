@@ -11,11 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.nexus.domain.model.Series
+import com.example.nexus.domain.model.Serie
 
 @Composable
 fun SeriesCardLarge(
-    series: Series,
+    serie: Serie,
     modifier: Modifier = Modifier,
     onSeriesClick: (Int) -> Unit
 ) {
@@ -23,11 +23,11 @@ fun SeriesCardLarge(
         modifier = modifier
             .width(340.dp)
             .height(500.dp)
-            .clickable(onClick = { onSeriesClick(series.id) })
+            .clickable(onClick = { onSeriesClick(serie.id) })
     ) {
         AsyncImage(
-            model = series.posterUrl,
-            contentDescription = series.title,
+            model = serie.posterUrl,
+            contentDescription = serie.title,
             contentScale = ContentScale.Crop,
             modifier = modifier.fillMaxSize(),
             alignment = Alignment.Center,

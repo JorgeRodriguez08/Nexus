@@ -2,6 +2,7 @@ package com.example.nexus.ui.screens.movies
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.nexus.common.constants.NetworkConstants
 import com.example.nexus.common.core.Resource
 import com.example.nexus.domain.model.Movie
 import com.example.nexus.domain.usecase.movies.MoviesUseCase
@@ -91,7 +92,7 @@ class MoviesViewModel(
         val genreId = category.genreId ?: return
         viewModelScope.launch(Dispatchers.IO) {
             delay(100)
-            moviesUseCase.getMoviesByGenre.invoke(genreId, page).collect { resource ->
+            moviesUseCase.discoverMovies.invoke(genreId, page, NetworkConstants.ORIGIN_COUNTRY_US).collect { resource ->
                 updateUiState(category, resource)
             }
         }

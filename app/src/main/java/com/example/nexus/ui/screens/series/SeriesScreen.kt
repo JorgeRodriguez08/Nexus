@@ -12,9 +12,9 @@ fun SeriesScreen(
     onSeriesClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val featuredSeriesState = seriesViewModel.featuredSeriesState.collectAsState()
+    val featuredSeriesState = seriesViewModel.featuredSerieState.collectAsState()
     val uiState = seriesViewModel.uiState.collectAsState()
-    val seriesUiState = uiState.value.seriesUiState
+    val seriesUiState = uiState.value.serieUiState
 
     LaunchedEffect(Unit) {
         seriesViewModel.loadFeaturedSeries()
@@ -23,7 +23,7 @@ fun SeriesScreen(
 
     SeriesContentLayout(
         featuredState = featuredSeriesState.value,
-        seriesUiState = seriesUiState,
+        serieUiState = seriesUiState,
         categories = seriesViewModel.seriesCategories,
         onSeriesClick = onSeriesClick,
         modifier = modifier

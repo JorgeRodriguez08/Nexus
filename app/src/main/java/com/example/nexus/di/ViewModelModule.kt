@@ -6,7 +6,6 @@ import com.example.nexus.ui.screens.games.GamesViewModel
 import com.example.nexus.ui.screens.movies.MoviesViewModel
 import com.example.nexus.ui.screens.series.SeriesViewModel
 import com.example.nexus.ui.screens.home.HomeViewModel
-import com.example.nexus.ui.screens.movieVideo.MovieVideoViewModel
 import com.example.nexus.ui.screens.newsPopular.NewsAndPopularViewModel
 import com.example.nexus.ui.screens.search.SearchViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -20,6 +19,5 @@ val viewModelModule = module {
     viewModel { GamesViewModel(moviesUseCase = get(), seriesUseCase = get()) }
     viewModel { NewsAndPopularViewModel(moviesUseCase = get()) }
     viewModel { MovieDetailViewModel(moviesUseCase = get()) }
-    viewModel { MovieVideoViewModel()}
     viewModel { SearchViewModel(moviesUseCase = get()) }
 }

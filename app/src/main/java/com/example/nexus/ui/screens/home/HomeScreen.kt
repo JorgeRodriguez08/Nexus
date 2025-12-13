@@ -25,7 +25,7 @@ fun HomeScreen(
         featuredState = featuredState.value,
         rows = homeUiState.rows,
         moviesMap = homeUiState.moviesMap,
-        seriesMap = homeUiState.seriesMap,
+        serieMap = homeUiState.serieMap,
         onMovieClick = onMovieClick,
         onSeriesClick = onSeriesClick,
         modifier = modifier

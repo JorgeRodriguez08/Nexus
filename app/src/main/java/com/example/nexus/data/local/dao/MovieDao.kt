@@ -5,11 +5,10 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import com.example.nexus.data.local.entities.MovieEntity
+import com.example.nexus.data.local.entity.MovieEntity
 
 @Dao
 interface MovieDao {
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMovie(movie: MovieEntity)
 
@@ -24,5 +23,4 @@ interface MovieDao {
 
     @Query("DELETE FROM movies")
     suspend fun deleteAllMovies()
-
 }

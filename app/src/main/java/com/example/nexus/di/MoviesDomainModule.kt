@@ -1,49 +1,37 @@
 package com.example.nexus.di
 
-import com.example.nexus.domain.usecase.movies.GetMovieByIdUseCase
-import com.example.nexus.domain.usecase.movies.GetMovieCastUseCase
-import com.example.nexus.domain.usecase.movies.GetMovieCrewUseCase
-import com.example.nexus.domain.usecase.movies.GetMovieDetailUseCase
-import com.example.nexus.domain.usecase.movies.GetMovieMultimediaUseCase
-import com.example.nexus.domain.usecase.movies.GetMovieVideoUseCase
-import com.example.nexus.domain.usecase.movies.GetMoviesByGenreUseCase
+import com.example.nexus.domain.usecase.movies.DiscoverMoviesUseCase
+import com.example.nexus.domain.usecase.movies.GetMovieDetailsUseCase
 import com.example.nexus.domain.usecase.movies.GetMoviesNowPlayingUseCase
 import com.example.nexus.domain.usecase.movies.GetMoviesPopularUseCase
 import com.example.nexus.domain.usecase.movies.GetMoviesTopRatedUseCase
+import com.example.nexus.domain.usecase.movies.GetMoviesTrendingUseCase
 import com.example.nexus.domain.usecase.movies.GetMoviesUpComingUseCase
 import com.example.nexus.domain.usecase.movies.MoviesUseCase
-import com.example.nexus.domain.usecase.movies.SearchMoviesUseCase
+import com.example.nexus.domain.usecase.movies.SearchMovieUseCase
 import org.koin.dsl.module
 
 val moviesDomainModule = module {
-
+    factory { GetMoviesTrendingUseCase(get()) }
     factory { GetMoviesNowPlayingUseCase(get()) }
-    factory { GetMoviesTopRatedUseCase(get()) }
     factory { GetMoviesPopularUseCase(get()) }
+    factory { GetMoviesTopRatedUseCase(get()) }
     factory { GetMoviesUpComingUseCase(get()) }
-    factory { GetMoviesByGenreUseCase(get()) }
-    factory { GetMovieByIdUseCase(get()) }
-    factory { GetMovieVideoUseCase(get()) }
-    factory { SearchMoviesUseCase(get()) }
-    factory { GetMovieCastUseCase(get()) }
-    factory { GetMovieCrewUseCase(get()) }
-    factory { GetMovieDetailUseCase(get())}
-    factory { GetMovieMultimediaUseCase(get())}
+    factory { DiscoverMoviesUseCase(get()) }
+    factory { SearchMovieUseCase(get()) }
+    factory { GetMovieDetailsUseCase(get()) }
 
     factory {
         MoviesUseCase(
+            getMoviesTrending = get(),
             getMoviesNowPlaying = get(),
-            getMoviesTopRated = get(),
             getMoviesPopular = get(),
+            getMoviesTopRated = get(),
             getMoviesUpComing = get(),
-            getMoviesByGenre = get(),
-            getMovieById = get(),
-            getMovieVideo = get(),
-            searchMovies = get(),
-            getMovieCast = get(),
-            getMovieCrew = get(),
-            getMovieDetail = get(),
-            getMovieMultimedia = get()
+            discoverMovies = get(),
+            searchMovie = get(),
+            getMovieDetails = get(),
+            getMovieImage = get()
         )
     }
 }

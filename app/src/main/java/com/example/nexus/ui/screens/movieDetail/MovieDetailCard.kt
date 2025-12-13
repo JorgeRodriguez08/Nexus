@@ -1,6 +1,5 @@
 package com.example.nexus.ui.screens.movieDetail
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,45 +23,23 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 import coil.compose.AsyncImage
 import com.example.nexus.R
-import com.example.nexus.domain.model.MovieDetail
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+import com.example.nexus.domain.model.MovieDetails
 
 @Composable
 fun MovieDetailCard(
-    movieDetail: MovieDetail,
-    movieDetailViewModel: MovieDetailViewModel,
-    onFullClick: (String) -> Unit,
+    movieDetail: MovieDetails,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
-
-    LaunchedEffect(Unit) {
-        movieDetailViewModel.setPlayingState(isPlaying = true)
-        movieDetailViewModel.setVideoLoadingState(isLoading = true)
-    }
-
-    val isPlaying by movieDetailViewModel.isPlaying.collectAsState()
-    val isVideoLoading by movieDetailViewModel.isVideoLoading.collectAsState()
-    val isFullScreen by movieDetailViewModel.isFullScreen.collectAsState()
 
     Column(
         modifier = modifier
@@ -75,50 +52,16 @@ fun MovieDetailCard(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(1.7f)
-                .clickable(onClick = { movieDetailViewModel.setPlayingState(true) }),
+                .aspectRatio(1.7f),
             shape = RectangleShape
         ) {
-            if (isPlaying) {
-                // Adjusting the YouTubePlayerView to simulate full-screen behavior by hiding other UI elements
-                val youtubePlayerView = remember { YouTubePlayerView(context) }
-                DisposableEffect(Unit) {
-                    youtubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
-                        override fun onReady(youTubePlayer: YouTubePlayer) {
-                            movieDetailViewModel.setVideoLoadingState(false)
-                            if (movieDetail.video != null && movieDetail.video.key.isNotEmpty()) {
-                                youTubePlayer.loadVideo(movieDetail.video.key, 3f)
-                            }
-                        }
-                    })
-                    onDispose { youtubePlayerView.release() }
-                }
-
-                if (isVideoLoading) {
-                    AsyncImage(
-                        model = movieDetail.movie.backdropUrl,
-                        contentDescription = movieDetail.movie.title,
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop,
-                        alignment = Alignment.TopCenter
-                    )
-                } else {
-                    AndroidView(
-                        factory = { youtubePlayerView },
-                        modifier = if (isFullScreen) Modifier.fillMaxSize() else Modifier
-                            .fillMaxWidth()
-                            .aspectRatio(1.7f)
-                    )
-                }
-            } else {
-                AsyncImage(
-                    model = movieDetail.movie.backdropUrl,
-                    contentDescription = movieDetail.movie.title,
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop,
-                    alignment = Alignment.TopCenter
-                )
-            }
+            AsyncImage(
+                model = movieDetail.movie.backdropUrl,
+                contentDescription = movieDetail.movie.title,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop,
+                alignment = Alignment.TopCenter
+            )
         }
 
         Text(
@@ -165,16 +108,6 @@ fun MovieDetailCard(
 
         Button(
             onClick = {
-                movieDetailViewModel.setFullScreenState(true)
-                movieDetailViewModel.setPlayingState(true)
-                movieDetailViewModel.setVideoLoadingState(true)
-                onFullClick(
-                    if (movieDetail.video != null && movieDetail.video.key.isNotEmpty()) {
-                        movieDetail.video.key
-                    } else {
-                        ""
-                    }
-                )
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.onSurface,

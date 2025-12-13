@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nexus.common.core.Resource
 import com.example.nexus.common.constants.MoviesGenreIds
+import com.example.nexus.common.constants.NetworkConstants
 import com.example.nexus.domain.usecase.movies.MoviesUseCase
 import com.example.nexus.ui.screens.movies.MoviesState
 import kotlinx.coroutines.Dispatchers
@@ -80,7 +81,7 @@ class NewsAndPopularViewModel(
 
     fun loadMobileGames(page: Int = 1) {
         viewModelScope.launch(Dispatchers.IO) {
-            moviesUseCase.getMoviesByGenre.invoke(MoviesGenreIds.ANIMATION, page).collect { resource ->
+            moviesUseCase.discoverMovies.invoke(MoviesGenreIds.ANIMATION, page, NetworkConstants.ORIGIN_COUNTRY_US).collect { resource ->
                 when (resource) {
                     is Resource.Loading -> {
                         _moviesUiState.value = MoviesState.Loading
@@ -124,7 +125,7 @@ class NewsAndPopularViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             updateMovieDetailState(movieId, MovieMultimediaState.Loading)
 
-            moviesUseCase.getMovieMultimedia.invoke(movieId).collect { resource ->
+            moviesUseCase.getMovieImage.invoke(movieId).collect { resource ->
                 when (resource) {
                     is Resource.Loading -> updateMovieDetailState(movieId, MovieMultimediaState.Loading)
                     is Resource.Success -> updateMovieDetailState(movieId, MovieMultimediaState.Success(resource.data))

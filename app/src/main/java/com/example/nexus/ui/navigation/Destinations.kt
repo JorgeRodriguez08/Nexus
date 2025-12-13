@@ -8,7 +8,7 @@ sealed class Destinations(
     val showNewsFilterBar: Boolean = false,
     val showSearchBar: Boolean = false
 ) {
-    object Series : Destinations("Series")
+    object Series : Destinations("Serie")
     object Movies : Destinations("Películas")
     object Categories : Destinations("Categorías", showFilterBar = false)
     object Search : Destinations("Busqueda", showFilterBar = false, showBottomBar = false, showSearchBar = true)

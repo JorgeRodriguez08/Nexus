@@ -14,7 +14,7 @@ import com.example.nexus.ui.components.lazyrow.MoviesLazyRow
 import com.example.nexus.ui.components.lazyrow.SeriesLazyRow
 import com.example.nexus.ui.components.shimmer.MoviesRowShimmer
 import com.example.nexus.ui.components.shimmer.SeriesRowShimmer
-import com.example.nexus.domain.model.Series
+import com.example.nexus.domain.model.Serie
 import com.example.nexus.ui.components.card.MovieCardLarge
 import com.example.nexus.ui.components.shimmer.MoviesCardLargeShimmer
 import com.example.nexus.ui.screens.home.HomeRow
@@ -28,7 +28,7 @@ fun HomeContentLayout(
     featuredState: MoviesState,
     rows: List<HomeRow>,
     moviesMap: Map<MoviesCategory, HomeState<Movie>>,
-    seriesMap: Map<SeriesCategory, HomeState<Series>>,
+    serieMap: Map<SeriesCategory, HomeState<Serie>>,
     onMovieClick: (Int) -> Unit,
     onSeriesClick: (Int) -> Unit,
     modifier: Modifier = Modifier
@@ -63,10 +63,10 @@ fun HomeContentLayout(
                 }
 
                 is HomeRow.SeriesRow -> {
-                    val homeState = seriesMap[row.category]
+                    val homeState = serieMap[row.category]
                     when (homeState) {
                         null, is HomeState.Loading -> SeriesRowShimmer(row.category.title)
-                        is HomeState.Success -> SeriesLazyRow(row.category.title, seriesList = homeState.items, onSeriesClick = onSeriesClick)
+                        is HomeState.Success -> SeriesLazyRow(row.category.title, serieList = homeState.items, onSeriesClick = onSeriesClick)
                         is HomeState.Error -> SeriesRowShimmer(row.category.title)
                     }
                 }

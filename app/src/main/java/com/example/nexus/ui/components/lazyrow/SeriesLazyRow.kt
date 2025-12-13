@@ -12,13 +12,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.nexus.domain.model.Series
+import com.example.nexus.domain.model.Serie
 import com.example.nexus.ui.components.card.SeriesCardSmall
 
 @Composable
 fun SeriesLazyRow(
     title: String,
-    seriesList: List<Series>,
+    serieList: List<Serie>,
     onSeriesClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -38,8 +38,8 @@ fun SeriesLazyRow(
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(seriesList) { series ->
-                SeriesCardSmall(series = series, onSeriesClick = onSeriesClick)
+            items(serieList) { series ->
+                SeriesCardSmall(serie = series, onSeriesClick = onSeriesClick)
             }
         }
     }

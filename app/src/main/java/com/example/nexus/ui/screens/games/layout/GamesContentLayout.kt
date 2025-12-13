@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.nexus.domain.model.Movie
-import com.example.nexus.domain.model.Series
+import com.example.nexus.domain.model.Serie
 import com.example.nexus.ui.components.card.MovieCardLarge
 import com.example.nexus.ui.components.lazyrow.MoviesLazyRow
 import com.example.nexus.ui.components.lazyrow.SeriesLazyRow
@@ -28,7 +28,7 @@ fun GamesContentLayout(
 
     rows: List<GamesRow>,
     moviesMap: Map<MoviesCategory, GamesState<Movie>>,
-    seriesMap: Map<SeriesCategory, GamesState<Series>>,
+    serieMap: Map<SeriesCategory, GamesState<Serie>>,
     onMovieClick: (Int) -> Unit,
     onSeriesClick: (Int) -> Unit,
     featuredState: MoviesState,
@@ -64,10 +64,10 @@ fun GamesContentLayout(
                 }
 
                 is GamesRow.SeriesRow -> {
-                    val gamesState = seriesMap[row.category]
+                    val gamesState = serieMap[row.category]
                     when (gamesState) {
                         null, is GamesState.Loading -> SeriesRowShimmer(row.category.title)
-                        is GamesState.Success -> SeriesLazyRow(row.category.title, seriesList = gamesState.items, onSeriesClick = onSeriesClick)
+                        is GamesState.Success -> SeriesLazyRow(row.category.title, serieList = gamesState.items, onSeriesClick = onSeriesClick)
                         is GamesState.Error -> SeriesRowShimmer(row.category.title)
                     }
                 }

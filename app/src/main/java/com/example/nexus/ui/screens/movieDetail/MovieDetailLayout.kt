@@ -6,8 +6,6 @@ import androidx.compose.ui.Modifier
 @Composable
 fun MovieDetailLayout(
     movieDetailState: MovieDetailState,
-    movieDetailViewModel: MovieDetailViewModel,
-    onFullClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     when (movieDetailState) {
@@ -17,8 +15,6 @@ fun MovieDetailLayout(
         is MovieDetailState.Success -> {
             MovieDetailCard(
                 movieDetail = movieDetailState.movieDetail,
-                movieDetailViewModel = movieDetailViewModel,
-                onFullClick = onFullClick,
                 modifier = modifier
             )
         }

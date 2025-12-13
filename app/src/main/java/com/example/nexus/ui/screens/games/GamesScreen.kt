@@ -23,7 +23,7 @@ fun GamesScreen(
     GamesContentLayout(
         rows = gamesUiState.rows,
         moviesMap = gamesUiState.moviesMap,
-        seriesMap = gamesUiState.seriesMap,
+        serieMap = gamesUiState.serieMap,
         onMovieClick = onMovieClick,
         onSeriesClick = onSeriesClick,
         featuredState = featuredState,

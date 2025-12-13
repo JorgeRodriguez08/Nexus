@@ -10,11 +10,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.nexus.domain.model.Series
+import com.example.nexus.domain.model.Serie
 
 @Composable
 fun SeriesCardSmall(
-    series: Series,
+    serie: Serie,
     modifier: Modifier = Modifier,
     width: Dp = 120.dp,
     height: Dp = 180.dp,
@@ -27,8 +27,8 @@ fun SeriesCardSmall(
             .clickable(onClick = { onSeriesClick })
     ) {
         AsyncImage(
-            model = series.posterUrl,
-            contentDescription = series.title,
+            model = serie.posterUrl,
+            contentDescription = serie.title,
             contentScale = ContentScale.Crop
         )
     }

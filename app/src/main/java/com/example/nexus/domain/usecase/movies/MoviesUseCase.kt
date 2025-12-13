@@ -1,16 +1,13 @@
 package com.example.nexus.domain.usecase.movies
 
 data class MoviesUseCase(
+    val getMoviesTrending: GetMoviesTrendingUseCase,
     val getMoviesNowPlaying: GetMoviesNowPlayingUseCase,
-    val getMoviesTopRated: GetMoviesTopRatedUseCase,
     val getMoviesPopular: GetMoviesPopularUseCase,
+    val getMoviesTopRated: GetMoviesTopRatedUseCase,
     val getMoviesUpComing: GetMoviesUpComingUseCase,
-    val getMoviesByGenre: GetMoviesByGenreUseCase,
-    val getMovieById: GetMovieByIdUseCase,
-    val getMovieVideo: GetMovieVideoUseCase,
-    val searchMovies: SearchMoviesUseCase,
-    val getMovieCast: GetMovieCastUseCase,
-    val getMovieCrew: GetMovieCrewUseCase,
-    val getMovieDetail: GetMovieDetailUseCase,
-    val getMovieMultimedia: GetMovieMultimediaUseCase
+    val discoverMovies: DiscoverMoviesUseCase,
+    val searchMovie: SearchMovieUseCase,
+    val getMovieDetails: GetMovieDetailsUseCase,
+    val getMovieImage: GetMovieImageUseCase
 )

@@ -3,7 +3,7 @@ package com.example.nexus.di
 import androidx.room.Room
 import com.example.nexus.BuildConfig
 import com.example.nexus.data.local.database.AppDatabase
-import com.example.nexus.data.remote.ApiService
+import com.example.nexus.data.remote.api.ApiService
 import com.example.nexus.common.constants.ApiConstants
 import com.example.nexus.common.constants.NetworkConstants
 import com.google.gson.GsonBuilder

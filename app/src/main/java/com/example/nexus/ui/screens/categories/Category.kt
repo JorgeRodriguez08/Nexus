@@ -1,25 +1,25 @@
 package com.example.nexus.ui.screens.categories
 
-import com.example.nexus.common.constants.CategoriesGenreIds
+import com.example.nexus.common.constants.MoviesGenreIds
 
-sealed class Category(val title: String, val genreId: Int) {
-    object Action : Category("Action", CategoriesGenreIds.ACTION)
-    object Adventure : Category("Aventura", CategoriesGenreIds.ADVENTURE)
-    object Animation : Category("Animación", CategoriesGenreIds.ANIMATION)
-    object Comedy : Category("Comedia", CategoriesGenreIds.COMEDY)
-    object Crime : Category("Crimen", CategoriesGenreIds.CRIME)
-    object Documentary : Category("Documental", CategoriesGenreIds.DOCUMENTARY)
-    object Drama : Category("Drama", CategoriesGenreIds.DRAMA)
-    object Family : Category("Familia", CategoriesGenreIds.FAMILY)
-    object Fantasy : Category("Fantasía", CategoriesGenreIds.FANTASY)
-    object History : Category("Historia", CategoriesGenreIds.HISTORY)
-    object Horror : Category("Horror", CategoriesGenreIds.HORROR)
-    object Music : Category("Musica", CategoriesGenreIds.MUSIC)
-    object Mystery : Category("Misterio", CategoriesGenreIds.MYSTERY)
-    object Romance : Category("Romance", CategoriesGenreIds.ROMANCE)
-    object ScienceFiction : Category("Ciencia Ficción", CategoriesGenreIds.SCIENCE_FICTION)
-    object TvMovie : Category("Tv-Movie", CategoriesGenreIds.TV_MOVIE)
-    object Thriller : Category("Thriller", CategoriesGenreIds.THRILLER)
-    object War : Category("Guerra", CategoriesGenreIds.WAR)
-    object Western : Category("Occidente", CategoriesGenreIds.WESTERN)
+sealed class Category(val title: String, val genreId: String) {
+    object Action : Category("Action", MoviesGenreIds.ACTION)
+    object Adventure : Category("Aventura", MoviesGenreIds.ADVENTURE)
+    object Animation : Category("Animación", MoviesGenreIds.ANIMATION)
+    object Comedy : Category("Comedia", MoviesGenreIds.COMEDY)
+    object Crime : Category("Crimen", MoviesGenreIds.CRIME)
+    object Documentary : Category("Documental", MoviesGenreIds.DOCUMENTARY)
+    object Drama : Category("Drama", MoviesGenreIds.DRAMA)
+    object Family : Category("Familia", MoviesGenreIds.FAMILY)
+    object Fantasy : Category("Fantasía", MoviesGenreIds.FANTASY)
+    object History : Category("Historia", MoviesGenreIds.HISTORY)
+    object Horror : Category("Horror", MoviesGenreIds.HORROR)
+    object Music : Category("Musica", MoviesGenreIds.MUSIC)
+    object Mystery : Category("Misterio", MoviesGenreIds.MYSTERY)
+    object Romance : Category("Romance", MoviesGenreIds.ROMANCE)
+    object ScienceFiction : Category("Ciencia Ficción", MoviesGenreIds.SCIENCE_FICTION)
+    object TvMovie : Category("Tv-Movie", MoviesGenreIds.TV_MOVIE)
+    object Thriller : Category("Thriller", MoviesGenreIds.THRILLER)
+    object War : Category("Guerra", MoviesGenreIds.WAR)
+    object Western : Category("Occidente", MoviesGenreIds.WESTERN)
 }
