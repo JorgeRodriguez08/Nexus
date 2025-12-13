@@ -1,7 +1,5 @@
 package com.example.nexus.ui.navigation
 
-import com.example.nexus.ui.navigation.NavRoutes
-
 sealed class Destinations(
     val route: String,
     val showTopBar: Boolean = true,
