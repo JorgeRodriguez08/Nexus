@@ -29,12 +29,19 @@ object Dimens {
         val gigaLarge = 18.dp
     }
 
-    object Border {
+    object Elevation {
+        val extraLarge = 15.dp
+    }
+
+    object Borders {
         val thin = 0.5.dp
         val hairline = 1.dp
     }
 
     object Alpha {
+        const val hover = 0.05f
+        const val pressed = 0.20f
+        const val regular = 0.30f
         const val disabled = 0.45f
         const val medium = 0.60f
     }
@@ -44,17 +51,24 @@ object Dimens {
         val height: Dp
     )
 
-    object Poster {
-        val small = Size(116.dp, 162.dp)
+    object Posters {
+        val extraExtraSmall = Size(40.dp, 23.dp)
+        val extraSmall = Size(55.dp, 55.dp)
+        val small = Size(116.dp, 116.dp)
+        val medium = Size(116.dp, 162.dp)
+        val base = Size(214.dp, 214.dp)
+        val regular = Size(155.dp, 252.dp)
         val large = Size(360.dp, 496.dp)
+        val extraLarge = Size(388.dp, 388.dp)
     }
 
-    object Button {
-        val regular = Size(158.dp, 38.dp)
+    object Buttons {
+        val medium = Size(158.dp, 38.dp)
+        val regular = Size(155.dp, 47.dp)
         val large = Size(158.dp, 50.dp)
     }
 
-    object Icon {
+    object Icons {
         val small = 18.dp
         val medium = 26.dp
         val regular = 28.dp
@@ -62,7 +76,7 @@ object Dimens {
         val extraLarge = 42.dp
     }
 
-    object Filter {
+    object Filters {
         val small = Size(40.dp, 40.dp)
         val medium = Size(88.dp, 48.dp)
         val large = Size(110.dp, 48.dp)

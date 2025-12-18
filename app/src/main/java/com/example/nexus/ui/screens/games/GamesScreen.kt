@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import com.example.nexus.ui.screens.games.layout.GamesContentLayout
 
 @Composable
 fun GamesScreen(
@@ -13,22 +12,19 @@ fun GamesScreen(
     onSerieClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val featuredMovieState = gamesViewModel.featuredMoviesState.collectAsState().value
     val gamesUiState = gamesViewModel.gamesUiState.collectAsState().value
-    val featuredState = gamesViewModel.featuredState.collectAsState().value
+
     LaunchedEffect(Unit) {
         gamesViewModel.loadFeaturedMovies()
         gamesViewModel.loadGamesContent()
     }
 
-    GamesContentLayout(
-        rows = gamesUiState.rows,
-        moviesMap = gamesUiState.moviesMap,
-        serieMap = gamesUiState.serieMap,
+    GamesLayout(
+        featuredMovieState = featuredMovieState,
+        gamesUiState = gamesUiState,
         onMovieClick = onMovieClick,
-        onSeriesClick = onSerieClick,
-        featuredState = featuredState,
+        onSerieClick = onSerieClick,
         modifier = modifier
     )
-
-
 }

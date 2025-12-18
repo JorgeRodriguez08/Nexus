@@ -41,7 +41,7 @@ fun SearchBarFake(
         },
         leadingIcon = {
             Icon(
-                painter = painterResource(R.drawable.magnifying_glass),
+                painter = painterResource(R.drawable.search_icon),
                 contentDescription = stringResource(R.string.search_icon),
                 modifier = Modifier.size(26.dp)
             )

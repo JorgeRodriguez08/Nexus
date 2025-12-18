@@ -48,11 +48,9 @@ fun MoviesAndSeriesSection(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-
         }
     }
 }
-
 
 @Composable
 fun MovieAndSerieRecommended(
@@ -87,7 +85,7 @@ fun MovieAndSerieRecommended(
 
         Icon(
             painter = painterResource(R.drawable.play_circle_60dp),
-            contentDescription = "Play Icon",
+            contentDescription = "Play Icons",
             modifier = Modifier
                 .size(49.dp)
                 .padding(end = 8.dp),
@@ -95,4 +93,3 @@ fun MovieAndSerieRecommended(
         )
     }
 }
-

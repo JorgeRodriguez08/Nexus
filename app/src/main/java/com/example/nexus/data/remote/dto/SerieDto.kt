@@ -9,6 +9,8 @@ data class SerieDto(
     val title: String?,
     @SerializedName("overview")
     val overview: String?,
+    @SerializedName("adult")
+    val adult: Boolean?,
     @SerializedName("poster_path")
     val posterPath: String?,
     @SerializedName("backdrop_path")

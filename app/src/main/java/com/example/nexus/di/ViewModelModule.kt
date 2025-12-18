@@ -1,7 +1,7 @@
 package com.example.nexus.di
 
 import com.example.nexus.ui.navigation.NavigationViewModel
-import com.example.nexus.ui.screens.movieDetail.MovieDetailsViewModel
+import com.example.nexus.ui.screens.movieDetails.MovieDetailsViewModel
 import com.example.nexus.ui.screens.games.GamesViewModel
 import com.example.nexus.ui.screens.movies.MoviesViewModel
 import com.example.nexus.ui.screens.series.SeriesViewModel

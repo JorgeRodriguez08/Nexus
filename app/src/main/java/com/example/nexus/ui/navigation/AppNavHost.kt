@@ -11,15 +11,15 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.nexus.ui.components.bottomappbar.NexusBottomAppBar
-import com.example.nexus.ui.components.topappbar.NexusTopAppBar
+import com.example.nexus.ui.components.bottomappbar.BottomBar
+import com.example.nexus.ui.components.topappbar.TopBar
 import com.example.nexus.ui.screens.categories.CategoriesScreen
 import com.example.nexus.ui.screens.games.GamesScreen
 import com.example.nexus.ui.screens.games.GamesViewModel
 import com.example.nexus.ui.screens.home.HomeScreen
 import com.example.nexus.ui.screens.home.HomeViewModel
-import com.example.nexus.ui.screens.movieDetail.MovieDetailsScreen
-import com.example.nexus.ui.screens.movieDetail.MovieDetailsViewModel
+import com.example.nexus.ui.screens.movieDetails.MovieDetailsScreen
+import com.example.nexus.ui.screens.movieDetails.MovieDetailsViewModel
 import com.example.nexus.ui.screens.movies.MoviesScreen
 import com.example.nexus.ui.screens.movies.MoviesViewModel
 import com.example.nexus.ui.screens.newsPopular.NewsAndPopularScreen
@@ -28,8 +28,8 @@ import com.example.nexus.ui.screens.search.SearchScreen
 import com.example.nexus.ui.screens.search.SearchViewModel
 import com.example.nexus.ui.screens.series.SeriesScreen
 import com.example.nexus.ui.screens.series.SeriesViewModel
-import com.example.nexus.ui.screens.seriesDetail.SerieDetailsScreen
-import com.example.nexus.ui.screens.seriesDetail.SerieDetailsViewModel
+import com.example.nexus.ui.screens.serieDetails.SerieDetailsScreen
+import com.example.nexus.ui.screens.serieDetails.SerieDetailsViewModel
 import com.example.nexus.ui.theme.Dimens
 import org.koin.androidx.compose.koinViewModel
 
@@ -48,9 +48,9 @@ fun AppNavHost(
     Scaffold(
         topBar = {
             if (Destinations.shouldShowTopBar(currentRoute)) {
-                NexusTopAppBar(
+                TopBar(
                     currentRoute = currentRoute,
-                    selectedFilter = selectedFilter,
+                    selectedNewFilter = selectedFilter,
                     canNavigateBack = navigationViewModel.canNavigateBack(),
                     onBackClick = { navController.navigateUp() },
                     onSearchClick = { navController.navigate(Destinations.Search.route) },
@@ -67,7 +67,7 @@ fun AppNavHost(
         },
         bottomBar = {
             if (Destinations.shouldShowBottomBar(currentRoute)) {
-                NexusBottomAppBar(
+                BottomBar(
                     currentRoute = currentRoute,
                     onNavigate = { currentRoute ->
                         navController.navigate(currentRoute)
@@ -122,7 +122,7 @@ fun AppNavHost(
                     homeViewModel = homeViewModel,
                     onMovieClick = { id -> navController.navigate(Destinations.MovieDetail.create(id)) },
                     onSerieClick = { id -> navController.navigate(Destinations.SerieDetail.create(id)) },
-                    modifier = modifier.padding(top = Dimens.Padding.compact)
+                    modifier = modifier.padding(top = Dimens.Padding.medium)
                 )
             }
 

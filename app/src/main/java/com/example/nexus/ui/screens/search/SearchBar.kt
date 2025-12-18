@@ -1,6 +1,5 @@
 package com.example.nexus.ui.screens.search
 
-import android.R.attr.value
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -11,8 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Send
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
@@ -43,7 +40,7 @@ fun SearchBar(
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
-                painter = painterResource(R.drawable.magnifying_glass),
+                painter = painterResource(R.drawable.search_icon),
                 contentDescription = "Search",
                 modifier = Modifier.size(23.dp),
                 tint = MaterialTheme.colorScheme.onSurface
@@ -64,7 +61,6 @@ fun SearchBar(
                     .weight(1f)
                     .align(Alignment.CenterVertically)
             ) { innerTextField ->
-                // placeholder + innerTextField
                 if (value.isEmpty()) {
                     Text(
                         text = "Buscar series, películas, juegos...",

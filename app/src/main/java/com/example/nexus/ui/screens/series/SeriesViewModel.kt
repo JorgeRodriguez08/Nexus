@@ -2,7 +2,6 @@ package com.example.nexus.ui.screens.series
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.nexus.common.constants.NetworkConstants
 import com.example.nexus.common.core.Resource
 import com.example.nexus.domain.model.Serie
 import com.example.nexus.domain.usecase.series.SeriesUseCase
@@ -12,37 +11,35 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.delay
 
 class SeriesViewModel(
     private val seriesUseCase: SeriesUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(SeriesUiState())
-    val uiState: StateFlow<SeriesUiState> = _uiState.asStateFlow()
+    private val _seriesUiState = MutableStateFlow(SeriesUiState())
+    val seriesUiState: StateFlow<SeriesUiState> = _seriesUiState.asStateFlow()
 
-    private val _featuredSerieState = MutableStateFlow<SeriesState<Serie>>(SeriesState.Loading)
-    val featuredSerieState: StateFlow<SeriesState<Serie>> = _featuredSerieState.asStateFlow()
+    private val _featuredSeriesState = MutableStateFlow<SeriesState>(SeriesState.Loading)
+    val featuredSeriesState: StateFlow<SeriesState> = _featuredSeriesState.asStateFlow()
 
     val seriesCategories = SeriesCategories.seriesCategories
 
     fun loadSeriesContent() {
         seriesCategories.forEach { category ->
             when (category) {
-                is SeriesCategory.AiringToday -> loadSeriesAiringToday(category, 1)
-                is SeriesCategory.OnTheAir -> loadSeriesOnTheAir(category, 1)
-                is SeriesCategory.Popular -> loadSeriesPopular(category, 1)
-                is SeriesCategory.TopRated -> loadSeriesTopRated(category, 1)
-                else -> loadSeriesByGenre(category, 1)
+                is SerieCategory.Trending -> loadSeriesTrending(category)
+                is SerieCategory.AiringToday -> loadSeriesAiringToday(category, 1)
+                is SerieCategory.OnTheAir -> loadSeriesOnTheAir(category, 1)
+                is SerieCategory.Popular -> loadSeriesPopular(category, 1)
+                else -> discoverSeries(category)
             }
         }
     }
 
-    fun loadFeaturedSeries(page: Int = 1) {
+    fun loadFeaturedSeries() {
         viewModelScope.launch(Dispatchers.IO) {
-            delay(50)
-            seriesUseCase.getSeriesAiringToday.invoke(page).collect { resource ->
-                _featuredSerieState.value = when (resource) {
+            seriesUseCase.getSeriesTrending.invoke().collect { resource ->
+                _featuredSeriesState.value = when (resource) {
                     is Resource.Loading -> SeriesState.Loading
                     is Resource.Success -> SeriesState.Success(resource.data)
                     is Resource.Error -> SeriesState.Error(resource.message)
@@ -51,61 +48,56 @@ class SeriesViewModel(
         }
     }
 
-    private fun loadSeriesAiringToday(category: SeriesCategory, page: Int) {
+    private fun loadSeriesTrending(category: SerieCategory) {
         viewModelScope.launch(Dispatchers.IO) {
-            delay(50)
+            seriesUseCase.getSeriesTrending.invoke().collect { resource ->
+                updateSeriesUiState(category, resource)
+            }
+        }
+    }
+
+    private fun loadSeriesAiringToday(category: SerieCategory, page: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
             seriesUseCase.getSeriesAiringToday.invoke(page).collect { resource ->
-                updateUiState(category, resource)
+                updateSeriesUiState(category, resource)
             }
         }
     }
 
-    private fun loadSeriesOnTheAir(category: SeriesCategory, page: Int) {
+    private fun loadSeriesOnTheAir(category: SerieCategory, page: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            delay(50)
             seriesUseCase.getSeriesOnTheAir.invoke(page).collect { resource ->
-                updateUiState(category, resource)
+                updateSeriesUiState(category, resource)
             }
         }
     }
 
-    private fun loadSeriesPopular(category: SeriesCategory, page: Int) {
+    private fun loadSeriesPopular(category: SerieCategory, page: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            delay(50)
             seriesUseCase.getSeriesPopular.invoke(page).collect { resource ->
-                updateUiState(category, resource)
+                updateSeriesUiState(category, resource)
             }
         }
     }
 
-    private fun loadSeriesTopRated(category: SeriesCategory, page: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            delay(50)
-            seriesUseCase.getSeriesTopRated.invoke(page).collect { resource ->
-                updateUiState(category, resource)
-            }
-        }
-    }
-
-    private fun loadSeriesByGenre(category: SeriesCategory, page: Int) {
+    private fun discoverSeries(category: SerieCategory) {
         val genreId = category.genreId ?: return
         viewModelScope.launch(Dispatchers.IO) {
-            delay(100)
-            seriesUseCase.discoverSeries.invoke(genreId, page, NetworkConstants.ORIGIN_COUNTRY_US).collect { resource ->
-                updateUiState(category, resource)
+            seriesUseCase.discoverSeries.invoke(genreId, category.page, category.originCountry).collect { resource ->
+                updateSeriesUiState(category, resource)
             }
         }
     }
 
-    private fun updateUiState(category: SeriesCategory, resource: Resource<List<Serie>>) {
-        _uiState.update { currentUiState ->
-            val updateSeriesUiState = currentUiState.serieUiState.toMutableMap()
-            updateSeriesUiState[category] = when (resource) {
+    private fun updateSeriesUiState(category: SerieCategory, resource: Resource<List<Serie>>) {
+        _seriesUiState.update { currentUiState ->
+            val updateSeriesMap = currentUiState.seriesMap.toMutableMap()
+            updateSeriesMap[category] = when (resource) {
                 is Resource.Loading -> SeriesState.Loading
-                is Resource.Success -> SeriesState.Success(items = resource.data)
-                is Resource.Error -> SeriesState.Error(message = resource.message)
+                is Resource.Success -> SeriesState.Success(resource.data)
+                is Resource.Error -> SeriesState.Error(resource.message)
             }
-            currentUiState.copy(serieUiState = updateSeriesUiState)
+            currentUiState.copy(updateSeriesMap)
         }
     }
 }

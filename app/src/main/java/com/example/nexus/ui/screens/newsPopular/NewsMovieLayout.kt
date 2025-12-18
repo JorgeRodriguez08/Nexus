@@ -9,11 +9,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.nexus.domain.model.Movie
+import com.example.nexus.ui.screens.movieDetails.MovieDetailState
 
 @Composable
 fun NewsMovieLayout(
     movies: List<Movie>,
-    moviesDetailStates: Map<Int, MovieMultimediaState>,
+    moviesDetailStates: Map<Int, MovieDetailState>,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -25,11 +26,11 @@ fun NewsMovieLayout(
             val movieDetailState = moviesDetailStates[movie.id]
 
             when (movieDetailState) {
-                null, is MovieMultimediaState.Loading -> NewsMovieCardShimmer()
-                is MovieMultimediaState.Success -> {
-                    NewsMovieCard(movie, movieDetailState.data)
+                null, is MovieDetailState.Loading -> {  }
+                is MovieDetailState.Success -> {
+                    NewsMovieCard(movieDetailState.movieDetails)
                 }
-                is MovieMultimediaState.Error -> {  }
+                is MovieDetailState.Error -> {  }
             }
         }
     }

@@ -2,6 +2,7 @@ package com.example.nexus.di
 
 import com.example.nexus.domain.usecase.movies.DiscoverMoviesUseCase
 import com.example.nexus.domain.usecase.movies.GetMovieDetailsUseCase
+import com.example.nexus.domain.usecase.movies.GetMovieImageUseCase
 import com.example.nexus.domain.usecase.movies.GetMoviesNowPlayingUseCase
 import com.example.nexus.domain.usecase.movies.GetMoviesPopularUseCase
 import com.example.nexus.domain.usecase.movies.GetMoviesTopRatedUseCase
@@ -20,6 +21,7 @@ val moviesDomainModule = module {
     factory { DiscoverMoviesUseCase(get()) }
     factory { SearchMovieUseCase(get()) }
     factory { GetMovieDetailsUseCase(get()) }
+    factory { GetMovieImageUseCase(get()) }
 
     factory {
         MoviesUseCase(

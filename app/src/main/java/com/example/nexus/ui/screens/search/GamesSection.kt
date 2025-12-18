@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.nexus.domain.model.Movie
 
-
 @Composable
 fun GamesSection(
     games: List<Movie>,

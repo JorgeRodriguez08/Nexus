@@ -44,18 +44,15 @@ fun NewsPopularLayoutFake(
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-        ,
+        modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
-
     ) {
-
         item {
             LazyRow(
                 modifier = Modifier.padding(horizontal = 2.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 item {
                     FilterChip(
                         selected = false,
@@ -100,7 +97,7 @@ fun NewsPopularLayoutFake(
                     FilterChip(
                         selected = false,
                         onClick = {},
-                        label = { Text("Las 10 películas más populares", fontSize = 14.sp) } ,
+                        label = { Text("Las 10 películas más populares", fontSize = 14.sp) },
                         modifier = Modifier.height(40.dp),
                         shape = RoundedCornerShape(18.dp)
                     )
@@ -117,7 +114,10 @@ fun NewsPopularLayoutFake(
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.background
                 ),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.30f))
+                border = BorderStroke(
+                    1.dp,
+                    MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.30f)
+                )
             ) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
@@ -126,21 +126,21 @@ fun NewsPopularLayoutFake(
                     Box {
                         Image(
                             painter = painterResource(R.drawable.tron_backdrops),
-                            contentDescription = "Poster Image",
-                            contentScale = ContentScale.Crop,
+                            contentDescription = "Posters Image",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(214.dp)
                                 .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)),
+                            contentScale = ContentScale.Crop
                         )
 
                         Card(
-                            shape = RectangleShape,
                             modifier = Modifier
                                 .align(Alignment.TopEnd)
                                 .padding(top = 8.dp, end = 8.dp)
                                 .width(40.dp)
                                 .height(23.dp),
+                            shape = RectangleShape,
                             colors = CardDefaults.cardColors(
                                 containerColor = MaterialTheme.colorScheme.background
                             )
@@ -168,7 +168,7 @@ fun NewsPopularLayoutFake(
                     ) {
                         Image(
                             painter = painterResource(R.drawable.tron_logos),
-                            contentDescription = "Poster Image",
+                            contentDescription = "Posters Image",
                             modifier = Modifier.height(55.dp)
                         )
                     }
@@ -177,22 +177,22 @@ fun NewsPopularLayoutFake(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 10.dp, vertical = 5.dp),
-                        horizontalAlignment = Alignment.Start,
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalAlignment = Alignment.Start
                     ) {
                         Text(
                             text = "Estreno el jueves",
+                            color = MaterialTheme.colorScheme.onSurface,
                             fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface
+                            fontWeight = FontWeight.Bold
                         )
 
                         Text(
                             text = "Un elixir reanima a los muertos en una aldea. Una familia en conflicto debe unirse y luchar por sobrevivir mientras su hogar colapsa.",
+                            color = MaterialTheme.colorScheme.onSurface,
                             fontSize = 12.75.sp,
                             lineHeight = 16.sp,
-                            fontWeight = FontWeight.Normal,
-                            color = MaterialTheme.colorScheme.onSurface
+                            fontWeight = FontWeight.Normal
                         )
 
                         Spacer(modifier = Modifier.height(8.dp))
@@ -206,20 +206,17 @@ fun NewsPopularLayoutFake(
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.onSurface,
                                 contentColor = MaterialTheme.colorScheme.surface
-
                             ),
                             contentPadding = PaddingValues(horizontal = 4.dp, vertical = 4.dp)
-
                         ) {
                             Row(
-                                modifier = Modifier
-                                    .fillMaxWidth(),
+                                modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.Center,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
                                     imageVector = Icons.Outlined.Notifications,
-                                    contentDescription = "Notification Icon",
+                                    contentDescription = "Notification Icons",
                                     modifier = Modifier.size(25.dp)
                                 )
 

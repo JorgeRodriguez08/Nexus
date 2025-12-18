@@ -2,29 +2,26 @@ package com.example.nexus.ui.screens.series
 
 object SeriesCategories {
     val seriesCategories = listOf(
-        SeriesCategory.AiringToday,
-        SeriesCategory.OnTheAir,
-        SeriesCategory.Popular,
-        SeriesCategory.TopRated,
-
-        SeriesCategory.News,
-        SeriesCategory.Action,
-        SeriesCategory.Western,
-        SeriesCategory.ScienceFiction,
-        SeriesCategory.Mystery,
-        SeriesCategory.War,
-        SeriesCategory.Crime,
-        SeriesCategory.Drama,
-        SeriesCategory.Comedy,
-        SeriesCategory.Documentary,
-        SeriesCategory.Reality,
-        SeriesCategory.Talk,
-        SeriesCategory.Soap,
-        SeriesCategory.Family,
-        SeriesCategory.Kids,
-        SeriesCategory.Animation,
-
-
-
+        SerieCategory.Romantic,
+        SerieCategory.News,
+        SerieCategory.RomanticKorea,
+        SerieCategory.SciFiFantasy,
+        SerieCategory.Telenovela,
+        SerieCategory.Trending,
+        SerieCategory.RomanticAsiatic,
+        SerieCategory.SeriesKr,
+        SerieCategory.SeriesUs,
+        SerieCategory.Action,
+        SerieCategory.SeriesLatam,
+        SerieCategory.OnTheAir,
+        SerieCategory.Kids,
+        SerieCategory.SeriesMex,
+        SerieCategory.Thriller,
+        SerieCategory.Popular,
+        SerieCategory.RomanticInter,
+        SerieCategory.Dark,
+        SerieCategory.Animation,
+        SerieCategory.Talk,
+        SerieCategory.AiringToday
     )
 }

@@ -1,21 +1,40 @@
 package com.example.nexus.ui.screens.games
 
-import com.example.nexus.ui.screens.movies.MoviesCategory
-import com.example.nexus.ui.screens.series.SeriesCategory
+import com.example.nexus.ui.screens.movies.MovieCategory
+import com.example.nexus.ui.screens.series.SerieCategory
 
 object GamesCategories {
-    val rows = listOf(
-        GamesRow.SeriesRow(SeriesCategory.Kids),
-        GamesRow.SeriesRow(SeriesCategory.Family),
-        GamesRow.MoviesRow(MoviesCategory.Family),
-        GamesRow.SeriesRow(SeriesCategory.Kids),
-        GamesRow.MoviesRow(MoviesCategory.Fantasy),
-        GamesRow.SeriesRow(SeriesCategory.Animation),
-        GamesRow.MoviesRow(MoviesCategory.Animation),
-        GamesRow.SeriesRow(SeriesCategory.Soap),
-        GamesRow.MoviesRow(MoviesCategory.Animation),
-        GamesRow.SeriesRow(SeriesCategory.Kids),
-        GamesRow.MoviesRow(MoviesCategory.Family),
-        GamesRow.SeriesRow(SeriesCategory.Animation),
+    val gamesCategories = listOf(
+        MovieCategory.War,
+        SerieCategory.Trending,
+        SerieCategory.News,
+        SerieCategory.Crime,
+        SerieCategory.AiringToday,
+        SerieCategory.OnTheAir,
+        MovieCategory.Mystery,
+        SerieCategory.Romantic,
+        SerieCategory.RomanticAsiatic,
+        MovieCategory.Popular,
+        MovieCategory.ActionAndThriller,
+        SerieCategory.ActionAdventure,
+        MovieCategory.TaqAction,
+        SerieCategory.Crime,
+        MovieCategory.Adventure,
+        MovieCategory.Comedy,
+        SerieCategory.RomanticKorea,
+        MovieCategory.Horror,
+        MovieCategory.NowPlaying,
+        MovieCategory.Crime,
+        MovieCategory.Thriller,
+        SerieCategory.War,
+        MovieCategory.UpComing,
+        SerieCategory.Family,
+        MovieCategory.ScienceFiction,
+        MovieCategory.Fantasy,
+        SerieCategory.Comedy,
+        SerieCategory.Telenovela,
+        MovieCategory.Trending,
+        MovieCategory.Drama,
+        SerieCategory.Mystery,
     )
 }

@@ -2,17 +2,16 @@ package com.example.nexus.ui.screens.games
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.nexus.common.constants.NetworkConstants
 import com.example.nexus.common.core.Resource
 import com.example.nexus.domain.model.Movie
 import com.example.nexus.domain.model.Serie
 import com.example.nexus.domain.usecase.movies.MoviesUseCase
 import com.example.nexus.domain.usecase.series.SeriesUseCase
-import com.example.nexus.ui.screens.movies.MoviesCategory
+import com.example.nexus.ui.screens.movies.MovieCategory
 import com.example.nexus.ui.screens.movies.MoviesState
-import com.example.nexus.ui.screens.series.SeriesCategory
+import com.example.nexus.ui.screens.series.SerieCategory
+import com.example.nexus.ui.screens.series.SeriesState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,26 +23,25 @@ class GamesViewModel(
     private val seriesUseCase: SeriesUseCase
 ) : ViewModel() {
 
-    private val _gamesUiState = MutableStateFlow(GamesUiState(rows = GamesCategories.rows))
+    private val _gamesUiState = MutableStateFlow(GamesUiState())
     val gamesUiState: StateFlow<GamesUiState> = _gamesUiState.asStateFlow()
 
-    private val _featuredState = MutableStateFlow<MoviesState>(MoviesState.Loading)
-    val featuredState: StateFlow<MoviesState> = _featuredState.asStateFlow()
+    private val _featuredMoviesState = MutableStateFlow<MoviesState>(MoviesState.Loading)
+    val featuredMoviesState: StateFlow<MoviesState> = _featuredMoviesState.asStateFlow()
 
     fun loadGamesContent() {
-        GamesCategories.rows.forEach { row ->
-            when (row) {
-                is GamesRow.MoviesRow -> loadMoviesRow(row.category, 1)
-                is GamesRow.SeriesRow -> loadSeriesRow(row.category, 1)
+        GamesCategories.gamesCategories.forEach { category ->
+            when (category) {
+                is MovieCategory -> { loadMoviesContent(category) }
+                is SerieCategory -> { loadSeriesContent(category) }
             }
         }
     }
 
-    fun loadFeaturedMovies(page: Int = 1) {
+    fun loadFeaturedMovies() {
         viewModelScope.launch {
-            delay(50)
-            moviesUseCase.getMoviesUpComing.invoke(page).collect { resource ->
-                _featuredState.value = when (resource) {
+            moviesUseCase.getMoviesTrending.invoke().collect { resource ->
+                _featuredMoviesState.value = when (resource) {
                     is Resource.Loading -> MoviesState.Loading
                     is Resource.Success -> MoviesState.Success(resource.data)
                     is Resource.Error -> MoviesState.Error(resource.message)
@@ -52,141 +50,129 @@ class GamesViewModel(
         }
     }
 
-    private fun loadMoviesRow(category: MoviesCategory, page: Int) {
+    private fun loadMoviesContent(category: MovieCategory) {
         when (category) {
-            is MoviesCategory.NowPlaying -> loadMoviesNowPlaying(category, 1)
-            is MoviesCategory.Popular -> loadMoviesPopular(category, 1)
-            is MoviesCategory.TopRated -> loadMoviesTopRated(category, 1)
-            is MoviesCategory.UpComing -> loadMoviesUpComing(category, 1)
-            else -> loadMoviesByGenre(category, 1)
+            is MovieCategory.Trending -> loadMoviesTrending(category)
+            is MovieCategory.NowPlaying -> loadMoviesNowPlaying(category, 1)
+            is MovieCategory.UpComing -> loadMoviesUpComing(category, 1)
+            is MovieCategory.Popular -> loadMoviesPopular(category, 1)
+            else -> discoverMovies(category)
         }
     }
 
-    private fun loadSeriesRow(category: SeriesCategory, page: Int) {
-        when (category) {
-            is SeriesCategory.AiringToday -> loadSeriesAiringToday(category, 1)
-            is SeriesCategory.OnTheAir -> loadSeriesOnTheAir(category, 1)
-            is SeriesCategory.Popular -> loadSeriesPopular(category, 1)
-            is SeriesCategory.TopRated -> loadSeriesTopRated(category, 1)
-            else -> loadSeriesByGenre(category, 1)
-        }
-    }
-
-    private fun loadMoviesNowPlaying(category: MoviesCategory, page: Int) {
+    private fun loadMoviesTrending(category: MovieCategory) {
         viewModelScope.launch(Dispatchers.IO) {
-            delay(50)
+            moviesUseCase.getMoviesTrending.invoke().collect { resource ->
+                updateMoviesUiState(category, resource)
+            }
+        }
+    }
+
+    private fun loadMoviesNowPlaying(category: MovieCategory, page: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
             moviesUseCase.getMoviesNowPlaying.invoke(page).collect { resource ->
-                updateMoviesState(category, resource)
+                updateMoviesUiState(category, resource)
             }
         }
     }
 
-    private fun loadMoviesPopular(category: MoviesCategory, page: Int) {
+    private fun loadMoviesUpComing(category: MovieCategory, page: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            delay(50)
-            moviesUseCase.getMoviesPopular.invoke(page).collect { resource ->
-                updateMoviesState(category, resource)
-            }
-        }
-    }
-
-    private fun loadMoviesTopRated(category: MoviesCategory, page: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            delay(50)
-            moviesUseCase.getMoviesTopRated.invoke(page).collect { resource ->
-                updateMoviesState(category, resource)
-            }
-        }
-    }
-
-    private fun loadMoviesUpComing(category: MoviesCategory, page: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            delay(50)
             moviesUseCase.getMoviesUpComing.invoke(page).collect { resource ->
-                updateMoviesState(category, resource)
+                updateMoviesUiState(category, resource)
             }
         }
     }
 
-    private fun loadMoviesByGenre(category: MoviesCategory, page: Int) {
+    private fun loadMoviesPopular(category: MovieCategory, page: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            moviesUseCase.getMoviesPopular.invoke(page).collect { resource ->
+                updateMoviesUiState(category, resource)
+            }
+        }
+    }
+
+    private fun discoverMovies(category: MovieCategory) {
         val genreId = category.genreId ?: return
         viewModelScope.launch(Dispatchers.IO) {
-            delay(100)
-            moviesUseCase.discoverMovies.invoke(genreId, page, NetworkConstants.ORIGIN_COUNTRY_US).collect { resource ->
-                updateMoviesState(category, resource)
+            moviesUseCase.discoverMovies.invoke(genreId, category.page, category.originCountry).collect { resource ->
+                updateMoviesUiState(category, resource)
             }
         }
     }
 
-    private fun updateMoviesState(category: MoviesCategory, resource: Resource<List<Movie>>) {
+    private fun updateMoviesUiState(category: MovieCategory, resource: Resource<List<Movie>>) {
         _gamesUiState.update { currentUiState ->
-            val moviesMap = currentUiState.moviesMap.toMutableMap()
-            moviesMap[category] = when (resource) {
-                is Resource.Loading -> GamesState.Loading
-                is Resource.Success -> GamesState.Success(resource.data)
-                is Resource.Error -> GamesState.Error(resource.message)
+            val updateMoviesMap = currentUiState.moviesMap.toMutableMap()
+            updateMoviesMap[category] = when (resource) {
+                is Resource.Loading -> MoviesState.Loading
+                is Resource.Success -> MoviesState.Success(resource.data)
+                is Resource.Error -> MoviesState.Error(resource.message)
             }
-            currentUiState.copy(moviesMap = moviesMap)
-
+            currentUiState.copy(moviesMap = updateMoviesMap)
         }
     }
 
-    private fun loadSeriesAiringToday(category: SeriesCategory, page: Int) {
+    private fun loadSeriesContent(category: SerieCategory) {
+        when (category) {
+            is SerieCategory.Trending -> loadSeriesTrending(category)
+            is SerieCategory.AiringToday -> loadSeriesAiringToday(category, 1)
+            is SerieCategory.OnTheAir -> loadSeriesOnTheAir(category, 1)
+            is SerieCategory.Popular -> loadSeriesPopular(category, 1)
+            else -> discoverSeries(category)
+        }
+    }
+
+    private fun loadSeriesTrending(category: SerieCategory) {
         viewModelScope.launch(Dispatchers.IO) {
-            delay(50)
+            seriesUseCase.getSeriesTrending.invoke().collect { resource ->
+                updateSeriesUiState(category, resource)
+            }
+        }
+    }
+
+    private fun loadSeriesAiringToday(category: SerieCategory, page: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
             seriesUseCase.getSeriesAiringToday.invoke(page).collect { resource ->
-                updateSeriesState(category, resource)
+                updateSeriesUiState(category, resource)
             }
         }
     }
 
-    private fun loadSeriesOnTheAir(category: SeriesCategory, page: Int) {
+    private fun loadSeriesOnTheAir(category: SerieCategory, page: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            delay(50)
             seriesUseCase.getSeriesOnTheAir.invoke(page).collect { resource ->
-                updateSeriesState(category, resource)
+                updateSeriesUiState(category, resource)
             }
         }
     }
 
-    private fun loadSeriesPopular(category: SeriesCategory, page: Int) {
+    private fun loadSeriesPopular(category: SerieCategory, page: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            delay(50)
             seriesUseCase.getSeriesPopular.invoke(page).collect { resource ->
-                updateSeriesState(category, resource)
+                updateSeriesUiState(category, resource)
             }
         }
     }
 
-    private fun loadSeriesTopRated(category: SeriesCategory, page: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            delay(50)
-            seriesUseCase.getSeriesTopRated.invoke(page).collect { resource ->
-                updateSeriesState(category, resource)
-            }
-        }
-    }
-
-    private fun loadSeriesByGenre(category: SeriesCategory, page: Int) {
+    private fun discoverSeries(category: SerieCategory) {
         val genreId = category.genreId ?: return
         viewModelScope.launch(Dispatchers.IO) {
-            delay(50)
-            seriesUseCase.discoverSeries.invoke(genreId, page, NetworkConstants.ORIGIN_COUNTRY_US).collect { resource ->
-                updateSeriesState(category, resource)
+            seriesUseCase.discoverSeries.invoke(genreId, category.page, category.originCountry).collect { resource ->
+                updateSeriesUiState(category, resource)
             }
         }
     }
 
-    private fun updateSeriesState(category: SeriesCategory, resource: Resource<List<Serie>>) {
+    private fun updateSeriesUiState(category: SerieCategory, resource: Resource<List<Serie>>) {
         _gamesUiState.update { currentUiState ->
-            val seriesMap = currentUiState.serieMap.toMutableMap()
-            seriesMap[category] = when (resource) {
-                is Resource.Loading -> GamesState.Loading
-                is Resource.Success -> GamesState.Success(items = resource.data)
-                is Resource.Error -> GamesState.Error(message = resource.message)
+            val updateSeriesMap = currentUiState.seriesMap.toMutableMap()
+            updateSeriesMap[category] = when (resource) {
+                is Resource.Loading -> SeriesState.Loading
+                is Resource.Success -> SeriesState.Success(results = resource.data)
+                is Resource.Error -> SeriesState.Error(message = resource.message)
             }
-            currentUiState.copy(serieMap = seriesMap)
+            currentUiState.copy(seriesMap = updateSeriesMap)
         }
     }
-
 }

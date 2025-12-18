@@ -2,10 +2,12 @@ package com.example.nexus.ui.screens.newsPopular
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.nexus.common.core.Resource
 import com.example.nexus.common.constants.MoviesGenreIds
 import com.example.nexus.common.constants.NetworkConstants
+import com.example.nexus.common.core.Resource
 import com.example.nexus.domain.usecase.movies.MoviesUseCase
+import com.example.nexus.ui.components.filterbar.NewFilterType
+import com.example.nexus.ui.screens.movieDetails.MovieDetailState
 import com.example.nexus.ui.screens.movies.MoviesState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,27 +19,27 @@ class NewsAndPopularViewModel(
     private val moviesUseCase: MoviesUseCase
 ) : ViewModel() {
 
-    private val _selectedFilter = MutableStateFlow<FilterType>(FilterType.Upcoming)
-    val selectedFilter: StateFlow<FilterType> = _selectedFilter.asStateFlow()
+    private val _selectedFilter = MutableStateFlow<NewFilterType>(NewFilterType.Upcoming)
+    val selectedFilter: StateFlow<NewFilterType> = _selectedFilter.asStateFlow()
 
     private val _moviesUiState = MutableStateFlow<MoviesState>(MoviesState.Loading)
     val moviesUiState: StateFlow<MoviesState> = _moviesUiState.asStateFlow()
 
-    private val _moviesDetailStates = MutableStateFlow<Map<Int, MovieMultimediaState>>(emptyMap())
-    val moviesDetailStates: StateFlow<Map<Int, MovieMultimediaState>> = _moviesDetailStates.asStateFlow()
+    private val _moviesDetailStates = MutableStateFlow<Map<Int, MovieDetailState>>(emptyMap())
+    val moviesDetailStates: StateFlow<Map<Int, MovieDetailState>> = _moviesDetailStates.asStateFlow()
 
-    fun setFilter(filter: FilterType) {
+    fun setFilter(filter: NewFilterType) {
         _selectedFilter.value = filter
         loadMoviesForFilter(filter)
     }
 
-    private fun loadMoviesForFilter(filter: FilterType) {
+    private fun loadMoviesForFilter(filter: NewFilterType) {
         when (filter) {
-            FilterType.Upcoming -> loadMoviesUpcoming()
-            FilterType.Popular -> loadMoviesPopular()
-            FilterType.MobileGames -> loadMobileGames()
-            FilterType.Top10Movies -> loadTop10Movies()
-            FilterType.Top10Series -> loadTop10Series()
+            NewFilterType.Upcoming -> loadMoviesUpcoming()
+            NewFilterType.Popular -> loadMoviesPopular()
+            NewFilterType.MobileGames -> loadMobileGames()
+            NewFilterType.Top10Movies -> loadTop10Movies()
+            NewFilterType.Top10Series -> loadTop10Series()
         }
     }
 
@@ -50,7 +52,7 @@ class NewsAndPopularViewModel(
                     }
                     is Resource.Success -> {
                         _moviesUiState.value = MoviesState.Success(resource.data)
-                        resource.data.forEach { movie -> loadMovieMultimedia(movie.id) }
+                        resource.data.forEach { movie -> loadMovieDetails(movie.id) }
                     }
                     is Resource.Error -> {
                         _moviesUiState.value = MoviesState.Error(resource.message)
@@ -69,7 +71,7 @@ class NewsAndPopularViewModel(
                     }
                     is Resource.Success -> {
                         _moviesUiState.value = MoviesState.Success(resource.data)
-                        resource.data.forEach { movie -> loadMovieMultimedia(movie.id) }
+                        resource.data.forEach { movie -> loadMovieDetails(movie.id) }
                     }
                     is Resource.Error -> {
                         _moviesUiState.value = MoviesState.Error(resource.message)
@@ -88,7 +90,7 @@ class NewsAndPopularViewModel(
                     }
                     is Resource.Success -> {
                         _moviesUiState.value = MoviesState.Success(resource.data)
-                        resource.data.forEach { movie -> loadMovieMultimedia(movie.id) }
+                        resource.data.forEach { movie -> loadMovieDetails(movie.id) }
                     }
                     is Resource.Error -> {
                         _moviesUiState.value = MoviesState.Error(resource.message)
@@ -98,20 +100,16 @@ class NewsAndPopularViewModel(
         }
     }
 
-    fun loadTop10Series(page: Int = 1) {
-
-    }
-
-    fun loadTop10Movies(page: Int = 1) {
+    fun loadTop10Movies() {
         viewModelScope.launch(Dispatchers.IO) {
-            moviesUseCase.getMoviesTopRated.invoke(page).collect { resource ->
+            moviesUseCase.getMoviesTrending.invoke().collect { resource ->
                 when (resource) {
                     is Resource.Loading -> {
                         _moviesUiState.value = MoviesState.Loading
                     }
                     is Resource.Success -> {
                         _moviesUiState.value = MoviesState.Success(resource.data)
-                        resource.data.forEach { movie -> loadMovieMultimedia(movie.id) }
+                        resource.data.forEach { movie -> loadMovieDetails(movie.id) }
                     }
                     is Resource.Error -> {
                         _moviesUiState.value = MoviesState.Error(resource.message)
@@ -121,24 +119,31 @@ class NewsAndPopularViewModel(
         }
     }
 
-    fun loadMovieMultimedia(movieId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            updateMovieDetailState(movieId, MovieMultimediaState.Loading)
+    fun loadTop10Series() {
+    }
 
-            moviesUseCase.getMovieImage.invoke(movieId).collect { resource ->
+    fun loadMovieDetails(movieId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            updateMovieDetailStates(movieId, MovieDetailState.Loading)
+            moviesUseCase.getMovieDetails.invoke(movieId).collect { resource ->
                 when (resource) {
-                    is Resource.Loading -> updateMovieDetailState(movieId, MovieMultimediaState.Loading)
-                    is Resource.Success -> updateMovieDetailState(movieId, MovieMultimediaState.Success(resource.data))
-                    is Resource.Error -> updateMovieDetailState(movieId, MovieMultimediaState.Error(resource.message))
+                    is Resource.Loading -> {
+                        updateMovieDetailStates(movieId, MovieDetailState.Loading)
+                    }
+                    is Resource.Success -> {
+                        updateMovieDetailStates(movieId, MovieDetailState.Success(resource.data))
+                    }
+                    is Resource.Error -> {
+                        updateMovieDetailStates(movieId, MovieDetailState.Error(resource.message))
+                    }
                 }
             }
         }
     }
 
-    private fun updateMovieDetailState(movieId: Int, state: MovieMultimediaState) {
+    private fun updateMovieDetailStates(movieId: Int, movieDetailState: MovieDetailState) {
         val currentMap = _moviesDetailStates.value.toMutableMap()
-        currentMap[movieId] = state
+        currentMap[movieId] = movieDetailState
         _moviesDetailStates.value = currentMap
     }
-    
 }

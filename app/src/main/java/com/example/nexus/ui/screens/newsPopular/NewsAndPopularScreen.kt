@@ -4,12 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import com.example.nexus.ui.components.filterbar.NewFilterType
+import com.example.nexus.ui.components.shimmer.NewsMovieLayoutShimmer
 import com.example.nexus.ui.screens.movies.MoviesState
 
 @Composable
 fun NewsAndPopularScreen(
     newsAndPopularViewModel: NewsAndPopularViewModel,
-    selectedFilter: FilterType,
+    selectedFilter: NewFilterType,
     modifier: Modifier = Modifier
 ) {
     LaunchedEffect(selectedFilter) {

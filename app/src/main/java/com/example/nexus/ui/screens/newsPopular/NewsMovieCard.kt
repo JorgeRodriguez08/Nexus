@@ -1,7 +1,6 @@
 package com.example.nexus.ui.screens.newsPopular
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,110 +29,105 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.example.nexus.R
-import com.example.nexus.domain.model.Movie
-import com.example.nexus.domain.model.MovieMultimedia
+import com.example.nexus.domain.model.MovieDetails
+import com.example.nexus.ui.theme.Dimens
+import com.example.nexus.ui.theme.FontSizes
+import com.example.nexus.ui.theme.Strings
 
 @Composable
 fun NewsMovieCard(
-    movie: Movie,
-    movieDetail: MovieMultimedia,
+    movieDetails: MovieDetails,
     modifier: Modifier = Modifier
 ) {
-
     Card(
         modifier = Modifier
-            .width(388.dp)
-            .wrapContentHeight()
-        ,
-        shape = RoundedCornerShape(12.dp),
+            .width(Dimens.Posters.extraLarge.width)
+            .wrapContentHeight(),
+        shape = RoundedCornerShape( Dimens.Padding.large),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background
         ),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.30f))
+        border = BorderStroke(
+            width = Dimens.Padding.hairline,
+            color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = Dimens.Alpha.regular)
+        )
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(bottom = 14.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = Dimens.Padding.extraLarge),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box {
-                if (movie.backdropUrl.isNotEmpty()) {
-                    AsyncImage(
-                        model = movie.backdropUrl,
-                        contentDescription = movie.title,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(214.dp)
-                            .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
-                    )
-                } else {
-                    Image(
-                        painter = painterResource(R.drawable.tron_logos),
-                        contentDescription = movie.title,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(214.dp)
-                            .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
-                    )
-                }
+                AsyncImage(
+                    model = movieDetails.movie.backdropUrl,
+                    contentDescription = movieDetails.movie.title,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(Dimens.Posters.base.height)
+                        .clip(
+                            RoundedCornerShape(
+                                topStart = Dimens.Radius.large,
+                                topEnd = Dimens.Radius.large
+                            )
+                        ),
+                    contentScale = ContentScale.Crop
+                )
 
                 Card(
-                    shape = RoundedCornerShape(2.dp),
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(top = 8.dp, end = 8.dp)
-                        .width(40.dp)
-                        .height(23.dp),
+                        .padding(top = Dimens.Padding.medium, end = Dimens.Padding.medium)
+                        .width(Dimens.Posters.extraExtraSmall.width)
+                        .height(Dimens.Posters.extraExtraSmall.height),
+                    shape = RoundedCornerShape(Dimens.Radius.micro),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.background
                     )
-                ) {
-
-                }
+                ) {}
 
                 Text(
-                    text = "16+",
+                    text =
+                        if (movieDetails.movie.adult)
+                            Strings.Badges.adults
+                        else
+                            Strings.Badges.kids,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(top = 4.dp, end = 12.dp),
+                        .padding(top = Dimens.Padding.extraSmall, end = Dimens.Padding.large),
                     color = MaterialTheme.colorScheme.onSurface,
+                    fontSize = FontSizes.labelMedium,
                     fontWeight = FontWeight.ExtraBold,
-                    fontSize = 12.sp,
                     maxLines = 1
                 )
-
             }
 
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 12.dp, vertical = 6.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                    .padding(horizontal = Dimens.Padding.large, vertical = Dimens.Padding.small),
+                verticalArrangement = Arrangement.spacedBy(Dimens.Padding.medium),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (movieDetail.image != null && movieDetail.image.fileUrl.isNotEmpty()) {
+                if (movieDetails.image.fileUrl.isNotEmpty()) {
                     AsyncImage(
-                        model = movieDetail.image.fileUrl,
-                        contentDescription = "Movie Logo",
-                        contentScale = ContentScale.Fit,
-                        modifier = Modifier.height(55.dp)
+                        model = movieDetails.image.fileUrl,
+                        contentDescription = Strings.Labels.movieLogo,
+                        modifier = Modifier.height(Dimens.Posters.extraSmall.height),
+                        contentScale = ContentScale.Fit
                     )
                 } else {
                     Text(
-                        text = movie.title,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
+                        text = movieDetails.movie.title,
                         color = MaterialTheme.colorScheme.onSurface,
-                        maxLines = 2,
-                        textAlign = TextAlign.Center
+                        fontSize = FontSizes.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        maxLines = 2
                     )
                 }
             }
@@ -141,59 +135,59 @@ fun NewsMovieCard(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 10.dp, vertical = 5.dp),
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                    .padding(horizontal = Dimens.Padding.base, vertical = Dimens.Padding.small),
+                verticalArrangement = Arrangement.spacedBy(Dimens.Padding.medium),
+                horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    text = "Estreno el" + " " + movie.releaseDate,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface
+                    text = Strings.Labels.release + movieDetails.movie.releaseDate,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontSize = FontSizes.bodySmall,
+                    fontWeight = FontWeight.Bold
                 )
 
                 Text(
-                    text = movie.overview,
-                    fontSize = 12.75.sp,
-                    lineHeight = 16.sp,
-                    maxLines = 5,
+                    text = movieDetails.movie.overview,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontSize = FontSizes.labelMedium,
                     fontWeight = FontWeight.Normal,
-                    color = MaterialTheme.colorScheme.onSurface
+                    lineHeight = FontSizes.bodyMedium,
+                    maxLines = 5
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(Dimens.Padding.medium))
 
                 Button(
                     onClick = {},
                     modifier = Modifier
-                        .width(155.dp)
-                        .height(47.dp),
-                    shape = RoundedCornerShape(4.dp),
+                        .width(Dimens.Buttons.regular.width)
+                        .height(Dimens.Buttons.regular.height),
+                    shape = RoundedCornerShape(Dimens.Radius.extraSmall),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.onSurface,
                         contentColor = MaterialTheme.colorScheme.surface
-
                     ),
-                    contentPadding = PaddingValues(horizontal = 1.dp, vertical = 1.dp)
-
+                    contentPadding = PaddingValues(
+                        horizontal = Dimens.Padding.hairline,
+                        vertical = Dimens.Padding.hairline
+                    )
                 ) {
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.Notifications,
-                            contentDescription = "Notification Icon",
-                            modifier = Modifier.size(25.dp)
+                            contentDescription = Strings.Icons.notificationsIcon,
+                            modifier = Modifier.size(Dimens.Icons.medium)
                         )
 
-                        Spacer(Modifier.width(6.dp))
+                        Spacer(Modifier.width(Dimens.Padding.small))
 
                         Text(
-                            text = "Avisarme",
-                            fontSize = 15.sp,
+                            text = Strings.Labels.notify,
+                            fontSize = FontSizes.bodyMedium,
                             fontWeight = FontWeight.Bold,
                             maxLines = 1
                         )

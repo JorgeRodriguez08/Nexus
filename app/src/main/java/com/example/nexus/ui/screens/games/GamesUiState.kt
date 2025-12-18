@@ -1,12 +1,11 @@
 package com.example.nexus.ui.screens.games
 
-import com.example.nexus.domain.model.Movie
-import com.example.nexus.domain.model.Serie
-import com.example.nexus.ui.screens.movies.MoviesCategory
-import com.example.nexus.ui.screens.series.SeriesCategory
+import com.example.nexus.ui.screens.movies.MovieCategory
+import com.example.nexus.ui.screens.movies.MoviesState
+import com.example.nexus.ui.screens.series.SerieCategory
+import com.example.nexus.ui.screens.series.SeriesState
 
 data class GamesUiState(
-    val moviesMap: Map<MoviesCategory, GamesState<Movie>> = emptyMap(),
-    val serieMap: Map<SeriesCategory, GamesState<Serie>> = emptyMap(),
-    val rows: List<GamesRow> = emptyList()
+    val moviesMap: Map<MovieCategory, MoviesState> = emptyMap(),
+    val seriesMap: Map<SerieCategory, SeriesState> = emptyMap()
 )
