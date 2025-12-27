@@ -24,6 +24,7 @@ object Dimens {
     object Radius {
         val micro = 2.dp
         val extraSmall = 4.dp
+        val small = 6.dp
         val base = 10.dp
         val large = 12.dp
         val gigaLarge = 18.dp
@@ -42,7 +43,7 @@ object Dimens {
         const val hover = 0.05f
         const val pressed = 0.20f
         const val regular = 0.30f
-        const val disabled = 0.45f
+        const val disabled = 0.40f
         const val medium = 0.60f
     }
 
@@ -52,14 +53,21 @@ object Dimens {
     )
 
     object Posters {
-        val extraExtraSmall = Size(40.dp, 23.dp)
-        val extraSmall = Size(55.dp, 55.dp)
-        val small = Size(116.dp, 116.dp)
-        val medium = Size(116.dp, 162.dp)
-        val base = Size(214.dp, 214.dp)
-        val regular = Size(155.dp, 252.dp)
-        val large = Size(360.dp, 496.dp)
-        val extraLarge = Size(388.dp, 388.dp)
+        val mini = Size(40.dp, 23.dp)
+        val extraExtraSmall = Size(55.dp, 55.dp)
+        val extraSmall = Size(116.dp, 116.dp)
+        val small = Size(116.dp, 162.dp)
+        val top = Size(127.dp, 177.dp)
+        val medium = Size(145.dp, 225.dp)
+        val regular = Size(178.dp, 350.dp)
+        val large = Size(214.dp, 214.dp)
+        val extraLarge = Size(360.dp, 496.dp)
+        val extraExtraLarge = Size(388.dp, 388.dp)
+    }
+
+    object Box {
+        val small = Size(48.dp, 48.dp)
+        val medium = Size(81.dp, 81.dp)
     }
 
     object Buttons {
@@ -73,6 +81,7 @@ object Dimens {
         val medium = 26.dp
         val regular = 28.dp
         val large = 32.dp
+        val base = 38.dp
         val extraLarge = 42.dp
     }
 

@@ -11,7 +11,6 @@ import com.example.nexus.ui.screens.movies.MovieCategory
 import com.example.nexus.ui.screens.movies.MoviesState
 import com.example.nexus.ui.screens.series.SerieCategory
 import com.example.nexus.ui.screens.series.SeriesState
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,22 +22,18 @@ class HomeViewModel(
     private val seriesUseCase: SeriesUseCase
 ) : ViewModel() {
 
-    private val _homeUiState = MutableStateFlow(HomeUiState())
-    val homeUiState: StateFlow<HomeUiState> = _homeUiState.asStateFlow()
-
     private val _featuredMoviesState = MutableStateFlow<MoviesState>(MoviesState.Loading)
     val featuredMoviesState: StateFlow<MoviesState> = _featuredMoviesState.asStateFlow()
 
-    fun loadHomeContent() {
-        HomeCategories.homeCategories.forEach { category ->
-            when (category) {
-                is MovieCategory -> { loadMoviesContent(category) }
-                is SerieCategory -> { loadSeriesContent(category) }
-            }
-        }
+    private val _homeUiState = MutableStateFlow(HomeUiState())
+    val homeUiState: StateFlow<HomeUiState> = _homeUiState.asStateFlow()
+
+    init {
+        loadFeaturedMovies()
+        loadHomeContent()
     }
 
-    fun loadFeaturedMovies() {
+    private fun loadFeaturedMovies() {
         viewModelScope.launch {
             moviesUseCase.getMoviesTrending.invoke().collect { resource ->
                 _featuredMoviesState.value = when (resource) {
@@ -46,6 +41,15 @@ class HomeViewModel(
                     is Resource.Success -> MoviesState.Success(resource.data)
                     is Resource.Error -> MoviesState.Error(resource.message)
                 }
+            }
+        }
+    }
+
+    private fun loadHomeContent() {
+        HomeCategories.homeCategories.forEach { category ->
+            when (category) {
+                is MovieCategory -> { loadMoviesContent(category) }
+                is SerieCategory -> { loadSeriesContent(category) }
             }
         }
     }
@@ -61,7 +65,7 @@ class HomeViewModel(
     }
 
     private fun loadMoviesTrending(category: MovieCategory) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             moviesUseCase.getMoviesTrending.invoke().collect { resource ->
                 updateMoviesUiState(category, resource)
             }
@@ -69,7 +73,7 @@ class HomeViewModel(
     }
 
     private fun loadMoviesNowPlaying(category: MovieCategory, page: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             moviesUseCase.getMoviesNowPlaying.invoke(page).collect { resource ->
                 updateMoviesUiState(category, resource)
             }
@@ -77,7 +81,7 @@ class HomeViewModel(
     }
 
     private fun loadMoviesUpComing(category: MovieCategory, page: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             moviesUseCase.getMoviesUpComing.invoke(page).collect { resource ->
                 updateMoviesUiState(category, resource)
             }
@@ -85,7 +89,7 @@ class HomeViewModel(
     }
 
     private fun loadMoviesPopular(category: MovieCategory, page: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             moviesUseCase.getMoviesPopular.invoke(page).collect { resource ->
                 updateMoviesUiState(category, resource)
             }
@@ -94,7 +98,7 @@ class HomeViewModel(
 
     private fun discoverMovies(category: MovieCategory) {
         val genreId = category.genreId ?: return
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             moviesUseCase.discoverMovies.invoke(genreId, category.page, category.originCountry).collect { resource ->
                 updateMoviesUiState(category, resource)
             }
@@ -124,7 +128,7 @@ class HomeViewModel(
     }
 
     private fun loadSeriesTrending(category: SerieCategory) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             seriesUseCase.getSeriesTrending.invoke().collect { resource ->
                 updateSeriesUiState(category, resource)
             }
@@ -132,7 +136,7 @@ class HomeViewModel(
     }
 
     private fun loadSeriesAiringToday(category: SerieCategory, page: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             seriesUseCase.getSeriesAiringToday.invoke(page).collect { resource ->
                 updateSeriesUiState(category, resource)
             }
@@ -140,7 +144,7 @@ class HomeViewModel(
     }
 
     private fun loadSeriesOnTheAir(category: SerieCategory, page: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             seriesUseCase.getSeriesOnTheAir.invoke(page).collect { resource ->
                 updateSeriesUiState(category, resource)
             }
@@ -148,7 +152,7 @@ class HomeViewModel(
     }
 
     private fun loadSeriesPopular(category: SerieCategory, page: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             seriesUseCase.getSeriesPopular.invoke(page).collect { resource ->
                 updateSeriesUiState(category, resource)
             }
@@ -157,7 +161,7 @@ class HomeViewModel(
 
     private fun discoverSeries(category: SerieCategory) {
         val genreId = category.genreId ?: return
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             seriesUseCase.discoverSeries.invoke(genreId, category.page, category.originCountry).collect { resource ->
                 updateSeriesUiState(category, resource)
             }
@@ -169,8 +173,8 @@ class HomeViewModel(
             val updateSeriesMap = currentUiState.seriesMap.toMutableMap()
             updateSeriesMap[category] = when (resource) {
                 is Resource.Loading -> SeriesState.Loading
-                is Resource.Success -> SeriesState.Success(results = resource.data)
-                is Resource.Error -> SeriesState.Error(message = resource.message)
+                is Resource.Success -> SeriesState.Success(resource.data)
+                is Resource.Error -> SeriesState.Error(resource.message)
             }
             currentUiState.copy(seriesMap = updateSeriesMap)
         }

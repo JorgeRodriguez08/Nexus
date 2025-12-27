@@ -30,14 +30,13 @@ fun ButtonMedium(
     color: Color,
     modifier: Modifier = Modifier
 ) {
-    val buttonLarge = Dimens.Buttons.large
     Button(
         onClick = onClick,
         modifier = Modifier
-            .width(buttonLarge.width)
-            .height(buttonLarge.height),
+            .width(Dimens.Buttons.medium.width)
+            .height(Dimens.Buttons.medium.height),
         enabled = enabled,
-        shape = RoundedCornerShape(Dimens.Radius.micro),
+        shape = RoundedCornerShape(Dimens.Radius.extraSmall),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.onSurface,
             contentColor = MaterialTheme.colorScheme.surface,

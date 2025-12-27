@@ -1,4 +1,4 @@
-package com.example.nexus.ui.components.card
+package com.example.nexus.ui.components.card.serie
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -33,11 +33,10 @@ fun SerieCardLarge(
     onSerieClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val posterLarge = Dimens.Posters.large
     Card(
         modifier = modifier
-            .width(posterLarge.width)
-            .height(posterLarge.height)
+            .width(Dimens.Posters.extraLarge.width)
+            .height(Dimens.Posters.extraLarge.height)
             .clickable(onClick = { onSerieClick(serie.id) }),
         shape = RoundedCornerShape(Dimens.Radius.large),
         elevation = CardDefaults.cardElevation(Dimens.Elevation.extraLarge),

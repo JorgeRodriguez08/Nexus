@@ -58,7 +58,7 @@ interface ApiService {
         @Query("vote_average.gte") voteAverageGte: Float = NetworkConstants.VOTE_AVERAGE_GTE,
         @Query("vote_average.lte") voteAverageLte: Float = NetworkConstants.VOTE_AVERAGE_LTE,
         @Query("with_genres") genreId: String,
-        @Query("with_origin_country") originCountry: String = NetworkConstants.ORIGIN_COUNTRY_US
+        @Query("with_origin_country") originCountry: String = NetworkConstants.ORIGINAL_COUNTRY_US
     ): MoviesResponse
 
     @GET("search/movie")
@@ -132,7 +132,7 @@ interface ApiService {
         @Query("first_air_date.lte") firstAirDateLte: String = NetworkConstants.FIRST_AIR_DATE_LTE,
         @Query("vote_average") voteAverage: Float = NetworkConstants.VOTE_AVERAGE_GTE,
         @Query("with_genres") genreId: String,
-        @Query("with_origin_country") originCountry: String = NetworkConstants.ORIGIN_COUNTRY_US
+        @Query("with_origin_country") originCountry: String = NetworkConstants.ORIGINAL_COUNTRY_US
     ): SeriesResponse
 
     @GET("search/tv")

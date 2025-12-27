@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import com.example.nexus.R
 import com.example.nexus.ui.components.filterbar.FilterBar
 import com.example.nexus.ui.navigation.Destinations
@@ -43,7 +45,7 @@ fun TopBar(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        verticalArrangement = Arrangement.SpaceEvenly
+        verticalArrangement = Arrangement.spacedBy(Dimens.Padding.micro)
     ) {
         TopAppBar(
             title = {
@@ -55,7 +57,7 @@ fun TopBar(
                             else -> currentRoute
                     },
                     color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = FontSizes.titleSmall,
+                    fontSize = FontSizes.titleRegular,
                     fontWeight = FontWeight.Bold
                 )
             },
@@ -75,7 +77,7 @@ fun TopBar(
                     Image(
                         painter = painterResource(R.drawable.nexus_icon),
                         contentDescription = Strings.Icons.nexusIcon,
-                        modifier = Modifier.size(Dimens.Icons.large)
+                        modifier = Modifier.size(Dimens.Icons.base)
                     )
                 }
             },
@@ -96,7 +98,7 @@ fun TopBar(
                     onClick = onSearchClick
                 )
             },
-            modifier = modifier
+            modifier = modifier.padding(start = Dimens.Padding.micro)
         )
 
         if (Destinations.shouldShowFilterBar(currentRoute)) {

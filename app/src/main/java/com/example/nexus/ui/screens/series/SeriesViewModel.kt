@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.nexus.common.core.Resource
 import com.example.nexus.domain.model.Serie
 import com.example.nexus.domain.usecase.series.SeriesUseCase
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,28 +15,19 @@ class SeriesViewModel(
     private val seriesUseCase: SeriesUseCase
 ) : ViewModel() {
 
-    private val _seriesUiState = MutableStateFlow(SeriesUiState())
-    val seriesUiState: StateFlow<SeriesUiState> = _seriesUiState.asStateFlow()
-
     private val _featuredSeriesState = MutableStateFlow<SeriesState>(SeriesState.Loading)
     val featuredSeriesState: StateFlow<SeriesState> = _featuredSeriesState.asStateFlow()
 
-    val seriesCategories = SeriesCategories.seriesCategories
+    private val _seriesUiState = MutableStateFlow(SeriesUiState())
+    val seriesUiState: StateFlow<SeriesUiState> = _seriesUiState.asStateFlow()
 
-    fun loadSeriesContent() {
-        seriesCategories.forEach { category ->
-            when (category) {
-                is SerieCategory.Trending -> loadSeriesTrending(category)
-                is SerieCategory.AiringToday -> loadSeriesAiringToday(category, 1)
-                is SerieCategory.OnTheAir -> loadSeriesOnTheAir(category, 1)
-                is SerieCategory.Popular -> loadSeriesPopular(category, 1)
-                else -> discoverSeries(category)
-            }
-        }
+    init {
+        loadFeaturedSeries()
+        loadSeriesContent()
     }
 
-    fun loadFeaturedSeries() {
-        viewModelScope.launch(Dispatchers.IO) {
+    private fun loadFeaturedSeries() {
+        viewModelScope.launch {
             seriesUseCase.getSeriesTrending.invoke().collect { resource ->
                 _featuredSeriesState.value = when (resource) {
                     is Resource.Loading -> SeriesState.Loading
@@ -48,8 +38,20 @@ class SeriesViewModel(
         }
     }
 
+    private fun loadSeriesContent() {
+        SeriesCategories.seriesCategories.forEach { category ->
+            when (category) {
+                is SerieCategory.Trending -> loadSeriesTrending(category)
+                is SerieCategory.AiringToday -> loadSeriesAiringToday(category, 1)
+                is SerieCategory.OnTheAir -> loadSeriesOnTheAir(category, 1)
+                is SerieCategory.Popular -> loadSeriesPopular(category, 1)
+                else -> discoverSeries(category)
+            }
+        }
+    }
+
     private fun loadSeriesTrending(category: SerieCategory) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             seriesUseCase.getSeriesTrending.invoke().collect { resource ->
                 updateSeriesUiState(category, resource)
             }
@@ -57,7 +59,7 @@ class SeriesViewModel(
     }
 
     private fun loadSeriesAiringToday(category: SerieCategory, page: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             seriesUseCase.getSeriesAiringToday.invoke(page).collect { resource ->
                 updateSeriesUiState(category, resource)
             }
@@ -65,7 +67,7 @@ class SeriesViewModel(
     }
 
     private fun loadSeriesOnTheAir(category: SerieCategory, page: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             seriesUseCase.getSeriesOnTheAir.invoke(page).collect { resource ->
                 updateSeriesUiState(category, resource)
             }
@@ -73,7 +75,7 @@ class SeriesViewModel(
     }
 
     private fun loadSeriesPopular(category: SerieCategory, page: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             seriesUseCase.getSeriesPopular.invoke(page).collect { resource ->
                 updateSeriesUiState(category, resource)
             }
@@ -82,7 +84,7 @@ class SeriesViewModel(
 
     private fun discoverSeries(category: SerieCategory) {
         val genreId = category.genreId ?: return
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             seriesUseCase.discoverSeries.invoke(genreId, category.page, category.originCountry).collect { resource ->
                 updateSeriesUiState(category, resource)
             }

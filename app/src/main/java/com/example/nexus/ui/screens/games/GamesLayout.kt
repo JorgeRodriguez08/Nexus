@@ -8,11 +8,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.example.nexus.ui.components.card.MovieCardLarge
-import com.example.nexus.ui.components.lazyrow.GamesMobileRecommended
-import com.example.nexus.ui.components.lazyrow.GamesMobileTop10
-import com.example.nexus.ui.components.lazyrow.MoviesLazyRow
-import com.example.nexus.ui.components.lazyrow.SeriesLazyRow
+import com.example.nexus.ui.components.card.movie.MovieCardLarge
+import com.example.nexus.ui.components.lazyrow.games.GamesMobileRecommended
+import com.example.nexus.ui.components.lazyrow.games.GamesMobileTop10
+import com.example.nexus.ui.components.lazyrow.movies.MoviesLazyRow
+import com.example.nexus.ui.components.lazyrow.series.SeriesLazyRow
 import com.example.nexus.ui.screens.movies.MovieCategory
 import com.example.nexus.ui.screens.movies.MoviesState
 import com.example.nexus.ui.screens.series.SerieCategory
@@ -23,6 +23,7 @@ import com.example.nexus.ui.theme.Dimens
 fun GamesLayout(
     featuredMovieState: MoviesState,
     gamesUiState: GamesUiState,
+    categories: List<Any>,
     onMovieClick: (Int) -> Unit,
     onSerieClick: (Int) -> Unit,
     modifier: Modifier = Modifier
@@ -30,7 +31,7 @@ fun GamesLayout(
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .padding(top = Dimens.Padding.hero),
+            .padding(top = Dimens.Padding.sectionSmall),
         verticalArrangement = Arrangement.spacedBy(Dimens.Padding.extraExtraLarge),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -38,7 +39,7 @@ fun GamesLayout(
             when (featuredMovieState) {
                 is MoviesState.Loading -> {  }
                 is MoviesState.Success -> {
-                    val featuredMovie = featuredMovieState.results.random()
+                    val featuredMovie = featuredMovieState.results.first()
                     MovieCardLarge(
                         movie = featuredMovie,
                         onMovieClick =  onMovieClick
@@ -72,8 +73,7 @@ fun GamesLayout(
             }
         }
 
-        val gamesCategories = GamesCategories.gamesCategories
-        items(gamesCategories) { category ->
+        items(categories) { category ->
             when (category) {
                 is MovieCategory -> {
                     val moviesMap = gamesUiState.moviesMap

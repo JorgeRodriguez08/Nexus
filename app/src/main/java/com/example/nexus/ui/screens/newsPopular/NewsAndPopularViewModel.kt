@@ -6,8 +6,10 @@ import com.example.nexus.common.constants.MoviesGenreIds
 import com.example.nexus.common.constants.NetworkConstants
 import com.example.nexus.common.core.Resource
 import com.example.nexus.domain.usecase.movies.MoviesUseCase
+import com.example.nexus.domain.usecase.series.SeriesUseCase
 import com.example.nexus.ui.components.filterbar.NewFilterType
 import com.example.nexus.ui.screens.movieDetails.MovieDetailState
+import com.example.nexus.ui.screens.movies.MovieCategory
 import com.example.nexus.ui.screens.movies.MoviesState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,8 +18,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class NewsAndPopularViewModel(
-    private val moviesUseCase: MoviesUseCase
-) : ViewModel() {
+    private val moviesUseCase: MoviesUseCase,
+    private val seriesUseCase: SeriesUseCase
+): ViewModel() {
 
     private val _selectedFilter = MutableStateFlow<NewFilterType>(NewFilterType.Upcoming)
     val selectedFilter: StateFlow<NewFilterType> = _selectedFilter.asStateFlow()
@@ -83,7 +86,7 @@ class NewsAndPopularViewModel(
 
     fun loadMobileGames(page: Int = 1) {
         viewModelScope.launch(Dispatchers.IO) {
-            moviesUseCase.discoverMovies.invoke(MoviesGenreIds.ANIMATION, page, NetworkConstants.ORIGIN_COUNTRY_US).collect { resource ->
+            moviesUseCase.discoverMovies.invoke(MoviesGenreIds.ANIMATION, page, NetworkConstants.ORIGINAL_COUNTRY_US).collect { resource ->
                 when (resource) {
                     is Resource.Loading -> {
                         _moviesUiState.value = MoviesState.Loading

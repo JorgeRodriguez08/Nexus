@@ -1,7 +1,6 @@
 package com.example.nexus.ui.screens.series
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 
@@ -14,16 +13,11 @@ fun SeriesScreen(
     val featuredSerieState = seriesViewModel.featuredSeriesState.collectAsState().value
     val seriesUiState = seriesViewModel.seriesUiState.collectAsState().value
 
-    LaunchedEffect(Unit) {
-        seriesViewModel.loadFeaturedSeries()
-        seriesViewModel.loadSeriesContent()
-    }
-
     SeriesLayout(
         featuredSerieState = featuredSerieState,
         seriesUiState = seriesUiState,
         categories = SeriesCategories.seriesCategories,
         onSerieClick = onSerieClick,
-        modifier = modifier
+        modifier = modifier,
     )
 }

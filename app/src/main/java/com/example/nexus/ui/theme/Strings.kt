@@ -68,10 +68,10 @@ object Strings {
         const val tvMovie = "De Hollywood a tu pantalla"
         const val warAndThriller = "Cine de intriga y acción de suspenso"
         const val dramaArgentina = "Películas argentinas"
-        const val comedy2 = "Películas para reír"
+        const val comedy2 = "Películas de Hollywood para reír"
         const val horror = "Noches de pelis con amigos"
         const val actionKorea = "Películas y programas de Asia"
-        const val animation = "Noches de pelis con amigos"
+        const val animation = "Noches de pelis para ver en familiar"
         const val drama2 = "Cine dramático"
         const val actionAndSciFi = "Acción y sci-fi"
         const val taqAction = "Taquillazos emocionantes"
@@ -83,10 +83,11 @@ object Strings {
         const val adventure = "Películas de acción y aventura"
         const val fantasy = "Modo todoterreno activado"
         const val western = "Películas de Occidente"
+        const val mexican = "Películas mexicanas"
     }
 
     object serieCategory {
-        const val trending = "Las 10 series más populares hoy"
+        const val trending = "Las 10 series más populares en Argentina hoy"
         const val news = "Lo nuevo en Nexus"
         const val crime = "Dramas implacables sobre crímenes"
         const val airingToday = "Para pasar el rato"
@@ -95,11 +96,13 @@ object Strings {
         const val romanticAsiatic = "Series románticas asiáticas"
         const val actionAdventure = "Series emocionantes"
         const val romanticKorea = "Series románticas coreanas"
+        const val dramaKorea = "Series dramáticas coreanas"
         const val family = "Series para ver en familia"
         const val action = "Series de Acción y Aventura"
         const val comedy = "Series de Comedia"
         const val telenovela = "Series románticas"
         const val mystery = "Series sombrías"
+        const val onlyNexus = "Solo en Nexus"
         const val seriesKr = "Series coreanas"
         const val sciFiFantasy = "Nuestra selección de hoy para ti"
         const val seriesUs = "Series de EE.UU"
@@ -107,11 +110,21 @@ object Strings {
         const val kids = "Para ver con peques no tan peques"
         const val seriesMex = "Series mexicanas"
         const val thriller = "Para aniquilar el aburrimiento"
+        const val thrillerAndMystery = "Series de intriga y misterio"
         const val popular = "Series aclamadas por la crítica"
         const val romanticInter = "Series internacionales románticas"
         const val war = "Para aniquilar el aburrimiento"
         const val dark = "Series dramáticas sombrías de EE.UU"
         const val animation = "Animación"
         const val talk = "Shows de EE.UU"
+        const val drama = "Series dramáticas"
+        const val dramaUs = "Series dramáticas de EE.UU"
+        const val dramaAndThriller = "Series dramáticas de suspenso"
+        const val police = "Series policiales"
+    }
+
+    object gamesCategory {
+        const val gamesMobiles = "Juegos móviles"
+        const val gamesTop10 = "Los 10 juegos móviles más populares"
     }
 }

@@ -1,7 +1,6 @@
 package com.example.nexus.ui.screens.games
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 
@@ -15,14 +14,10 @@ fun GamesScreen(
     val featuredMovieState = gamesViewModel.featuredMoviesState.collectAsState().value
     val gamesUiState = gamesViewModel.gamesUiState.collectAsState().value
 
-    LaunchedEffect(Unit) {
-        gamesViewModel.loadFeaturedMovies()
-        gamesViewModel.loadGamesContent()
-    }
-
     GamesLayout(
         featuredMovieState = featuredMovieState,
         gamesUiState = gamesUiState,
+        categories = GamesCategories.gamesCategories,
         onMovieClick = onMovieClick,
         onSerieClick = onSerieClick,
         modifier = modifier

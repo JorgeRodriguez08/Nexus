@@ -3,13 +3,15 @@ package com.example.nexus.ui.screens.movies
 object MoviesCategories {
     val moviesCategories = listOf(
         MovieCategory.UpComing,
+
         MovieCategory.NewHistory,
         MovieCategory.Thriller,
         MovieCategory.Family,
         MovieCategory.ActionAndDrama,
         MovieCategory.ActionComedy,
+
         MovieCategory.OnlyNexus,
-        MovieCategory.NowPlaying,
+
         MovieCategory.Comedy,
         MovieCategory.Action,
         MovieCategory.ActionAndThriller,
@@ -17,6 +19,9 @@ object MoviesCategories {
         MovieCategory.Terror,
         MovieCategory.SciFiAndFantasy,
         MovieCategory.Thriller2,
+
+        MovieCategory.Trending,
+
         MovieCategory.ScienceFiction,
         MovieCategory.Crime,
         MovieCategory.TvMovie,
@@ -24,14 +29,18 @@ object MoviesCategories {
         MovieCategory.DramaArgentina,
         MovieCategory.Comedy2,
         MovieCategory.Horror,
+
+        MovieCategory.NowPlaying,
+
         MovieCategory.ActionKorea,
         MovieCategory.Animation,
         MovieCategory.Drama2,
         MovieCategory.ActionAndSciFi,
         MovieCategory.TaqAction,
         MovieCategory.Romance,
-        MovieCategory.Trending,
+
         MovieCategory.Popular,
+
         MovieCategory.War,
         MovieCategory.Mystery,
         MovieCategory.Adventure,

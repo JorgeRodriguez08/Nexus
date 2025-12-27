@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.nexus.common.core.Resource
 import com.example.nexus.domain.model.Movie
 import com.example.nexus.domain.usecase.movies.MoviesUseCase
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,27 +15,18 @@ class MoviesViewModel(
     private val moviesUseCase: MoviesUseCase
 ): ViewModel() {
 
-    private val _moviesUiState = MutableStateFlow(MoviesUiState())
-    val moviesUiState: StateFlow<MoviesUiState> = _moviesUiState.asStateFlow()
-
     private val _featuredMoviesState = MutableStateFlow<MoviesState>(MoviesState.Loading)
     val featuredMoviesState: StateFlow<MoviesState> = _featuredMoviesState.asStateFlow()
 
-    val moviesCategories = MoviesCategories.moviesCategories
+    private val _moviesUiState = MutableStateFlow(MoviesUiState())
+    val moviesUiState: StateFlow<MoviesUiState> = _moviesUiState.asStateFlow()
 
-    fun loadMoviesContent() {
-        moviesCategories.forEach { category ->
-            when (category) {
-                is MovieCategory.Trending -> loadMoviesTrending(category)
-                is MovieCategory.NowPlaying -> loadMoviesNowPlaying(category, 1)
-                is MovieCategory.UpComing -> loadMoviesUpComing(category, 1)
-                is MovieCategory.Popular -> loadMoviesPopular(category, 1)
-                else -> discoverMovies(category)
-            }
-        }
+    init {
+        loadFeaturedMovies()
+        loadMoviesContent()
     }
 
-    fun loadFeaturedMovies() {
+    private fun loadFeaturedMovies() {
         viewModelScope.launch {
             moviesUseCase.getMoviesTrending.invoke().collect { resource ->
                 _featuredMoviesState.value = when (resource) {
@@ -48,8 +38,20 @@ class MoviesViewModel(
         }
     }
 
+    private fun loadMoviesContent() {
+        MoviesCategories.moviesCategories.forEach { category ->
+            when (category) {
+                is MovieCategory.Trending -> loadMoviesTrending(category)
+                is MovieCategory.NowPlaying -> loadMoviesNowPlaying(category, 1)
+                is MovieCategory.UpComing -> loadMoviesUpComing(category, 1)
+                is MovieCategory.Popular -> loadMoviesPopular(category, 1)
+                else -> discoverMovies(category)
+            }
+        }
+    }
+
     private fun loadMoviesTrending(category: MovieCategory) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             moviesUseCase.getMoviesTrending.invoke().collect { resource ->
                 updateMoviesUiState(category, resource)
             }
@@ -57,7 +59,7 @@ class MoviesViewModel(
     }
 
     private fun loadMoviesNowPlaying(category: MovieCategory, page: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             moviesUseCase.getMoviesNowPlaying.invoke(page).collect { resource ->
                 updateMoviesUiState(category, resource)
             }
@@ -65,7 +67,7 @@ class MoviesViewModel(
     }
 
     private fun loadMoviesUpComing(category: MovieCategory, page: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             moviesUseCase.getMoviesUpComing.invoke(page).collect { resource ->
                 updateMoviesUiState(category, resource)
             }
@@ -73,7 +75,7 @@ class MoviesViewModel(
     }
 
     private fun loadMoviesPopular(category: MovieCategory, page: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             moviesUseCase.getMoviesPopular.invoke(page).collect { resource ->
                 updateMoviesUiState(category, resource)
             }
@@ -82,7 +84,7 @@ class MoviesViewModel(
 
     private fun discoverMovies(category: MovieCategory) {
         val genreId = category.genreId ?: return
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             moviesUseCase.discoverMovies.invoke(genreId, category.page, category.originCountry).collect { resource ->
                 updateMoviesUiState(category, resource)
             }

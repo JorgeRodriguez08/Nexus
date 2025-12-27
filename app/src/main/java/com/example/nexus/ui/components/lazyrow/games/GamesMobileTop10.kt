@@ -1,9 +1,10 @@
-package com.example.nexus.ui.components.lazyrow
+package com.example.nexus.ui.components.lazyrow.games
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,7 +13,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -27,7 +28,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.nexus.domain.model.Movie
 import com.example.nexus.ui.theme.Dimens
@@ -42,7 +42,10 @@ fun GamesMobileTop10(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = Dimens.Padding.extraSmall)
+            .padding(
+                top = Dimens.Padding.extraSmall,
+                start = Dimens.Padding.large
+            )
     ) {
         Text(
             text = Strings.Games.gamesMobileTop10,
@@ -56,10 +59,10 @@ fun GamesMobileTop10(
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(Dimens.Padding.base)
         ) {
-            items(games) { game ->
+            itemsIndexed(games.take(10)) { index, game ->
                 GameMobileTop(
                     game = game,
-                    index = games.indexOf(game) + 1
+                    index = index + 1
                 )
             }
         }
@@ -72,33 +75,37 @@ fun GameMobileTop(
     index: Int,
     modifier: Modifier = Modifier
 ) {
-    Box(
-        modifier = Modifier.width(Dimens.Posters.regular.width)
+    Row(
+        verticalAlignment = Alignment.Top
     ) {
-        Text(
-            text = index.toString(),
+        Box(
             modifier = Modifier
-                .align(Alignment.BottomStart)
-                .offset(x = 0.dp, y = -42.dp),
-            style = TextStyle(
-                color = Color.White,
-                fontSize = FontSizes.displayLarge,
-                fontWeight = FontWeight.Bold,
-                fontFamily = FontFamily.Default,
-                drawStyle = Stroke(width = 2f)
+                .width(Dimens.Box.small.width)
+                .offset(x = Dimens.Padding.medium),
+            contentAlignment = Alignment.BottomStart
+        ) {
+            Text(
+                text = index.toString().substring(0,1),
+                modifier = Modifier.padding(),
+                style = TextStyle(
+                    color = Color.White,
+                    fontSize = FontSizes.displayLarge,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.Default,
+                    drawStyle = Stroke(width = 2f)
+                ),
+                maxLines = 1
             )
-        )
+        }
 
-        val postersSmall = Dimens.Posters.small
         Column(
-            horizontalAlignment = Alignment.Start,
-            modifier = Modifier.align(Alignment.CenterEnd)
+            modifier = modifier.width(Dimens.Posters.extraSmall.width),
+            horizontalAlignment = Alignment.Start
         ) {
             Card(
                 modifier = Modifier
-                    .width(postersSmall.width)
-                    .height(postersSmall.height)
-                ,
+                    .fillMaxWidth()
+                    .height(Dimens.Posters.extraSmall.height),
                 shape = RoundedCornerShape(Dimens.Radius.large),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.background
@@ -128,7 +135,7 @@ fun GameMobileTop(
             )
 
             Text(
-                text = game.releaseDate,
+                text = game.releaseDate.substring(0,4),
                 color = MaterialTheme.colorScheme.onSurface,
                 fontSize = FontSizes.labelMedium
             )

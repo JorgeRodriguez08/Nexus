@@ -31,7 +31,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.nexus.domain.model.MovieDetails
 import com.example.nexus.ui.theme.Dimens
@@ -45,7 +44,7 @@ fun NewsMovieCard(
 ) {
     Card(
         modifier = Modifier
-            .width(Dimens.Posters.extraLarge.width)
+            .width(Dimens.Posters.extraExtraLarge.width)
             .wrapContentHeight(),
         shape = RoundedCornerShape( Dimens.Padding.large),
         colors = CardDefaults.cardColors(
@@ -68,7 +67,7 @@ fun NewsMovieCard(
                     contentDescription = movieDetails.movie.title,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(Dimens.Posters.base.height)
+                        .height(Dimens.Posters.large.height)
                         .clip(
                             RoundedCornerShape(
                                 topStart = Dimens.Radius.large,
@@ -82,8 +81,8 @@ fun NewsMovieCard(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(top = Dimens.Padding.medium, end = Dimens.Padding.medium)
-                        .width(Dimens.Posters.extraExtraSmall.width)
-                        .height(Dimens.Posters.extraExtraSmall.height),
+                        .width(Dimens.Posters.mini.width)
+                        .height(Dimens.Posters.mini.height),
                     shape = RoundedCornerShape(Dimens.Radius.micro),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.background
@@ -117,7 +116,7 @@ fun NewsMovieCard(
                     AsyncImage(
                         model = movieDetails.image.fileUrl,
                         contentDescription = Strings.Labels.movieLogo,
-                        modifier = Modifier.height(Dimens.Posters.extraSmall.height),
+                        modifier = Modifier.height(Dimens.Posters.extraExtraSmall.height),
                         contentScale = ContentScale.Fit
                     )
                 } else {

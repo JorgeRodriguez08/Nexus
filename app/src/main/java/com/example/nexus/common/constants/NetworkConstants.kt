@@ -13,9 +13,10 @@ object NetworkConstants {
     const val RELEASE_DATE_LTE: String = "2025-11-01"
     const val FIRST_AIR_DATE_GTE: String = "2022-01-01"
     const val FIRST_AIR_DATE_LTE: String = "2025-11-28"
-    const val ORIGIN_COUNTRY_US: String = "US"
+    const val ORIGINAL_COUNTRY_US: String = "US"
     const val ORIGINAL_COUNTRY_MX: String = "MX"
     const val ORIGINAL_COUNTRY_KR: String = "KR"
     const val ORIGINAL_COUNTRY_AR: String = "AR"
     const val AND: String = "AND"
+    const val OR: String = "OR"
 }

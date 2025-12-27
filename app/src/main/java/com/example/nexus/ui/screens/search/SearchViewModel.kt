@@ -31,7 +31,7 @@ class SearchViewModel(
 
     fun loadGamesPopular(page: Int = 1) {
         viewModelScope.launch(Dispatchers.IO) {
-            moviesUseCase.discoverMovies.invoke(MoviesGenreIds.ANIMATION, page, NetworkConstants.ORIGIN_COUNTRY_US).collect { resource ->
+            moviesUseCase.discoverMovies.invoke(MoviesGenreIds.ANIMATION, page, NetworkConstants.ORIGINAL_COUNTRY_US).collect { resource ->
                 _gamesUiState.value = when (resource) {
                     is Resource.Loading -> MoviesState.Loading
                     is Resource.Success -> MoviesState.Success(resource.data)

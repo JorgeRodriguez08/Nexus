@@ -1,4 +1,4 @@
-package com.example.nexus.ui.components.lazyrow
+package com.example.nexus.ui.components.lazyrow.movies
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,12 +14,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import com.example.nexus.domain.model.Movie
-import com.example.nexus.ui.components.card.MovieCardSmall
+import com.example.nexus.ui.components.card.movie.MovieCardMedium
 import com.example.nexus.ui.theme.Dimens
 import com.example.nexus.ui.theme.FontSizes
 
 @Composable
-fun MoviesLazyRow(
+fun MoviesMediumLazyRow(
     title: String,
     movies: List<Movie>,
     onMovieClick: (Int) -> Unit,
@@ -28,7 +28,10 @@ fun MoviesLazyRow(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = Dimens.Padding.extraSmall)
+            .padding(
+                top = Dimens.Padding.extraSmall,
+                start = Dimens.Padding.large
+            )
     ) {
         Text(
             text = title,
@@ -44,7 +47,7 @@ fun MoviesLazyRow(
             horizontalArrangement = Arrangement.spacedBy(Dimens.Padding.medium)
         ) {
             items(movies) { movie ->
-                MovieCardSmall(
+                MovieCardMedium(
                     movie = movie,
                     onMovieClick = onMovieClick
                 )

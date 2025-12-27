@@ -1,4 +1,4 @@
-package com.example.nexus.ui.components.card
+package com.example.nexus.ui.components.card.serie
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,15 +22,15 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import coil.compose.AsyncImage
-import com.example.nexus.domain.model.MovieDetails
+import com.example.nexus.domain.model.SerieDetails
 import com.example.nexus.ui.components.buttons.ButtonLarge
 import com.example.nexus.ui.theme.Dimens
 import com.example.nexus.ui.theme.FontSizes
 import com.example.nexus.ui.theme.Strings
 
 @Composable
-fun MovieDetailsCard(
-    movieDetails: MovieDetails,
+fun SerieDetailsCard(
+    serieDetails: SerieDetails,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -48,8 +48,8 @@ fun MovieDetailsCard(
             shape = RectangleShape
         ) {
             AsyncImage(
-                model = movieDetails.movie.backdropUrl,
-                contentDescription = movieDetails.movie.title,
+                model = serieDetails.serie.backdropUrl,
+                contentDescription = serieDetails.serie.title,
                 modifier = Modifier.fillMaxSize(),
                 alignment = Alignment.TopCenter,
                 contentScale = ContentScale.Crop
@@ -57,7 +57,7 @@ fun MovieDetailsCard(
         }
 
         Text(
-            text = movieDetails.movie.title,
+            text = serieDetails.serie.title,
             color = MaterialTheme.colorScheme.onSurface,
             fontSize = FontSizes.titleLarge,
             fontWeight = FontWeight.ExtraBold
@@ -69,7 +69,7 @@ fun MovieDetailsCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = movieDetails.movie.releaseDate.substring(0, 4),
+                text = serieDetails.serie.firstAirDate.substring(0, 4),
                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                 fontSize = FontSizes.labelMedium
             )
@@ -85,7 +85,7 @@ fun MovieDetailsCard(
                 ) {
                     Text(
                         text =
-                            if (movieDetails.movie.adult)
+                            if (serieDetails.serie.adult)
                                 Strings.Badges.adults
                             else
                                 Strings.Badges.kids,
@@ -96,7 +96,7 @@ fun MovieDetailsCard(
             }
 
             Text(
-                text = "${movieDetails.movie.runtime / 60} h ${movieDetails.movie.runtime % 60} min",
+                text = "${120 / 60} h ${120 % 60} min",
                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                 fontSize = FontSizes.labelMedium
             )
@@ -117,7 +117,7 @@ fun MovieDetailsCard(
         Spacer(modifier = Modifier.height(Dimens.Padding.medium))
 
         Text(
-            text = movieDetails.movie.overview,
+            text = serieDetails.serie.overview,
             color = MaterialTheme.colorScheme.onSurface,
             fontSize = FontSizes.bodySmall,
             lineHeight = FontSizes.bodyMedium,
@@ -125,14 +125,14 @@ fun MovieDetailsCard(
         )
 
         Text(
-            text = Strings.Labels.cast + movieDetails.cast.joinToString(", ") { it.name },
+            text = Strings.Labels.cast + serieDetails.cast.joinToString(", ") { it.name },
             color = MaterialTheme.colorScheme.onSurface,
             fontSize = FontSizes.labelMedium,
             lineHeight = FontSizes.bodyMedium,
             maxLines = 2
         )
 
-        val director = movieDetails.crew.find { it.job == Strings.Labels.director }?.name
+        val director = serieDetails.crew.find { it.job == Strings.Labels.director }?.name
             ?: Strings.Labels.unknown
 
         Text(

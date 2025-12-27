@@ -121,8 +121,7 @@ fun AppNavHost(
                 HomeScreen(
                     homeViewModel = homeViewModel,
                     onMovieClick = { id -> navController.navigate(Destinations.MovieDetail.create(id)) },
-                    onSerieClick = { id -> navController.navigate(Destinations.SerieDetail.create(id)) },
-                    modifier = modifier.padding(top = Dimens.Padding.medium)
+                    onSerieClick = { id -> navController.navigate(Destinations.SerieDetail.create(id)) }
                 )
             }
 

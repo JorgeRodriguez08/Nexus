@@ -17,7 +17,7 @@ val viewModelModule = module {
     viewModel { SeriesViewModel(seriesUseCase = get()) }
     viewModel { HomeViewModel(moviesUseCase = get(), seriesUseCase = get()) }
     viewModel { GamesViewModel(moviesUseCase = get(), seriesUseCase = get()) }
-    viewModel { NewsAndPopularViewModel(moviesUseCase = get()) }
+    viewModel { NewsAndPopularViewModel(moviesUseCase = get(), seriesUseCase = get()) }
     viewModel { MovieDetailsViewModel(moviesUseCase = get()) }
     viewModel { SearchViewModel(moviesUseCase = get()) }
 }

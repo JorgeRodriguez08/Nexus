@@ -1,4 +1,4 @@
-package com.example.nexus.ui.components.lazyrow
+package com.example.nexus.ui.components.lazyrow.games
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -35,7 +35,10 @@ fun GamesMobileRecommended(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = Dimens.Padding.extraSmall)
+            .padding(
+                top = Dimens.Padding.extraSmall,
+                start = Dimens.Padding.large
+            )
     ) {
         Text(
             text = Strings.Games.gamesMobileRecommended,
@@ -63,15 +66,14 @@ fun GameMobile(
     game: Movie,
     modifier: Modifier = Modifier
 ) {
-    val postersSmall = Dimens.Posters.small
     Column(
-        modifier = modifier.width(postersSmall.width),
+        modifier = modifier.width(Dimens.Posters.extraSmall.width),
         horizontalAlignment = Alignment.Start
     ) {
         Card(
             modifier = Modifier
-                .height(postersSmall.height)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .height(Dimens.Posters.extraSmall.height),
             shape = RoundedCornerShape(Dimens.Radius.large),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.background
@@ -101,7 +103,7 @@ fun GameMobile(
         )
 
         Text(
-            text = game.releaseDate,
+            text = game.releaseDate.substring(0,4),
             color = MaterialTheme.colorScheme.onSurface,
             fontSize = FontSizes.labelMedium
         )

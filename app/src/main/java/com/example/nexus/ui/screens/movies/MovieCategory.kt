@@ -8,7 +8,7 @@ sealed class MovieCategory(
     val title: String,
     val genreId: String? = null,
     val page: Int = 1,
-    val originCountry: String = NetworkConstants.ORIGIN_COUNTRY_US
+    val originCountry: String = NetworkConstants.ORIGINAL_COUNTRY_US
 ) {
     object UpComing : MovieCategory(
         title = Strings.movieCategory.upcoming
@@ -24,11 +24,6 @@ sealed class MovieCategory(
         title = Strings.movieCategory.newHistory,
         genreId = MoviesGenreIds.ACTION,
         page = 1
-    )
-
-    object Family : MovieCategory(
-        title = Strings.movieCategory.family,
-        genreId = MoviesGenreIds.FAMILY
     )
 
     object ActionAndDrama : MovieCategory(
@@ -127,7 +122,7 @@ sealed class MovieCategory(
     object Comedy2 : MovieCategory(
         title = Strings.movieCategory.comedy2,
         genreId = MoviesGenreIds.COMEDY,
-        page = 3
+        page = 1
     )
 
     object Horror : MovieCategory(
@@ -141,11 +136,6 @@ sealed class MovieCategory(
         genreId = MoviesGenreIds.ACTION + NetworkConstants.AND + MoviesGenreIds.DRAMA,
         page = 1,
         originCountry = NetworkConstants.ORIGINAL_COUNTRY_KR
-    )
-
-    object Animation : MovieCategory(
-        title = Strings.movieCategory.animation,
-        genreId = MoviesGenreIds.ANIMATION
     )
 
     object Drama2 : MovieCategory(
@@ -201,5 +191,22 @@ sealed class MovieCategory(
     object Western : MovieCategory(
         title = Strings.movieCategory.western,
         genreId = MoviesGenreIds.WESTERN
+    )
+
+    object Mexican : MovieCategory(
+        title = Strings.movieCategory.mexican,
+        genreId = MoviesGenreIds.ACTION + NetworkConstants.OR + MoviesGenreIds.DRAMA,
+        page = 1,
+        originCountry = NetworkConstants.ORIGINAL_COUNTRY_MX
+    )
+
+    object Family : MovieCategory(
+        title = Strings.movieCategory.family,
+        genreId = MoviesGenreIds.FAMILY
+    )
+
+    object Animation : MovieCategory(
+        title = Strings.movieCategory.animation,
+        genreId = MoviesGenreIds.ANIMATION
     )
 }

@@ -37,14 +37,10 @@ fun FilterBar(
         modifier = modifier
             .fillMaxWidth()
             .padding(
-                horizontal = Dimens.Padding.extraExtraLarge,
-                vertical = Dimens.Padding.small
+                start = Dimens.Padding.extraExtraLarge
             ),
         horizontalArrangement = Arrangement.spacedBy(Dimens.Padding.large)
     ) {
-        val filterLarge = Dimens.Filters.large
-        val filterMedium = Dimens.Filters.medium
-
         visibleFilters.forEach { filter ->
             FilterChip(
                 selected = filter == selectedFilter,
@@ -57,7 +53,7 @@ fun FilterBar(
                         Text(
                             text = filter,
                             color = MaterialTheme.colorScheme.onSurface,
-                            fontSize = FontSizes.labelMedium,
+                            fontSize = FontSizes.labelBase,
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -65,12 +61,12 @@ fun FilterBar(
                 modifier =
                     if (filter == filters[2]) {
                         Modifier
-                            .width(filterLarge.width)
-                            .height(filterLarge.height)
+                            .width(Dimens.Filters.large.width)
+                            .height(Dimens.Filters.large.height)
                     } else {
                         Modifier
-                            .width(filterMedium.width)
-                            .height(filterMedium.height)
+                            .width(Dimens.Filters.medium.width)
+                            .height(Dimens.Filters.medium.height)
                     },
                 colors = FilterChipDefaults.filterChipColors(
                     containerColor = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = Dimens.Alpha.pressed),

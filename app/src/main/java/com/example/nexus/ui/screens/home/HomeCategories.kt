@@ -5,36 +5,72 @@ import com.example.nexus.ui.screens.series.SerieCategory
 
 object HomeCategories {
     val homeCategories = listOf(
-        MovieCategory.War,
+        MovieCategory.UpComing,
+
+        MovieCategory.ActionKorea,
+        SerieCategory.RomanticInter,
+        SerieCategory.Comedy,
+
         SerieCategory.Trending,
-        SerieCategory.News,
-        SerieCategory.Crime,
+
+        SerieCategory.DramaUs,
+        SerieCategory.DramaAndThriller,
+        SerieCategory.Police,
+        MovieCategory.TvMovie,
+
+        MovieCategory.OnlyNexus,
+
+        SerieCategory.Animation,
+        MovieCategory.Comedy2,
+        MovieCategory.Horror,
+        MovieCategory.Adventure,
+
         SerieCategory.AiringToday,
+
+        SerieCategory.ActionAdventure,
+        MovieCategory.Drama,
+        MovieCategory.TaqAction,
+        MovieCategory.Mexican,
+
+        MovieCategory.NowPlaying,
+
+        MovieCategory.ActionAndThriller,
+        SerieCategory.Thriller,
+        MovieCategory.War,
+        SerieCategory.News,
+
         SerieCategory.OnTheAir,
+
+        SerieCategory.Crime,
         MovieCategory.Mystery,
         SerieCategory.Romantic,
         SerieCategory.RomanticAsiatic,
-        MovieCategory.Popular,
-        MovieCategory.ActionAndThriller,
-        SerieCategory.ActionAdventure,
-        MovieCategory.TaqAction,
+
+        MovieCategory.Trending,
+
         SerieCategory.Crime,
-        MovieCategory.Adventure,
         MovieCategory.Comedy,
         SerieCategory.RomanticKorea,
-        MovieCategory.Horror,
-        MovieCategory.NowPlaying,
         MovieCategory.Crime,
+
+        SerieCategory.OnlyNexus,
+
         MovieCategory.Thriller,
         SerieCategory.War,
-        MovieCategory.UpComing,
+        SerieCategory.Drama,
         SerieCategory.Family,
+
+        MovieCategory.Popular,
+
         MovieCategory.ScienceFiction,
         MovieCategory.Fantasy,
-        SerieCategory.Comedy,
         SerieCategory.Telenovela,
-        MovieCategory.Trending,
-        MovieCategory.Drama,
         SerieCategory.Mystery,
+
+        SerieCategory.Popular,
+
+        SerieCategory.SciFiFantasy,
+        SerieCategory.ThrillerAndMystery,
+        SerieCategory.DramaKorea
     )
 }
