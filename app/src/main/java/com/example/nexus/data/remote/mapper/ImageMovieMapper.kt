@@ -8,6 +8,8 @@ fun ImageMovieDto.toDomainImageMovie(): ImageMovie {
     var fileUrl = ""
     if (filePath != null && filePath.isNotEmpty()) {
         fileUrl = BuildConfig.TMDB_IMAGE_BASE_URL + filePath
+    } else {
+        fileUrl
     }
 
     return ImageMovie(

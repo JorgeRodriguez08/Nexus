@@ -1,7 +1,14 @@
 package com.example.nexus.domain.model
 
 data class SerieDetails(
-    val serie: Serie,
-    val cast: List<Actor>,
-    val crew: List<Producer>
+    val id: Int,
+    val title: String,
+    val overview: String,
+    val adult: Boolean,
+    val posterUrl: String,
+    val backdropUrl: String,
+    val voteAverage: Double,
+    val firstAirDate: String,
+    val episodeRuntime: List<Int>,
+    val seasons: List<Season>,
 )

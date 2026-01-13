@@ -8,5 +8,6 @@ data class Serie(
     val posterUrl: String,
     val backdropUrl: String,
     val voteAverage: Double,
-    val firstAirDate: String
+    val firstAirDate: String,
+    val episodeRuntime: List<Int>
 )

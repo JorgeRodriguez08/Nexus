@@ -88,7 +88,7 @@ fun HomeLayout(
                         null, is MoviesState.Loading -> {  }
                         is MoviesState.Success -> {
                             when (category) {
-                                MovieCategory.UpComing -> {
+                                MovieCategory.Upcoming -> {
                                     MoviesMediumLazyRow(
                                         title = category.title,
                                         movies = moviesState.results,

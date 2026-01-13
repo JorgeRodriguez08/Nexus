@@ -53,13 +53,13 @@ fun ButtonLarge(
                 Icon(
                     imageVector = Icons.Filled.PlayArrow,
                     contentDescription = label,
-                    modifier = Modifier.size(Dimens.Icons.small)
+                    modifier = Modifier.size(Dimens.Icons.extraSmall)
                 )
             } else if (label == Strings.Labels.download) {
                 Icon(
                     painter = painterResource(R.drawable.download_icon),
                     contentDescription = Strings.Icons.downloadIcon,
-                    modifier = Modifier.size(Dimens.Icons.small),
+                    modifier = Modifier.size(Dimens.Icons.extraSmall),
                     tint = MaterialTheme.colorScheme.onSurface
                 )
             }
@@ -68,7 +68,11 @@ fun ButtonLarge(
 
             Text(
                 text = label,
-                color = MaterialTheme.colorScheme.onSurface,
+                color =
+                    if (enabled)
+                        MaterialTheme.colorScheme.surface
+                    else
+                        MaterialTheme.colorScheme.onSurface,
                 fontSize = FontSizes.bodyMedium,
                 fontWeight = FontWeight.Bold
             )

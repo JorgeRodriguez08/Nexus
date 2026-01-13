@@ -2,7 +2,7 @@ package com.example.nexus.ui.screens.movies
 
 object MoviesCategories {
     val moviesCategories = listOf(
-        MovieCategory.UpComing,
+        MovieCategory.Upcoming,
 
         MovieCategory.NewHistory,
         MovieCategory.Thriller,

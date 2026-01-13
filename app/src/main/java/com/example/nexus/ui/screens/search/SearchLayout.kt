@@ -9,11 +9,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.nexus.ui.screens.movies.MoviesState
+import com.example.nexus.ui.screens.series.SeriesState
 
 @Composable
 fun SearchLayout(
     gamesState: MoviesState,
     moviesState: MoviesState,
+    seriesState: SeriesState,
+    onMovieClick: (Int) -> Unit,
+    onSerieClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 
 ) {
@@ -28,7 +32,12 @@ fun SearchLayout(
         item {
             when (gamesState) {
                 is MoviesState.Loading -> {}
-                is MoviesState.Success -> GamesSection(games = gamesState.results)
+                is MoviesState.Success -> {
+                    GamesSection(
+                        games = gamesState.results,
+                        onMovieClick = onMovieClick
+                    )
+                }
                 is MoviesState.Error -> {}
             }
         }
@@ -36,8 +45,26 @@ fun SearchLayout(
         item {
             when (moviesState) {
                 is MoviesState.Loading -> {}
-                is MoviesState.Success -> MoviesAndSeriesSection(movies = moviesState.results)
+                is MoviesState.Success -> {
+                    MoviesSection(
+                        movies = moviesState.results,
+                        onMovieClick = onMovieClick
+                    )
+                }
                 is MoviesState.Error -> {}
+            }
+        }
+
+        item {
+            when (seriesState) {
+                is SeriesState.Loading -> {}
+                is SeriesState.Success -> {
+                    SeriesSection(
+                        series = seriesState.results,
+                        onSerieClick = onSerieClick
+                    )
+                }
+                is SeriesState.Error -> {}
             }
         }
     }

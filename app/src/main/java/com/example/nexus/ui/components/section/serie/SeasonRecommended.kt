@@ -1,7 +1,6 @@
-package com.example.nexus.ui.screens.search
+package com.example.nexus.ui.components.section.serie
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,64 +20,36 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.nexus.R
-import com.example.nexus.domain.model.Movie
+import com.example.nexus.domain.model.Season
+import com.example.nexus.domain.model.Serie
 
 @Composable
-fun MoviesAndSeriesSection(
-    movies: List<Movie>,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Text(
-            text = "Serie y películas recomendadas",
-            fontWeight = FontWeight.ExtraBold,
-            fontSize = 18.sp,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-
-        Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            movies.forEach { movie ->
-                MovieAndSerieRecommended(
-                    movie = movie,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun MovieAndSerieRecommended(
-    movie: Movie,
+fun SeasonRecommended(
+    season: Season,
     modifier: Modifier
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.Companion.fillMaxWidth(),
         horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.Companion.CenterVertically
 
     ) {
         AsyncImage(
-            model = movie.backdropUrl,
+            model = season.posterUrl,
             contentDescription = "Power Card Image",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
+            contentScale = ContentScale.Companion.Crop,
+            modifier = Modifier.Companion
                 .size(width = 136.dp, height = 76.dp)
                 .clip(RoundedCornerShape(3.dp))
         )
 
         Text(
-            text = movie.title,
+            text = season.name,
             fontSize = 15.sp,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.Companion.Bold,
             maxLines = 2,
             color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier
+            modifier = Modifier.Companion
                 .weight(1f)
                 .padding(start = 10.dp)
         )
@@ -86,7 +57,7 @@ fun MovieAndSerieRecommended(
         Icon(
             painter = painterResource(R.drawable.play_circle_60dp),
             contentDescription = "Play Icons",
-            modifier = Modifier
+            modifier = Modifier.Companion
                 .size(49.dp)
                 .padding(end = 8.dp),
             tint = MaterialTheme.colorScheme.onSurface

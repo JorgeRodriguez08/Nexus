@@ -22,15 +22,14 @@ import com.example.nexus.ui.screens.movieDetails.MovieDetailsScreen
 import com.example.nexus.ui.screens.movieDetails.MovieDetailsViewModel
 import com.example.nexus.ui.screens.movies.MoviesScreen
 import com.example.nexus.ui.screens.movies.MoviesViewModel
-import com.example.nexus.ui.screens.newsPopular.NewsAndPopularScreen
-import com.example.nexus.ui.screens.newsPopular.NewsAndPopularViewModel
+import com.example.nexus.ui.screens.newsPopular.NewsScreen
+import com.example.nexus.ui.screens.newsPopular.NewsViewModel
 import com.example.nexus.ui.screens.search.SearchScreen
 import com.example.nexus.ui.screens.search.SearchViewModel
 import com.example.nexus.ui.screens.series.SeriesScreen
 import com.example.nexus.ui.screens.series.SeriesViewModel
 import com.example.nexus.ui.screens.serieDetails.SerieDetailsScreen
 import com.example.nexus.ui.screens.serieDetails.SerieDetailsViewModel
-import com.example.nexus.ui.theme.Dimens
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,8 +41,8 @@ fun AppNavHost(
     val navigationViewModel: NavigationViewModel = koinViewModel()
     val currentRoute = navigationViewModel.currentRoute.collectAsState().value
 
-    val newsAndPopularViewModel: NewsAndPopularViewModel = koinViewModel()
-    val selectedFilter = newsAndPopularViewModel.selectedFilter.collectAsState().value
+    val newsViewModel: NewsViewModel = koinViewModel()
+    val selectedFilter = newsViewModel.selectedFilter.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -60,7 +59,7 @@ fun AppNavHost(
                         navigationViewModel.onRouteChanged(filter)
                     },
                     onNewFilterSelected = { newFilter ->
-                        newsAndPopularViewModel.setFilter(newFilter)
+                        newsViewModel.setFilter(newFilter)
                     }
                 )
             }
@@ -111,7 +110,9 @@ fun AppNavHost(
                 navigationViewModel.onRouteChanged(Destinations.Search.route)
                 val searchViewModel: SearchViewModel = koinViewModel()
                 SearchScreen(
-                    searchViewModel = searchViewModel
+                    searchViewModel = searchViewModel,
+                    onMovieClick = { id -> navController.navigate(Destinations.MovieDetail.create(id)) },
+                    onSerieClick = { id -> navController.navigate(Destinations.SerieDetail.create(id)) }
                 )
             }
 
@@ -137,9 +138,11 @@ fun AppNavHost(
 
             composable(route = Destinations.NewsAndPopular.route) {
                 navigationViewModel.onRouteChanged(Destinations.NewsAndPopular.route)
-                NewsAndPopularScreen(
-                    newsAndPopularViewModel = newsAndPopularViewModel,
-                    selectedFilter = selectedFilter
+                NewsScreen(
+                    newsViewModel = newsViewModel,
+                    selectedFilter = selectedFilter,
+                    onMovieClick = { id -> navController.navigate(Destinations.MovieDetail.create(id)) },
+                    onSerieClick = { id -> navController.navigate(Destinations.SerieDetail.create(id)) }
                 )
             }
 
@@ -165,11 +168,11 @@ fun AppNavHost(
                 arguments = listOf(navArgument(Destinations.SerieDetail.ARGUMENT) { type = NavType.IntType })
             ) { backStackEntry ->
                 val serieId = backStackEntry.arguments?.getInt(Destinations.SerieDetail.ARGUMENT) ?: return@composable
-                navigationViewModel.onRouteChanged(Destinations.MovieDetail.create(serieId))
+                navigationViewModel.onRouteChanged(Destinations.SerieDetail.create(serieId))
                 val serieDetailsViewModel: SerieDetailsViewModel = koinViewModel()
                 SerieDetailsScreen(
-                    serieDetailsViewModel = serieDetailsViewModel,
-                    serieId = serieId
+                    serieId = serieId,
+                    serieDetailsViewModel = serieDetailsViewModel
                 )
             }
         }

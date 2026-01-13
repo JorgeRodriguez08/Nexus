@@ -10,11 +10,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.nexus.domain.model.Movie
 import com.example.nexus.ui.components.lazyrow.movies.MoviesLazyRow
+import com.example.nexus.ui.components.lazyrow.series.SeriesLazyRow
 import com.example.nexus.ui.screens.movies.MoviesState
+import com.example.nexus.ui.screens.series.SeriesState
 
 @Composable
 fun SearchResultsLayout(
-    searchState: MoviesState,
+    searchMovieState: MoviesState,
+    searchSerieState: SeriesState,
+    moviesState: MoviesState,
+    seriesState: SeriesState,
+    onMovieClick: (Int) -> Unit,
+    onSerieClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -24,32 +31,60 @@ fun SearchResultsLayout(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        items(2) { index ->
-
-            when (searchState) {
+        item {
+            when (searchMovieState) {
                 is MoviesState.Loading -> {}
                 is MoviesState.Success -> {
                     MoviesLazyRow(
-                        title = "Principales resultados",
-                        movies = searchState.results,
-                        onMovieClick = { }
-                ) }
+                        title = "Principales resultados de películas",
+                        movies = searchMovieState.results,
+                        onMovieClick = onMovieClick
+                    )
+                }
                 is MoviesState.Error -> {}
+            }
+
+            when (searchSerieState) {
+                is SeriesState.Loading -> {}
+                is SeriesState.Success -> {
+                    SeriesLazyRow(
+                        title = "Principales resultados de series",
+                        series = searchSerieState.results,
+                        onSerieClick = onSerieClick
+                    )
+                }
+                is SeriesState.Error -> {}
+            }
+        }
+
+        item{
+            when (moviesState) {
+                is MoviesState.Loading -> {}
+                is MoviesState.Success -> {
+                    if (!moviesState.results.isEmpty()) {
+                        MoviesLazyRow(
+                            title = "Nuestra selección de hoy para ti",
+                            movies = moviesState.results,
+                            onMovieClick = onMovieClick
+                        )
+                    }
+                }
+                is MoviesState.Error -> {}
+            }
+
+            when (seriesState) {
+                is SeriesState.Loading -> {}
+                is SeriesState.Success -> {
+                    if (!seriesState.results.isEmpty()) {
+                        SeriesLazyRow(
+                            title = "Creemos que estas te encantarán",
+                            series = seriesState.results,
+                            onSerieClick = onSerieClick
+                        )
+                    }
+                }
+                is SeriesState.Error -> {}
             }
         }
     }
-}
-
-val movies = List(10) {
-    Movie(
-        id = 1,
-        title = "Movie",
-        overview = "Overview of movie",
-        posterUrl = "",
-        backdropUrl = "",
-        voteAverage = 1.1,
-        adult = true,
-        releaseDate = "2024-01-01",
-        runtime = 1
-    )
 }

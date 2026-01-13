@@ -6,17 +6,17 @@ import com.example.nexus.ui.components.card.movie.MovieDetailsCard
 
 @Composable
 fun MovieDetailsLayout(
-    movieDetailState: MovieDetailState,
+    movieDetailsState: MovieDetailsState,
     modifier: Modifier = Modifier
 ) {
-    when (movieDetailState) {
-        is MovieDetailState.Loading -> { }
-        is MovieDetailState.Success -> {
+    when (movieDetailsState) {
+        is MovieDetailsState.Loading -> { }
+        is MovieDetailsState.Success -> {
             MovieDetailsCard(
-                movieDetails = movieDetailState.movieDetails,
+                movieDetails = movieDetailsState.movieDetails,
                 modifier = modifier
             )
         }
-        is MovieDetailState.Error -> { }
+        is MovieDetailsState.Error -> { }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.nexus.ui.screens.search
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -29,6 +30,7 @@ import com.example.nexus.domain.model.Movie
 @Composable
 fun GamesSection(
     games: List<Movie>,
+    onMovieClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -50,7 +52,8 @@ fun GamesSection(
         ) {
             items(games) { game ->
                 GameRecommended(
-                    game = game
+                    game = game,
+                    onGameClick = onMovieClick
                 )
             }
         }
@@ -61,11 +64,14 @@ fun GamesSection(
 @Composable
 fun GameRecommended(
     game: Movie,
+    onGameClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
         horizontalAlignment = Alignment.Start,
-        modifier = modifier.width(113.dp)
+        modifier = modifier
+            .width(113.dp)
+            .clickable(onClick = { onGameClick(game.id) })
     ) {
         Card(
             shape = RoundedCornerShape(13.dp),
@@ -74,10 +80,11 @@ fun GameRecommended(
             ),
             border = BorderStroke(
                 width = 1.dp,
-                color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.3f)),
+                color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.3f)
+            ),
             modifier = Modifier
                 .height(113.dp)
-                .fillMaxWidth(),
+                .fillMaxWidth()
         ) {
             AsyncImage(
                 model = game.posterUrl,

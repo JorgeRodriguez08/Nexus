@@ -1,7 +1,9 @@
 package com.example.nexus.di
 
 import com.example.nexus.domain.usecase.series.DiscoverSeriesUseCase
+import com.example.nexus.domain.usecase.series.GetSeasonDetailsUseCase
 import com.example.nexus.domain.usecase.series.GetSerieDetailsUseCase
+import com.example.nexus.domain.usecase.series.GetSerieIntegratedUseCase
 import com.example.nexus.domain.usecase.series.GetSeriesAiringTodayUseCase
 import com.example.nexus.domain.usecase.series.GetSeriesOnTheAirUseCase
 import com.example.nexus.domain.usecase.series.GetSeriesPopularUseCase
@@ -19,7 +21,9 @@ val seriesDomainModule = module {
     factory { GetSeriesTopRatedUseCase(get()) }
     factory { DiscoverSeriesUseCase(get()) }
     factory { SearchSerieUseCase(get()) }
+    factory { GetSerieIntegratedUseCase(get()) }
     factory { GetSerieDetailsUseCase(get()) }
+    factory { GetSeasonDetailsUseCase(get()) }
 
     factory {
         SeriesUseCase(
@@ -30,7 +34,9 @@ val seriesDomainModule = module {
             getSeriesTopRated = get(),
             discoverSeries = get(),
             searchSerie = get(),
-            getSerieDetails = get()
+            getSerieIntegrated = get(),
+            getSerieDetails = get(),
+            getSeasonDetails = get()
         )
     }
 }

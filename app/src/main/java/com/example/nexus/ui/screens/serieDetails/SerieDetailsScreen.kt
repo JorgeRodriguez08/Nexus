@@ -7,18 +7,23 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun SerieDetailsScreen(
-    serieDetailsViewModel: SerieDetailsViewModel,
     serieId: Int,
+    serieDetailsViewModel: SerieDetailsViewModel,
     modifier: Modifier = Modifier
 ) {
-    val seriesDetailState = serieDetailsViewModel.serieDetailState.collectAsState().value
+    val serieIntegratedState = serieDetailsViewModel.serieIntegratedState.collectAsState().value
+    val selectedSeasonNumber = serieDetailsViewModel.selectedSeasonNumber.collectAsState().value
+    val seasonDetailsState = serieDetailsViewModel.seasonDetailsState.collectAsState().value
 
     LaunchedEffect(serieId) {
-        serieDetailsViewModel.loadSerieDetails(serieId)
+        serieDetailsViewModel.loadSerieIntegrated(serieId)
     }
 
     SerieDetailsLayout(
-        serieDetailState = seriesDetailState,
+        serieIntegratedState = serieIntegratedState,
+        selectedSeasonNumber = selectedSeasonNumber,
+        seasonDetailsState = seasonDetailsState,
+        onSeasonClick = { serieDetailsViewModel.changeSeason(it) },
         modifier = modifier
     )
 }

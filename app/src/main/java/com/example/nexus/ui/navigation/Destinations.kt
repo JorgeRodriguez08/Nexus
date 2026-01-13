@@ -16,12 +16,12 @@ sealed class Destinations(
     object MyNexus : Destinations(NavRoutes.MY_NEXUS, showFilterBar = false)
     object Categories : Destinations(NavRoutes.CATEGORIES, showFilterBar = false)
     object Search : Destinations(NavRoutes.SEARCH, showBottomBar = false, showFilterBar = false, showSearchBar = true)
-    data object MovieDetail : Destinations("detail/{movieId}", showBottomBar = false, showFilterBar = false) {
-        fun create(id: Int) = "detail/$id"
+    data object MovieDetail : Destinations("movie/{movieId}", showFilterBar = false) {
+        fun create(id: Int) = "movie/$id"
         const val ARGUMENT = NavRoutes.MOVIE_ID
     }
-    data object SerieDetail: Destinations("detail/{serieId}", showFilterBar = false) {
-        fun create(id: Int) = "detail/$id"
+    data object SerieDetail: Destinations("serie/{serieId}", showFilterBar = false) {
+        fun create(id: Int) = "serie/$id"
         const val ARGUMENT = NavRoutes.SERIE_ID
     }
 

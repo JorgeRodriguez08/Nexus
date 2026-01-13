@@ -9,10 +9,11 @@ object Strings {
         const val cast = "Protagonistas: "
         const val director = "Director"
         const val direction = "Dirección: "
-        const val unknown = "Desconocido"
         const val notify = "Avisarme"
         const val release = "Estreno el "
         const val movieLogo = "Movie Logo"
+        const val unknownDirector = "Dirrección desconocida"
+        const val unknownOverview = "Película sin descripción disponible"
     }
 
     object Games {
@@ -36,14 +37,21 @@ object Strings {
         const val nexusIcon = "Nexus Icon"
         const val searchIcon = "Search Icon"
         const val notificationsIcon = "Notification Icon"
+        const val micIcon = "Microphone"
+        const val playIcon = "Play Icons"
     }
 
     object NewsFilters {
         const val upcoming = "\uD83C\uDF7F Proximamente"
-        const val popular = "\uD83D\uDD25 Lo más cool"
+        const val cool = "\uD83D\uDD25 Lo más cool"
         const val mobileGames = "\uD83C\uDFAE Juegos móviles"
         const val top10Movies = "Las 10 películas más populares"
         const val top10Series = "Las 10 series más populares"
+    }
+
+    object Search {
+        const val searchTextField = "Buscar series, películas, juegos..."
+        const val serieAndMoviesRecommended = "Serie y películas recomendadas"
     }
 
     object movieCategory {

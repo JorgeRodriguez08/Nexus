@@ -2,6 +2,8 @@ package com.example.nexus.ui.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.nexus.common.constants.MoviesGenreIds
+import com.example.nexus.common.constants.NetworkConstants
 import com.example.nexus.common.core.Resource
 import com.example.nexus.domain.model.Movie
 import com.example.nexus.domain.model.Serie
@@ -25,6 +27,11 @@ class HomeViewModel(
     private val _featuredMoviesState = MutableStateFlow<MoviesState>(MoviesState.Loading)
     val featuredMoviesState: StateFlow<MoviesState> = _featuredMoviesState.asStateFlow()
 
+    private val _gamesState = MutableStateFlow<MoviesState>(MoviesState.Loading)
+    val gamesState: StateFlow<MoviesState> = _gamesState.asStateFlow()
+
+
+
     private val _homeUiState = MutableStateFlow(HomeUiState())
     val homeUiState: StateFlow<HomeUiState> = _homeUiState.asStateFlow()
 
@@ -37,6 +44,21 @@ class HomeViewModel(
         viewModelScope.launch {
             moviesUseCase.getMoviesTrending.invoke().collect { resource ->
                 _featuredMoviesState.value = when (resource) {
+                    is Resource.Loading -> MoviesState.Loading
+                    is Resource.Success -> MoviesState.Success(resource.data)
+                    is Resource.Error -> MoviesState.Error(resource.message)
+                }
+            }
+        }
+    }
+
+    private fun loadGamesPopular(page: Int = 1) {
+        viewModelScope.launch {
+            moviesUseCase.discoverMovies.invoke(
+                genreId = MoviesGenreIds.ANIMATION,
+                page = page,
+                originCountry = NetworkConstants.ORIGINAL_COUNTRY_US).collect { resource ->
+                _gamesState.value = when (resource) {
                     is Resource.Loading -> MoviesState.Loading
                     is Resource.Success -> MoviesState.Success(resource.data)
                     is Resource.Error -> MoviesState.Error(resource.message)
@@ -58,7 +80,7 @@ class HomeViewModel(
         when (category) {
             is MovieCategory.Trending -> loadMoviesTrending(category)
             is MovieCategory.NowPlaying -> loadMoviesNowPlaying(category, 1)
-            is MovieCategory.UpComing -> loadMoviesUpComing(category, 1)
+            is MovieCategory.Upcoming -> loadMoviesUpcoming(category, 1)
             is MovieCategory.Popular -> loadMoviesPopular(category, 1)
             else -> discoverMovies(category)
         }
@@ -80,9 +102,9 @@ class HomeViewModel(
         }
     }
 
-    private fun loadMoviesUpComing(category: MovieCategory, page: Int) {
+    private fun loadMoviesUpcoming(category: MovieCategory, page: Int) {
         viewModelScope.launch {
-            moviesUseCase.getMoviesUpComing.invoke(page).collect { resource ->
+            moviesUseCase.getMoviesUpcoming.invoke(page).collect { resource ->
                 updateMoviesUiState(category, resource)
             }
         }

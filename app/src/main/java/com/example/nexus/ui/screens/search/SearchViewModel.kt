@@ -6,33 +6,50 @@ import com.example.nexus.common.core.Resource
 import com.example.nexus.common.constants.MoviesGenreIds
 import com.example.nexus.common.constants.NetworkConstants
 import com.example.nexus.domain.usecase.movies.MoviesUseCase
+import com.example.nexus.domain.usecase.series.SeriesUseCase
 import com.example.nexus.ui.screens.movies.MoviesState
-import kotlinx.coroutines.Dispatchers
+import com.example.nexus.ui.screens.series.SeriesState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
-    private val moviesUseCase: MoviesUseCase
+    private val moviesUseCase: MoviesUseCase,
+    private val seriesUseCase: SeriesUseCase
 ) : ViewModel() {
 
-    private val _value: MutableStateFlow<String> = MutableStateFlow("")
-    val value: StateFlow<String> = _value.asStateFlow()
+    private val _query: MutableStateFlow<String> = MutableStateFlow("")
+    val value: StateFlow<String> = _query.asStateFlow()
 
-    private val _searchResultsState = MutableStateFlow<MoviesState>(MoviesState.Loading)
-    val searchResultsState: StateFlow<MoviesState> = _searchResultsState.asStateFlow()
+    private val _searchMovieState = MutableStateFlow<MoviesState>(MoviesState.Loading)
+    val searchMovieState: StateFlow<MoviesState> = _searchMovieState.asStateFlow()
 
-    private val _gamesUiState = MutableStateFlow<MoviesState>(MoviesState.Loading)
-    val gamesUiState: StateFlow<MoviesState> = _gamesUiState.asStateFlow()
+    private val _searchSerieState = MutableStateFlow<SeriesState>(SeriesState.Loading)
+    val searchSerieState: StateFlow<SeriesState> = _searchSerieState.asStateFlow()
 
-    private val _moviesUiState = MutableStateFlow<MoviesState>(MoviesState.Loading)
-    val moviesUiState: StateFlow<MoviesState> = _moviesUiState.asStateFlow()
+    private val _gamesState = MutableStateFlow<MoviesState>(MoviesState.Loading)
+    val gamesState: StateFlow<MoviesState> = _gamesState.asStateFlow()
 
-    fun loadGamesPopular(page: Int = 1) {
-        viewModelScope.launch(Dispatchers.IO) {
-            moviesUseCase.discoverMovies.invoke(MoviesGenreIds.ANIMATION, page, NetworkConstants.ORIGINAL_COUNTRY_US).collect { resource ->
-                _gamesUiState.value = when (resource) {
+    private val _moviesState = MutableStateFlow<MoviesState>(MoviesState.Loading)
+    val moviesState: StateFlow<MoviesState> = _moviesState.asStateFlow()
+
+    private val _seriesState = MutableStateFlow<SeriesState>(SeriesState.Loading)
+    val seriesState: StateFlow<SeriesState> = _seriesState.asStateFlow()
+
+    init {
+        loadGamesPopular()
+        loadMoviesPopular()
+        loadSeriesPopular()
+    }
+
+    private fun loadGamesPopular(page: Int = 1) {
+        viewModelScope.launch {
+            moviesUseCase.discoverMovies.invoke(
+                genreId = MoviesGenreIds.ANIMATION,
+                page = page,
+                originCountry = NetworkConstants.ORIGINAL_COUNTRY_US).collect { resource ->
+                _gamesState.value = when (resource) {
                     is Resource.Loading -> MoviesState.Loading
                     is Resource.Success -> MoviesState.Success(resource.data)
                     is Resource.Error -> MoviesState.Error(resource.message)
@@ -41,10 +58,10 @@ class SearchViewModel(
         }
     }
 
-    fun loadMoviesPopular(page: Int = 1) {
-        viewModelScope.launch(Dispatchers.IO) {
+    private fun loadMoviesPopular(page: Int = 1) {
+        viewModelScope.launch {
             moviesUseCase.getMoviesPopular.invoke(page).collect { resource ->
-                _moviesUiState.value = when (resource) {
+                _moviesState.value = when (resource) {
                     is Resource.Loading -> MoviesState.Loading
                     is Resource.Success -> MoviesState.Success(resource.data)
                     is Resource.Error -> MoviesState.Error(resource.message)
@@ -53,20 +70,46 @@ class SearchViewModel(
         }
     }
 
-    fun onValueChange(newValue: String) {
-        _value.value = newValue
-        searchResults(newValue)
+    private fun loadSeriesPopular(page: Int = 1) {
+        viewModelScope.launch {
+            seriesUseCase.getSeriesPopular.invoke(page).collect { resource ->
+                _seriesState.value = when (resource) {
+                    is Resource.Loading -> SeriesState.Loading
+                    is Resource.Success -> SeriesState.Success(resource.data)
+                    is Resource.Error -> SeriesState.Error(resource.message)
+                }
+            }
+        }
     }
 
-    fun searchResults(query: String, page: Int = 1) {
-        viewModelScope.launch(Dispatchers.IO) {
+    fun onValueChange(newQuery: String) {
+        _query.value = newQuery
+        searchMoviesResults(newQuery)
+        searchSeriesResults(newQuery)
+    }
+
+    private fun searchMoviesResults(query: String, page: Int = 1) {
+        viewModelScope.launch {
             moviesUseCase.searchMovie.invoke(query, page).collect { resource ->
-                _searchResultsState.value = when (resource) {
+                _searchMovieState.value = when (resource) {
                     is Resource.Loading -> MoviesState.Loading
                     is Resource.Success -> MoviesState.Success(resource.data)
                     is Resource.Error -> MoviesState.Error(resource.message)
                 }
             }
+        }
+    }
+
+    private fun searchSeriesResults(query: String, page: Int = 1) {
+        viewModelScope.launch {
+            seriesUseCase.searchSerie.invoke(query, page).collect { resource ->
+                _searchSerieState.value = when (resource) {
+                    is Resource.Loading -> SeriesState.Loading
+                    is Resource.Success -> SeriesState.Success(resource.data)
+                    is Resource.Error -> SeriesState.Error(resource.message)
+                }
+            }
+
         }
     }
 }

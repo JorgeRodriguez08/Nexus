@@ -5,7 +5,7 @@ import com.example.nexus.ui.screens.series.SerieCategory
 
 object GamesCategories {
     val gamesCategories = listOf(
-        MovieCategory.UpComing,
+        MovieCategory.Upcoming,
 
         MovieCategory.ActionKorea,
         SerieCategory.RomanticInter,

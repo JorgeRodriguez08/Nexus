@@ -3,10 +3,14 @@ package com.example.nexus.data.remote.api
 import com.example.nexus.common.constants.NetworkConstants
 import com.example.nexus.data.remote.dto.CreditsResponse
 import com.example.nexus.data.remote.dto.ImagesMovieResponse
+import com.example.nexus.data.remote.dto.ImagesSeriesResponse
 import com.example.nexus.data.remote.dto.MovieDto
 import com.example.nexus.data.remote.dto.MoviesResponse
+import com.example.nexus.data.remote.dto.SeasonDetailsDto
+import com.example.nexus.data.remote.dto.SerieDetailsDto
 import com.example.nexus.data.remote.dto.SerieDto
 import com.example.nexus.data.remote.dto.SeriesResponse
+import com.example.nexus.domain.model.SerieDetails
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -40,7 +44,7 @@ interface ApiService {
     ): MoviesResponse
 
     @GET("movie/upcoming")
-    suspend fun getMoviesUpComing(
+    suspend fun getMoviesUpcoming(
         @Query("language") language: String = NetworkConstants.LANGUAGE_SPANISH,
         @Query("page") page: Int = NetworkConstants.PAGE_1,
         @Query("region") region: String = NetworkConstants.REGION_US
@@ -149,9 +153,28 @@ interface ApiService {
         @Query("language") language: String = NetworkConstants.LANGUAGE_SPANISH
     ): SerieDto
 
+    @GET("tv/{series_id}")
+    suspend fun getSerieDetails2(
+        @Path("series_id") seriesId: Int,
+        @Query("language") language: String = NetworkConstants.LANGUAGE_SPANISH
+    ): SerieDetailsDto
+
+    @GET("tv/{series_id}/images")
+    suspend fun getSerieImages(
+        @Path("series_id") seriesId: Int,
+        @Query("language") language: String = NetworkConstants.LANGUAGE_SPANISH
+    ): ImagesSeriesResponse
+
     @GET("tv/{series_id}/credits")
     suspend fun getSerieCredits(
         @Path("series_id") seriesId: Int,
         @Query("language") language: String = NetworkConstants.LANGUAGE_SPANISH
     ): CreditsResponse
+
+    @GET("tv/{series_id}/season/{season_number}")
+    suspend fun getSeasonDetails(
+        @Path("series_id") seriesId: Int,
+        @Path("season_number") seasonNumber: Int,
+        @Query("language") language: String = NetworkConstants.LANGUAGE_SPANISH
+    ): SeasonDetailsDto
 }

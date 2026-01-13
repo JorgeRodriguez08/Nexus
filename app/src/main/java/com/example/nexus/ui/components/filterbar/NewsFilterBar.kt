@@ -16,8 +16,8 @@ import com.example.nexus.ui.theme.FontSizes
 
 @Composable
 fun NewsFilterBar(
-    selectedNewFilter: NewFilterType,
-    onNewFilterSelected: (NewFilterType) -> Unit,
+    selectedNewFilter: NewsFilter,
+    onNewFilterSelected: (NewsFilter) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyRow(
@@ -29,7 +29,7 @@ fun NewsFilterBar(
         ),
         horizontalArrangement = Arrangement.spacedBy(Dimens.Padding.medium)
     ) {
-        NewFilterType.values().forEach { newFilter ->
+        NewsFilter.values().forEach { newFilter ->
             item {
                 FilterChip(
                     selected = newFilter == selectedNewFilter,

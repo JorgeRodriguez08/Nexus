@@ -8,5 +8,7 @@ data class SeriesUseCase(
     val getSeriesTopRated: GetSeriesTopRatedUseCase,
     val discoverSeries: DiscoverSeriesUseCase,
     val searchSerie: SearchSerieUseCase,
-    val getSerieDetails: GetSerieDetailsUseCase
+    val getSerieIntegrated: GetSerieIntegratedUseCase,
+    val getSerieDetails: GetSerieDetailsUseCase,
+    val getSeasonDetails: GetSeasonDetailsUseCase
 )

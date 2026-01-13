@@ -20,9 +20,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.nexus.R
+import com.example.nexus.ui.theme.Dimens
+import com.example.nexus.ui.theme.FontSizes
+import com.example.nexus.ui.theme.Strings
 
 @Composable
 fun SearchBar(
@@ -33,28 +34,28 @@ fun SearchBar(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(51.dp)
+            .height(Dimens.Box.base.height)
             .background(color = Color(0xFF202020), shape = RectangleShape)
-            .padding(horizontal = 12.dp),
+            .padding(horizontal = Dimens.Padding.large),
         contentAlignment = Alignment.CenterStart
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 painter = painterResource(R.drawable.search_icon),
-                contentDescription = "Search",
-                modifier = Modifier.size(23.dp),
+                contentDescription = Strings.Icons.searchIcon,
+                modifier = Modifier.size(Dimens.Icons.small),
                 tint = MaterialTheme.colorScheme.onSurface
             )
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(Dimens.Padding.medium))
 
             BasicTextField(
                 value = value,
                 onValueChange = onValueChange,
                 singleLine = true,
                 textStyle = LocalTextStyle.current.copy(
-                    fontSize = 16.sp,
-                    lineHeight = 18.sp,
+                    fontSize = FontSizes.bodyMedium,
+                    lineHeight = FontSizes.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 ),
                 modifier = Modifier
@@ -63,9 +64,9 @@ fun SearchBar(
             ) { innerTextField ->
                 if (value.isEmpty()) {
                     Text(
-                        text = "Buscar series, películas, juegos...",
-                        fontSize = 16.sp,
-                        color = MaterialTheme.colorScheme.onSurface
+                        text = Strings.Search.searchTextField,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontSize = FontSizes.bodyMedium
                     )
                 }
                 innerTextField()
@@ -73,8 +74,8 @@ fun SearchBar(
 
             Icon(
                 painter = painterResource(R.drawable.mic_24px),
-                contentDescription = "Send",
-                modifier = Modifier.size(23.dp),
+                contentDescription = Strings.Icons.micIcon,
+                modifier = Modifier.size(Dimens.Icons.small),
                 tint = MaterialTheme.colorScheme.onSurface
             )
         }

@@ -20,12 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.example.nexus.R
 import com.example.nexus.ui.components.filterbar.FilterBar
 import com.example.nexus.ui.navigation.Destinations
 import com.example.nexus.ui.navigation.Destinations.Companion.findDestination
-import com.example.nexus.ui.components.filterbar.NewFilterType
+import com.example.nexus.ui.components.filterbar.NewsFilter
 import com.example.nexus.ui.components.filterbar.NewsFilterBar
 import com.example.nexus.ui.theme.Dimens
 import com.example.nexus.ui.theme.FontSizes
@@ -35,13 +34,13 @@ import com.example.nexus.ui.theme.Strings
 @Composable
 fun TopBar(
     currentRoute: String,
-    selectedNewFilter: NewFilterType,
+    selectedNewFilter: NewsFilter,
     canNavigateBack: Boolean,
     onBackClick: () -> Unit,
     onDownloadClick: () -> Unit,
     onSearchClick: () -> Unit,
     onFilterSelected: (String) -> Unit,
-    onNewFilterSelected: (NewFilterType) -> Unit,
+    onNewFilterSelected: (NewsFilter) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(

@@ -1,6 +1,7 @@
 package com.example.nexus.ui.components.card.movie
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
@@ -21,6 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.nexus.domain.model.MovieDetails
 import com.example.nexus.ui.components.buttons.ButtonLarge
@@ -60,7 +63,9 @@ fun MovieDetailsCard(
             text = movieDetails.movie.title,
             color = MaterialTheme.colorScheme.onSurface,
             fontSize = FontSizes.titleLarge,
-            fontWeight = FontWeight.ExtraBold
+            fontWeight = FontWeight.Black,
+            lineHeight = FontSizes.titleLarge,
+            maxLines = 2
         )
 
         Row(
@@ -76,12 +81,13 @@ fun MovieDetailsCard(
 
             Card(
                 modifier = Modifier
-                    .height(Dimens.Icons.small)
-                    .wrapContentWidth(),
+                    .width(Dimens.Box.extraSmall.width)
+                    .height(Dimens.Box.extraSmall.height),
                 shape = RectangleShape
             ) {
-                Column(
-                    verticalArrangement = Arrangement.Center
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text =
@@ -90,7 +96,8 @@ fun MovieDetailsCard(
                             else
                                 Strings.Badges.kids,
                         color = MaterialTheme.colorScheme.onSecondaryContainer,
-                        fontSize = FontSizes.labelMedium
+                        fontSize = FontSizes.labelMedium,
+                        fontWeight = FontWeight.ExtraBold
                     )
                 }
             }
@@ -117,11 +124,16 @@ fun MovieDetailsCard(
         Spacer(modifier = Modifier.height(Dimens.Padding.medium))
 
         Text(
-            text = movieDetails.movie.overview,
+            text =
+                if (movieDetails.movie.overview.isNotEmpty())
+                    movieDetails.movie.overview
+                else
+                    "${movieDetails.movie.title}. ${movieDetails.movie.releaseDate}",
             color = MaterialTheme.colorScheme.onSurface,
             fontSize = FontSizes.bodySmall,
             lineHeight = FontSizes.bodyMedium,
-            maxLines = 4
+            maxLines = 4,
+            overflow = TextOverflow.Ellipsis
         )
 
         Text(
@@ -129,11 +141,12 @@ fun MovieDetailsCard(
             color = MaterialTheme.colorScheme.onSurface,
             fontSize = FontSizes.labelMedium,
             lineHeight = FontSizes.bodyMedium,
-            maxLines = 2
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis
         )
 
         val director = movieDetails.crew.find { it.job == Strings.Labels.director }?.name
-            ?: Strings.Labels.unknown
+            ?: Strings.Labels.unknownDirector
 
         Text(
             text = Strings.Labels.direction + director,

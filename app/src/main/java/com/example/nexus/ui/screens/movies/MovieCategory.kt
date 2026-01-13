@@ -10,7 +10,7 @@ sealed class MovieCategory(
     val page: Int = 1,
     val originCountry: String = NetworkConstants.ORIGINAL_COUNTRY_US
 ) {
-    object UpComing : MovieCategory(
+    object Upcoming : MovieCategory(
         title = Strings.movieCategory.upcoming
     )
 

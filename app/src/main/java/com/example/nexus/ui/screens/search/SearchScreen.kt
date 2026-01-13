@@ -1,29 +1,23 @@
 package com.example.nexus.ui.screens.search
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import kotlinx.coroutines.delay
 
 @Composable
 fun SearchScreen(
     searchViewModel: SearchViewModel,
+    onMovieClick: (Int) -> Unit,
+    onSerieClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val value = searchViewModel.value.collectAsState().value
-    val searchState = searchViewModel.searchResultsState.collectAsState().value
-    val gamesState = searchViewModel.gamesUiState.collectAsState().value
-    val moviesState = searchViewModel.moviesUiState.collectAsState().value
-
-    LaunchedEffect(Unit) {
-        if (value.isEmpty()) {
-            searchViewModel.loadGamesPopular()
-            searchViewModel.loadMoviesPopular()
-        }
-    }
+    val searchMovieState = searchViewModel.searchMovieState.collectAsState().value
+    val searchSerieState = searchViewModel.searchSerieState.collectAsState().value
+    val gamesState = searchViewModel.gamesState.collectAsState().value
+    val moviesState = searchViewModel.moviesState.collectAsState().value
+    val seriesState = searchViewModel.seriesState.collectAsState().value
 
     Column() {
         SearchBar(
@@ -36,12 +30,19 @@ fun SearchScreen(
             SearchLayout(
                 gamesState = gamesState,
                 moviesState = moviesState,
+                seriesState = seriesState,
+                onMovieClick = onMovieClick,
+                onSerieClick = onSerieClick,
                 modifier = modifier
             )
         } else {
             SearchResultsLayout(
-                searchState = searchState,
-                modifier = modifier
+                searchMovieState = searchMovieState,
+                searchSerieState = searchSerieState,
+                moviesState = moviesState,
+                seriesState = seriesState,
+                onMovieClick = onMovieClick,
+                onSerieClick = onSerieClick,
             )
         }
     }

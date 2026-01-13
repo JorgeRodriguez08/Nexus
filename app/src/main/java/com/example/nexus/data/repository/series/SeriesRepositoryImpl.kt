@@ -5,10 +5,15 @@ import com.example.nexus.common.core.Resource
 import com.example.nexus.common.utils.safeApiCall
 import com.example.nexus.data.remote.api.ApiService
 import com.example.nexus.data.remote.mapper.toDomainActor
+import com.example.nexus.data.remote.mapper.toDomainImageSerie
 import com.example.nexus.data.remote.mapper.toDomainProducer
+import com.example.nexus.data.remote.mapper.toDomainSeasonDetails
 import com.example.nexus.data.remote.mapper.toDomainSerie
+import com.example.nexus.data.remote.mapper.toDomainSerieDetails
+import com.example.nexus.domain.model.SeasonDetails
 import com.example.nexus.domain.model.Serie
 import com.example.nexus.domain.model.SerieDetails
+import com.example.nexus.domain.model.SerieIntegrated
 import com.example.nexus.domain.repository.series.SeriesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -57,23 +62,56 @@ class SeriesRepositoryImpl(private val apiService: ApiService) : SeriesRepositor
             apiService.searchSeries(query = query, page = page).results.map { it.toDomainSerie() }
         }.flowOn(Dispatchers.IO)
 
+    override fun getSerieIntegrated(serieId: Int): Flow<Resource<SerieIntegrated>> =
+        flow {
+            emit(Resource.Loading)
+            try {
+                val serieResponse = apiService.getSerieDetails2(serieId)
+                val imagesSerieResponse = apiService.getSerieImages(serieId)
+                val creditsResponse = apiService.getSerieCredits(serieId)
+
+                val serieDetails = serieResponse.toDomainSerieDetails()
+                val logo = imagesSerieResponse.logos.firstOrNull()?.toDomainImageSerie()
+                val cast = creditsResponse.cast.map { it.toDomainActor() }
+                val crew = creditsResponse.crew.map { it.toDomainProducer() }
+
+                val serieIntegrated = SerieIntegrated(
+                    serieDetails = serieDetails,
+                    logo = logo,
+                    cast = cast,
+                    crew = crew
+                )
+                emit(Resource.Success(serieIntegrated))
+            } catch (e: HttpException) {
+                emit(Resource.Error(e.localizedMessage ?: ErrorMessages.HTTP))
+            } catch (e: IOException) {
+                emit(Resource.Error(e.localizedMessage ?: ErrorMessages.NETWORK))
+            } catch (e: Exception) {
+                emit(Resource.Error(e.localizedMessage ?: ErrorMessages.UNKNOWN))
+            }
+        }.flowOn(Dispatchers.IO)
+
     override fun getSerieDetails(seriesId: Int): Flow<Resource<SerieDetails>> =
         flow {
             emit(Resource.Loading)
             try {
-                val serieResponse = apiService.getSerieDetails(seriesId)
-                val creditsResponse = apiService.getSerieCredits(seriesId)
-
-                val serie = serieResponse.toDomainSerie()
-                val cast = creditsResponse.cast.map { it.toDomainActor() }
-                val crew = creditsResponse.crew.map { it.toDomainProducer() }
-
-                val serieDetails = SerieDetails(
-                    serie = serie,
-                    cast = cast,
-                    crew = crew
-                )
+                val serieDetails: SerieDetails = apiService.getSerieDetails2(seriesId).toDomainSerieDetails()
                 emit(Resource.Success(serieDetails))
+            } catch (e: HttpException) {
+                emit(Resource.Error(e.localizedMessage ?: ErrorMessages.HTTP))
+            } catch (e: IOException) {
+                emit(Resource.Error(e.localizedMessage ?: ErrorMessages.NETWORK))
+            } catch (e: Exception) {
+                emit(Resource.Error(e.localizedMessage ?: ErrorMessages.UNKNOWN))
+            }
+        }.flowOn(Dispatchers.IO)
+
+    override fun getSeasonDetails(serieId: Int, seasonNumber: Int): Flow<Resource<SeasonDetails>> =
+        flow {
+            emit(Resource.Loading)
+            try {
+                val seasonDetails: SeasonDetails = apiService.getSeasonDetails(serieId, seasonNumber).toDomainSeasonDetails()
+                emit(Resource.Success(seasonDetails))
             } catch (e: HttpException) {
                 emit(Resource.Error(e.localizedMessage ?: ErrorMessages.HTTP))
             } catch (e: IOException) {

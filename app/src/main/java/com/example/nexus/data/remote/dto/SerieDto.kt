@@ -18,5 +18,7 @@ data class SerieDto(
     @SerializedName("vote_average")
     val voteAverage: Double?,
     @SerializedName("first_air_date")
-    val firstAirDate: String?
+    val firstAirDate: String?,
+    @SerializedName("episode_run_time")
+    val episodeRuntime: List<Int>?
 )

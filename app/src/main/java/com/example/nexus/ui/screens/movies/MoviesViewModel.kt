@@ -43,7 +43,7 @@ class MoviesViewModel(
             when (category) {
                 is MovieCategory.Trending -> loadMoviesTrending(category)
                 is MovieCategory.NowPlaying -> loadMoviesNowPlaying(category, 1)
-                is MovieCategory.UpComing -> loadMoviesUpComing(category, 1)
+                is MovieCategory.Upcoming -> loadMoviesUpcoming(category, 1)
                 is MovieCategory.Popular -> loadMoviesPopular(category, 1)
                 else -> discoverMovies(category)
             }
@@ -66,9 +66,9 @@ class MoviesViewModel(
         }
     }
 
-    private fun loadMoviesUpComing(category: MovieCategory, page: Int) {
+    private fun loadMoviesUpcoming(category: MovieCategory, page: Int) {
         viewModelScope.launch {
-            moviesUseCase.getMoviesUpComing.invoke(page).collect { resource ->
+            moviesUseCase.getMoviesUpcoming.invoke(page).collect { resource ->
                 updateMoviesUiState(category, resource)
             }
         }

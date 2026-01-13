@@ -1,6 +1,7 @@
 package com.example.nexus.ui.screens.newsPopular
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,7 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import coil.compose.AsyncImage
 import com.example.nexus.domain.model.MovieDetails
 import com.example.nexus.ui.theme.Dimens
@@ -40,12 +41,14 @@ import com.example.nexus.ui.theme.Strings
 @Composable
 fun NewsMovieCard(
     movieDetails: MovieDetails,
+    onMovieClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
         modifier = Modifier
             .width(Dimens.Posters.extraExtraLarge.width)
-            .wrapContentHeight(),
+            .wrapContentHeight()
+            .clickable(onClick = { onMovieClick(movieDetails.movie.id) }),
         shape = RoundedCornerShape( Dimens.Padding.large),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background
@@ -57,7 +60,7 @@ fun NewsMovieCard(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(bottom = Dimens.Padding.extraLarge),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -81,28 +84,30 @@ fun NewsMovieCard(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(top = Dimens.Padding.medium, end = Dimens.Padding.medium)
-                        .width(Dimens.Posters.mini.width)
-                        .height(Dimens.Posters.mini.height),
+                        .width(Dimens.Box.extraSmall.width)
+                        .height(Dimens.Box.extraSmall.height),
                     shape = RoundedCornerShape(Dimens.Radius.micro),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.background
                     )
-                ) {}
-
-                Text(
-                    text =
-                        if (movieDetails.movie.adult)
-                            Strings.Badges.adults
-                        else
-                            Strings.Badges.kids,
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(top = Dimens.Padding.extraSmall, end = Dimens.Padding.large),
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = FontSizes.labelMedium,
-                    fontWeight = FontWeight.ExtraBold,
-                    maxLines = 1
-                )
+                ) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text =
+                                if (movieDetails.movie.adult)
+                                    Strings.Badges.adults
+                                else
+                                    Strings.Badges.kids,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
+                            fontSize = FontSizes.labelMedium,
+                            fontWeight = FontWeight.ExtraBold,
+                            maxLines = 1
+                        )
+                    }
+                }
             }
 
             Column(
@@ -112,21 +117,12 @@ fun NewsMovieCard(
                 verticalArrangement = Arrangement.spacedBy(Dimens.Padding.medium),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (movieDetails.image.fileUrl.isNotEmpty()) {
+                if (!movieDetails.logo?.fileUrl.isNullOrEmpty()) {
                     AsyncImage(
-                        model = movieDetails.image.fileUrl,
+                        model = movieDetails.logo.fileUrl,
                         contentDescription = Strings.Labels.movieLogo,
                         modifier = Modifier.height(Dimens.Posters.extraExtraSmall.height),
                         contentScale = ContentScale.Fit
-                    )
-                } else {
-                    Text(
-                        text = movieDetails.movie.title,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        fontSize = FontSizes.titleSmall,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center,
-                        maxLines = 2
                     )
                 }
             }
@@ -151,7 +147,8 @@ fun NewsMovieCard(
                     fontSize = FontSizes.labelMedium,
                     fontWeight = FontWeight.Normal,
                     lineHeight = FontSizes.bodyMedium,
-                    maxLines = 5
+                    maxLines = 5,
+                    overflow = TextOverflow.Ellipsis
                 )
 
                 Spacer(modifier = Modifier.height(Dimens.Padding.medium))

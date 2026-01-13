@@ -14,6 +14,8 @@ fun SerieDto.toDomainSerie(): Serie {
         backdropUrl = BuildConfig.TMDB_IMAGE_BASE_URL + backdropPath
     }
 
+    val defaultRuntime = listOf(60)
+
     return Serie(
         id = id,
         title = title.orEmpty(),
@@ -22,6 +24,7 @@ fun SerieDto.toDomainSerie(): Serie {
         posterUrl = posterUrl,
         backdropUrl = backdropUrl,
         voteAverage = voteAverage ?: 0.0,
-        firstAirDate = firstAirDate.orEmpty()
+        firstAirDate = firstAirDate.orEmpty(),
+        episodeRuntime = episodeRuntime ?: defaultRuntime
     )
 }

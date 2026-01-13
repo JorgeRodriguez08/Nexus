@@ -5,7 +5,7 @@ import com.example.nexus.domain.model.Movie
 import com.example.nexus.domain.repository.movies.MoviesRepository
 import kotlinx.coroutines.flow.Flow
 
-class GetMoviesUpComingUseCase(private val repository: MoviesRepository) {
+class GetMoviesUpcomingUseCase(private val repository: MoviesRepository) {
     operator fun invoke(page: Int): Flow<Resource<List<Movie>>> =
-        repository.getMoviesUpComing(page)
+        repository.getMoviesUpcoming(page)
 }

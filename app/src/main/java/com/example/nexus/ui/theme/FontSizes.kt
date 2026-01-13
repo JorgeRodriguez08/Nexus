@@ -13,6 +13,7 @@ object FontSizes {
     val titleRegular = 22.sp
     val titleMedium = 24.sp
     val titleLarge = 32.sp
+    val titleExtraLarge = 40.sp
     val displayLarge = 100.sp
     val displayExtraLarge = 110.sp
     val displayHuge = 125.sp

@@ -11,15 +11,14 @@ fun MovieDetailsScreen(
     movieId: Int,
     modifier: Modifier = Modifier
 ) {
-    movieDetailsViewModel.loadMovieDetails(movieId)
-    val movieDetailsState = movieDetailsViewModel.movieDetailState.collectAsState().value
+    val movieDetailsState = movieDetailsViewModel.movieDetailsState.collectAsState().value
 
     LaunchedEffect(movieId) {
         movieDetailsViewModel.loadMovieDetails(movieId)
     }
 
     MovieDetailsLayout(
-        movieDetailState = movieDetailsState,
+        movieDetailsState = movieDetailsState,
         modifier = modifier
     )
 }

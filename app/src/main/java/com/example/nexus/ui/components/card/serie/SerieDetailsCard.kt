@@ -1,6 +1,7 @@
 package com.example.nexus.ui.components.card.serie
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
@@ -21,23 +22,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.nexus.domain.model.SerieDetails
+import com.example.nexus.domain.model.SerieIntegrated
+import com.example.nexus.ui.components.buttons.ButtonDropDown
 import com.example.nexus.ui.components.buttons.ButtonLarge
+import com.example.nexus.ui.screens.serieDetails.SeasonDetailsState
 import com.example.nexus.ui.theme.Dimens
 import com.example.nexus.ui.theme.FontSizes
 import com.example.nexus.ui.theme.Strings
 
 @Composable
 fun SerieDetailsCard(
-    serieDetails: SerieDetails,
+    serieIntegrated: SerieIntegrated,
+    selectedSeasonNumber: Int,
+    onSeasonClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = Dimens.Padding.base)
-            .verticalScroll(rememberScrollState()),
+            .padding(horizontal = Dimens.Padding.base),
         verticalArrangement = Arrangement.spacedBy(Dimens.Padding.extraSmall),
         horizontalAlignment = Alignment.Start
     ) {
@@ -48,8 +54,8 @@ fun SerieDetailsCard(
             shape = RectangleShape
         ) {
             AsyncImage(
-                model = serieDetails.serie.backdropUrl,
-                contentDescription = serieDetails.serie.title,
+                model = serieIntegrated.serieDetails.backdropUrl,
+                contentDescription = serieIntegrated.serieDetails.title,
                 modifier = Modifier.fillMaxSize(),
                 alignment = Alignment.TopCenter,
                 contentScale = ContentScale.Crop
@@ -57,10 +63,12 @@ fun SerieDetailsCard(
         }
 
         Text(
-            text = serieDetails.serie.title,
+            text = serieIntegrated.serieDetails.title,
             color = MaterialTheme.colorScheme.onSurface,
             fontSize = FontSizes.titleLarge,
-            fontWeight = FontWeight.ExtraBold
+            fontWeight = FontWeight.Black,
+            lineHeight = FontSizes.titleLarge,
+            maxLines = 2
         )
 
         Row(
@@ -69,34 +77,40 @@ fun SerieDetailsCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = serieDetails.serie.firstAirDate.substring(0, 4),
+                text = serieIntegrated.serieDetails.firstAirDate.substring(0, 4),
                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                 fontSize = FontSizes.labelMedium
             )
 
             Card(
                 modifier = Modifier
-                    .height(Dimens.Icons.small)
-                    .wrapContentWidth(),
+                    .width(Dimens.Box.extraSmall.width)
+                    .height(Dimens.Box.extraSmall.height),
                 shape = RectangleShape
             ) {
-                Column(
-                    verticalArrangement = Arrangement.Center
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text =
-                            if (serieDetails.serie.adult)
+                            if (serieIntegrated.serieDetails.adult)
                                 Strings.Badges.adults
                             else
                                 Strings.Badges.kids,
                         color = MaterialTheme.colorScheme.onSecondaryContainer,
-                        fontSize = FontSizes.labelMedium
+                        fontSize = FontSizes.labelMedium,
+                        fontWeight = FontWeight.ExtraBold
                     )
                 }
             }
 
             Text(
-                text = "${120 / 60} h ${120 % 60} min",
+                text =
+                    if (!serieIntegrated.serieDetails.episodeRuntime.isEmpty())
+                        "${serieIntegrated.serieDetails.episodeRuntime.first() / 60} h ${serieIntegrated.serieDetails.episodeRuntime.first() % 60} min"
+                    else
+                        "${60 / 60} h ${60 % 60} min",
                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                 fontSize = FontSizes.labelMedium
             )
@@ -117,29 +131,43 @@ fun SerieDetailsCard(
         Spacer(modifier = Modifier.height(Dimens.Padding.medium))
 
         Text(
-            text = serieDetails.serie.overview,
+            text =
+                if (serieIntegrated.serieDetails.overview.isNotEmpty())
+                    serieIntegrated.serieDetails.overview
+                else
+                    "${serieIntegrated.serieDetails.title}. ${serieIntegrated.serieDetails.firstAirDate}",
             color = MaterialTheme.colorScheme.onSurface,
             fontSize = FontSizes.bodySmall,
             lineHeight = FontSizes.bodyMedium,
-            maxLines = 4
+            maxLines = 4,
+            overflow = TextOverflow.Ellipsis
         )
 
         Text(
-            text = Strings.Labels.cast + serieDetails.cast.joinToString(", ") { it.name },
+            text = Strings.Labels.cast + serieIntegrated.cast.joinToString(", ") { it.name },
             color = MaterialTheme.colorScheme.onSurface,
             fontSize = FontSizes.labelMedium,
             lineHeight = FontSizes.bodyMedium,
-            maxLines = 2
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis
         )
 
-        val director = serieDetails.crew.find { it.job == Strings.Labels.director }?.name
-            ?: Strings.Labels.unknown
+        val director = serieIntegrated.crew.find { it.job == Strings.Labels.director }?.name
+            ?: Strings.Labels.unknownDirector
 
         Text(
             text = Strings.Labels.direction + director,
             color = MaterialTheme.colorScheme.onSurface,
             fontSize = FontSizes.labelMedium,
             maxLines = 1
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        ButtonDropDown(
+            seasons = serieIntegrated.serieDetails.seasons,
+            selectedSeasonNumber = selectedSeasonNumber,
+            onSeasonClick = onSeasonClick,
         )
     }
 }
