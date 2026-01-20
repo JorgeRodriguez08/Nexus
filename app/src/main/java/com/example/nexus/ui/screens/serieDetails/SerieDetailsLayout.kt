@@ -11,6 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.nexus.ui.components.buttons.ButtonDropDown
 import com.example.nexus.ui.components.card.serie.SerieDetailsCard
+import com.example.nexus.ui.shimmer.card.serie.SerieDetailsCardShimmer
+import com.example.nexus.ui.shimmer.lazyrow.series.EpisodeDetailsRowShimmer
+import com.example.nexus.ui.theme.Dimens
 
 @Composable
 fun SerieDetailsLayout(
@@ -21,12 +24,16 @@ fun SerieDetailsLayout(
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
-        modifier = Modifier.padding(bottom = 8.dp),
+        modifier = Modifier.padding(
+            bottom = Dimens.Padding.sectionExtraLarge
+        ),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         item {
             when (serieIntegratedState) {
-                is SerieIntegratedState.Loading -> { }
+                is SerieIntegratedState.Loading -> {
+                    SerieDetailsCardShimmer()
+                }
                 is SerieIntegratedState.Success -> {
                     SerieDetailsCard(
                         serieIntegrated = serieIntegratedState.serieIntegrated,
@@ -35,13 +42,19 @@ fun SerieDetailsLayout(
                         modifier = modifier
                     )
                 }
-                is SerieIntegratedState.Error -> { }
+                is SerieIntegratedState.Error -> {
+                    SerieDetailsCardShimmer()
+                }
             }
         }
 
         item {
             when (seasonDetailsState) {
-                is SeasonDetailsState.Loading -> {}
+                is SeasonDetailsState.Loading -> {
+                    List(20) { it }.forEach { it ->
+                        EpisodeDetailsRowShimmer()
+                    }
+                }
                 is SeasonDetailsState.Success -> {
                     seasonDetailsState.seasonDetails.episodes.forEach { episode ->
                         EpisodeDetailsRow(
@@ -49,7 +62,11 @@ fun SerieDetailsLayout(
                         )
                     }
                 }
-                is SeasonDetailsState.Error -> {}
+                is SeasonDetailsState.Error -> {
+                    List(20) { it }.forEach { it ->
+                        EpisodeDetailsRowShimmer()
+                    }
+                }
             }
         }
     }

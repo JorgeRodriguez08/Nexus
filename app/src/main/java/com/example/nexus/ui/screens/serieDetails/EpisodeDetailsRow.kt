@@ -19,9 +19,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import com.example.nexus.R
 import com.example.nexus.domain.model.Episode
+import com.example.nexus.ui.shimmer.ShimmerDarkBox
 import com.example.nexus.ui.theme.FontSizes
 
 @Composable
@@ -31,7 +32,7 @@ fun EpisodeDetailsRow(
 ) {
     Column(
         modifier = Modifier
-            .padding(start = 10.dp, bottom = 34.dp)
+            .padding(start = 10.dp, bottom = 34.dp, end = 10.dp)
     ) {
         Row(
             modifier = Modifier
@@ -41,13 +42,20 @@ fun EpisodeDetailsRow(
             verticalAlignment = Alignment.CenterVertically
 
         ) {
-            AsyncImage(
+            SubcomposeAsyncImage(
                 model = episode.stillUrl,
                 contentDescription = episode.name,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(width = 136.dp, height = 76.dp)
-                    .clip(RoundedCornerShape(3.dp))
+                    .clip(RoundedCornerShape(3.dp)),
+                loading = {
+                    ShimmerDarkBox(
+                        width = 136.dp,
+                        height = 76.dp,
+                        cornerRadius = 3.dp
+                    )
+                }
             )
 
             Column(
@@ -92,8 +100,9 @@ fun EpisodeDetailsRow(
             fontSize = FontSizes.labelMedium,
             fontWeight = FontWeight.Normal,
             lineHeight = FontSizes.bodyMedium,
-            maxLines = 4,
-            overflow = TextOverflow.Ellipsis
+            maxLines = 3,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }

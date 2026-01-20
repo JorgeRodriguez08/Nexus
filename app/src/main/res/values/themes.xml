@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Tema real de la app -->
+    <style name="Theme.Nexus" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Acá van tus colores si querés -->
+    </style>
 
-    <style name="Theme.Nexus" parent="android:Theme.Material.Light.NoActionBar" />
+    <!-- Splash nativo -->
+    <style name="Theme.Nexus.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/black</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_empty</item>
+        <!-- Duración del zoom -->
+        <item name="windowSplashScreenAnimationDuration">0</item>
+        <item name="postSplashScreenTheme">@style/Theme.Nexus</item>
+    </style>
 </resources>

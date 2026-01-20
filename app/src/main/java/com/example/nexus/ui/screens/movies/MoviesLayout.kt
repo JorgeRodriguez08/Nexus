@@ -13,6 +13,11 @@ import com.example.nexus.ui.components.lazyrow.movies.MoviesLazyRow
 import com.example.nexus.ui.components.lazyrow.movies.MoviesMediumLazyRow
 import com.example.nexus.ui.components.lazyrow.movies.MoviesRegularLazyRow
 import com.example.nexus.ui.components.lazyrow.movies.MoviesTop10LazyRow
+import com.example.nexus.ui.shimmer.card.movie.MovieCardLargeShimmer
+import com.example.nexus.ui.shimmer.lazyrow.movies.MoviesLazyRowShimmer
+import com.example.nexus.ui.shimmer.lazyrow.movies.MoviesMediumLazyRowShimmer
+import com.example.nexus.ui.shimmer.lazyrow.movies.MoviesRegularLazyRowShimmer
+import com.example.nexus.ui.shimmer.lazyrow.movies.MoviesTop10LazyRowShimmer
 import com.example.nexus.ui.theme.Dimens
 
 @Composable
@@ -26,21 +31,28 @@ fun MoviesLayout(
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .padding(top = Dimens.Padding.sectionSmall),
+            .padding(
+                top = Dimens.Padding.sectionSmall,
+                bottom = Dimens.Padding.sectionExtraLarge
+            ),
         verticalArrangement = Arrangement.spacedBy(Dimens.Padding.extraExtraLarge),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
             when (featuredMovieState) {
-                is MoviesState.Loading -> {  }
+                is MoviesState.Loading -> {
+                    MovieCardLargeShimmer()
+                }
                 is MoviesState.Success -> {
-                    val featuredMovie = featuredMovieState.results.get(2)
+                    val featuredMovie = featuredMovieState.results.get(1)
                     MovieCardLarge(
                         movie = featuredMovie,
                         onMovieClick = onMovieClick
                     )
                 }
-                is MoviesState.Error -> {  }
+                is MoviesState.Error -> {
+                    MovieCardLargeShimmer()
+                }
             }
         }
 
@@ -48,31 +60,59 @@ fun MoviesLayout(
             val moviesMap = moviesUiState.moviesMap
             val moviesState = moviesMap[category]
             when (moviesState) {
-                null, is MoviesState.Loading -> {  }
+                null, is MoviesState.Loading, is MoviesState.Error -> {
+                    when (category) {
+                        is MovieCategory.Upcoming -> {
+                            MoviesMediumLazyRowShimmer(
+                                title = category.title
+                            )
+                        }
+                        is MovieCategory.OnlyNexus -> {
+                            MoviesRegularLazyRowShimmer(
+                                title = category.title
+                            )
+                        }
+                        is MovieCategory.Trending -> {
+                            MoviesTop10LazyRowShimmer(
+                                title = category.title
+                            )
+                        }
+                        is MovieCategory.NowPlaying -> {
+                            MoviesMediumLazyRowShimmer(
+                                title = category.title
+                            )
+                        }
+                        else -> {
+                            MoviesLazyRowShimmer(
+                                title = category.title
+                            )
+                        }
+                    }
+                }
                 is MoviesState.Success -> {
                     when (category) {
-                        MovieCategory.Upcoming -> {
+                        is MovieCategory.Upcoming -> {
                             MoviesMediumLazyRow(
                                 title = category.title,
                                 movies = moviesState.results,
                                 onMovieClick = onMovieClick
                             )
                         }
-                        MovieCategory.OnlyNexus -> {
+                        is MovieCategory.OnlyNexus -> {
                             MoviesRegularLazyRow(
                                 title = category.title,
                                 movies = moviesState.results,
                                 onMovieClick = onMovieClick
                             )
                         }
-                        MovieCategory.Trending -> {
+                        is MovieCategory.Trending -> {
                             MoviesTop10LazyRow(
                                 title = category.title,
                                 movies = moviesState.results,
                                 onMovieClick = onMovieClick
                             )
                         }
-                        MovieCategory.NowPlaying -> {
+                        is MovieCategory.NowPlaying -> {
                             MoviesMediumLazyRow(
                                 title = category.title,
                                 movies = moviesState.results,
@@ -88,7 +128,6 @@ fun MoviesLayout(
                         }
                     }
                 }
-                is MoviesState.Error -> {  }
             }
         }
     }

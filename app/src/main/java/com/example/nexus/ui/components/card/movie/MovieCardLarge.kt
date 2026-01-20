@@ -21,9 +21,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import com.example.nexus.domain.model.Movie
 import com.example.nexus.ui.components.buttons.ButtonMedium
+import com.example.nexus.ui.shimmer.ShimmerDarkBox
 import com.example.nexus.ui.theme.Dimens
 import com.example.nexus.ui.theme.Strings
 
@@ -43,7 +44,7 @@ fun MovieCardLarge(
         border =  BorderStroke(Dimens.Borders.hairline, MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = Dimens.Alpha.disabled)),
     ) {
         Box {
-            AsyncImage(
+            SubcomposeAsyncImage(
                 model = movie.posterUrl,
                 contentDescription = movie.title,
                 modifier = modifier
@@ -51,6 +52,13 @@ fun MovieCardLarge(
                     .background(MaterialTheme.colorScheme.surfaceContainerHigh),
                 alignment = Alignment.Center,
                 contentScale = ContentScale.Crop,
+                loading = {
+                    ShimmerDarkBox(
+                        width = Dimens.Posters.extraLarge.width,
+                        height = Dimens.Posters.extraLarge.height,
+                        cornerRadius = Dimens.Radius.large
+                    )
+                }
             )
 
             Row(

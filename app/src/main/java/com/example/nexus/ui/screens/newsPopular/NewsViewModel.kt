@@ -71,7 +71,7 @@ class NewsViewModel(
                     MoviesGenreIds.ADVENTURE + NetworkConstants.AND +
                     MoviesGenreIds.DRAMA,
                 page = page,
-                originCountry = NetworkConstants.ORIGINAL_COUNTRY_US
+                originCountry = NetworkConstants.ORIGIN_COUNTRY_US
             ).collect { resource ->
                 when (resource) {
                     is Resource.Loading -> {
@@ -94,7 +94,7 @@ class NewsViewModel(
             moviesUseCase.discoverMovies.invoke(
                 genreId = MoviesGenreIds.THRILLER,
                 page = page,
-                originCountry =NetworkConstants.ORIGINAL_COUNTRY_US
+                originCountry =NetworkConstants.ORIGIN_COUNTRY_US
             ).collect { resource ->
                 when (resource) {
                     is Resource.Loading -> {
@@ -117,7 +117,7 @@ class NewsViewModel(
             moviesUseCase.discoverMovies.invoke(
                 genreId = MoviesGenreIds.ANIMATION,
                 page = page,
-                originCountry = NetworkConstants.ORIGINAL_COUNTRY_US
+                originCountry = NetworkConstants.ORIGIN_COUNTRY_US
             ).collect { resource ->
                 when (resource) {
                     is Resource.Loading -> {
@@ -161,7 +161,7 @@ class NewsViewModel(
                     SeriesGenreIds.ACTION_ADVENTURE + NetworkConstants.AND +
                     SeriesGenreIds.DRAMA,
                 page = page,
-                originCountry = NetworkConstants.ORIGINAL_COUNTRY_US
+                originCountry = NetworkConstants.ORIGIN_COUNTRY_US
             ).collect { resource ->
                 when (resource) {
                     is Resource.Loading -> {

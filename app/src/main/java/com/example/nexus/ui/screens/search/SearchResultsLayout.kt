@@ -8,11 +8,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.nexus.domain.model.Movie
 import com.example.nexus.ui.components.lazyrow.movies.MoviesLazyRow
 import com.example.nexus.ui.components.lazyrow.series.SeriesLazyRow
 import com.example.nexus.ui.screens.movies.MoviesState
 import com.example.nexus.ui.screens.series.SeriesState
+import com.example.nexus.ui.shimmer.lazyrow.movies.MoviesLazyRowShimmer
+import com.example.nexus.ui.shimmer.lazyrow.series.SeriesLazyRowShimmer
+import com.example.nexus.ui.theme.Dimens
+import com.example.nexus.ui.theme.Strings
 
 @Composable
 fun SearchResultsLayout(
@@ -25,41 +28,67 @@ fun SearchResultsLayout(
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
-            .padding(top = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(
+                bottom = Dimens.Padding.sectionExtraLarge
+            ),
+        verticalArrangement = Arrangement.spacedBy(13.dp),
+        horizontalAlignment = Alignment.Start
     ) {
         item {
             when (searchMovieState) {
-                is MoviesState.Loading -> {}
-                is MoviesState.Success -> {
-                    MoviesLazyRow(
-                        title = "Principales resultados de películas",
-                        movies = searchMovieState.results,
-                        onMovieClick = onMovieClick
+                is MoviesState.Loading -> {
+                    MoviesLazyRowShimmer(
+                        title = Strings.Search.searchMoviesResults
                     )
                 }
-                is MoviesState.Error -> {}
+                is MoviesState.Success -> {
+                    if (!searchMovieState.results.isEmpty()) {
+                        MoviesLazyRow(
+                            title = Strings.Search.searchMoviesResults,
+                            movies = searchMovieState.results,
+                            onMovieClick = onMovieClick
+                        )
+                    }
+                }
+                is MoviesState.Error -> {
+                    MoviesLazyRowShimmer(
+                        title = Strings.Search.searchMoviesResults
+                    )
+                }
             }
 
             when (searchSerieState) {
-                is SeriesState.Loading -> {}
-                is SeriesState.Success -> {
-                    SeriesLazyRow(
-                        title = "Principales resultados de series",
-                        series = searchSerieState.results,
-                        onSerieClick = onSerieClick
+                is SeriesState.Loading -> {
+                    SeriesLazyRowShimmer(
+                        title = Strings.Search.searchSeriesResults
                     )
                 }
-                is SeriesState.Error -> {}
+                is SeriesState.Success -> {
+                    if (!searchSerieState.results.isEmpty()) {
+                        SeriesLazyRow(
+                            title = Strings.Search.searchSeriesResults,
+                            series = searchSerieState.results,
+                            onSerieClick = onSerieClick
+                        )
+                    }
+                }
+                is SeriesState.Error -> {
+                    SeriesLazyRowShimmer(
+                        title = Strings.Search.searchSeriesResults
+                    )
+                }
             }
         }
 
         item{
             when (moviesState) {
-                is MoviesState.Loading -> {}
+                is MoviesState.Loading -> {
+                    MoviesLazyRowShimmer(
+                        title = "Nuestra selección de hoy para ti"
+                    )
+                }
                 is MoviesState.Success -> {
                     if (!moviesState.results.isEmpty()) {
                         MoviesLazyRow(
@@ -69,11 +98,19 @@ fun SearchResultsLayout(
                         )
                     }
                 }
-                is MoviesState.Error -> {}
+                is MoviesState.Error -> {
+                    MoviesLazyRowShimmer(
+                        title = "Nuestra selección de hoy para ti"
+                    )
+                }
             }
 
             when (seriesState) {
-                is SeriesState.Loading -> {}
+                is SeriesState.Loading -> {
+                    SeriesLazyRowShimmer(
+                        title = "Creemos que estas te encantarán"
+                    )
+                }
                 is SeriesState.Success -> {
                     if (!seriesState.results.isEmpty()) {
                         SeriesLazyRow(
@@ -83,7 +120,11 @@ fun SearchResultsLayout(
                         )
                     }
                 }
-                is SeriesState.Error -> {}
+                is SeriesState.Error -> {
+                    SeriesLazyRowShimmer(
+                        title = "Creemos que estas te encantarán"
+                    )
+                }
             }
         }
     }

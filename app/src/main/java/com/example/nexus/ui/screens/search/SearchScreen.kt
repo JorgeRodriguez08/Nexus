@@ -43,6 +43,7 @@ fun SearchScreen(
                 seriesState = seriesState,
                 onMovieClick = onMovieClick,
                 onSerieClick = onSerieClick,
+                modifier = modifier
             )
         }
     }

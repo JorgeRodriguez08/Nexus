@@ -15,12 +15,12 @@ interface SeriesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllSeries(series: List<SeriesEntity>)
 
-    @Query("SELECT * FROM series WHERE id = :seriesId")
+    @Query("SELECT * FROM serie WHERE id = :seriesId")
     fun getSeriesById(seriesId: Int): Flow<SeriesEntity?>
 
-    @Query("SELECT * FROM series ORDER BY timestamp DESC")
+    @Query("SELECT * FROM serie ORDER BY timestamp DESC")
     fun getAllSeries(): Flow<List<SeriesEntity>>
 
-    @Query("DELETE FROM series")
+    @Query("DELETE FROM serie")
     suspend fun deleteAllSeries()
 }

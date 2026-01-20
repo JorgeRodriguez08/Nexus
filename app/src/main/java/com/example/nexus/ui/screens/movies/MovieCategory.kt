@@ -8,7 +8,7 @@ sealed class MovieCategory(
     val title: String,
     val genreId: String? = null,
     val page: Int = 1,
-    val originCountry: String = NetworkConstants.ORIGINAL_COUNTRY_US
+    val originCountry: String = NetworkConstants.ORIGIN_COUNTRY_US
 ) {
     object Upcoming : MovieCategory(
         title = Strings.movieCategory.upcoming
@@ -116,7 +116,7 @@ sealed class MovieCategory(
         title = Strings.movieCategory.dramaArgentina,
         genreId = MoviesGenreIds.DRAMA,
         page = 1,
-        originCountry = NetworkConstants.ORIGINAL_COUNTRY_AR
+        originCountry = NetworkConstants.ORIGIN_COUNTRY_AR
     )
 
     object Comedy2 : MovieCategory(
@@ -135,7 +135,7 @@ sealed class MovieCategory(
         title = Strings.movieCategory.actionKorea,
         genreId = MoviesGenreIds.ACTION + NetworkConstants.AND + MoviesGenreIds.DRAMA,
         page = 1,
-        originCountry = NetworkConstants.ORIGINAL_COUNTRY_KR
+        originCountry = NetworkConstants.ORIGIN_COUNTRY_KR
     )
 
     object Drama2 : MovieCategory(
@@ -197,7 +197,7 @@ sealed class MovieCategory(
         title = Strings.movieCategory.mexican,
         genreId = MoviesGenreIds.ACTION + NetworkConstants.OR + MoviesGenreIds.DRAMA,
         page = 1,
-        originCountry = NetworkConstants.ORIGINAL_COUNTRY_MX
+        originCountry = NetworkConstants.ORIGIN_COUNTRY_MX
     )
 
     object Family : MovieCategory(
@@ -209,4 +209,6 @@ sealed class MovieCategory(
         title = Strings.movieCategory.animation,
         genreId = MoviesGenreIds.ANIMATION
     )
+
+    // Games Category
 }

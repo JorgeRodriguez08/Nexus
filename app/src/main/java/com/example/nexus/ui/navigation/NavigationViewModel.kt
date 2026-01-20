@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class NavigationViewModel : ViewModel() {
-    private val _currentRoute = MutableStateFlow(Destinations.Home.route)
+    private val _currentRoute = MutableStateFlow(Destinations.Intro.route)
     val currentRoute: StateFlow<String> = _currentRoute.asStateFlow()
 
     fun onRouteChanged(route: String) {

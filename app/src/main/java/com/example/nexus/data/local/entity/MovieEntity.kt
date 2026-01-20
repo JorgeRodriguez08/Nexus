@@ -3,7 +3,7 @@ package com.example.nexus.data.local.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "movies")
+@Entity(tableName = "movie")
 data class MovieEntity(
     @PrimaryKey
     val id: Int,

@@ -107,5 +107,8 @@ dependencies {
     // Exo player
     implementation(libs.media3.exoplayer)
     implementation(libs.media3.ui)
-
+    // Splash Screen
+    implementation(libs.androidx.core.splashscreen)
+    // Material Design
+    implementation(libs.google.material)
 }

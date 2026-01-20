@@ -9,10 +9,9 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,7 +27,6 @@ import coil.compose.AsyncImage
 import com.example.nexus.domain.model.SerieIntegrated
 import com.example.nexus.ui.components.buttons.ButtonDropDown
 import com.example.nexus.ui.components.buttons.ButtonLarge
-import com.example.nexus.ui.screens.serieDetails.SeasonDetailsState
 import com.example.nexus.ui.theme.Dimens
 import com.example.nexus.ui.theme.FontSizes
 import com.example.nexus.ui.theme.Strings
@@ -73,13 +71,14 @@ fun SerieDetailsCard(
 
         Row(
             modifier = Modifier,
-            horizontalArrangement = Arrangement.spacedBy(Dimens.Padding.extraExtraLarge),
+            horizontalArrangement = Arrangement.spacedBy(Dimens.Padding.base),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = serieIntegrated.serieDetails.firstAirDate.substring(0, 4),
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                fontSize = FontSizes.labelMedium
+                color = MaterialTheme.colorScheme.outline,
+                fontSize = FontSizes.labelMedium,
+                fontWeight = FontWeight.ExtraBold
             )
 
             Card(
@@ -89,7 +88,9 @@ fun SerieDetailsCard(
                 shape = RectangleShape
             ) {
                 Box(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .offset(y = -3.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -98,7 +99,7 @@ fun SerieDetailsCard(
                                 Strings.Badges.adults
                             else
                                 Strings.Badges.kids,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        color = MaterialTheme.colorScheme.outline,
                         fontSize = FontSizes.labelMedium,
                         fontWeight = FontWeight.ExtraBold
                     )
@@ -107,12 +108,13 @@ fun SerieDetailsCard(
 
             Text(
                 text =
-                    if (!serieIntegrated.serieDetails.episodeRuntime.isEmpty())
-                        "${serieIntegrated.serieDetails.episodeRuntime.first() / 60} h ${serieIntegrated.serieDetails.episodeRuntime.first() % 60} min"
+                    if (serieIntegrated.serieDetails.seasons.size == 1)
+                        "${serieIntegrated.serieDetails.seasons.size} Temporada"
                     else
-                        "${60 / 60} h ${60 % 60} min",
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                fontSize = FontSizes.labelMedium
+                        "${serieIntegrated.serieDetails.seasons.size} Temporadas",
+                color = MaterialTheme.colorScheme.outline,
+                fontSize = FontSizes.labelMedium,
+                fontWeight = FontWeight.ExtraBold
             )
         }
 
@@ -132,11 +134,11 @@ fun SerieDetailsCard(
 
         Text(
             text =
-                if (serieIntegrated.serieDetails.overview.isNotEmpty())
-                    serieIntegrated.serieDetails.overview
+                if (serieIntegrated.serieDetails.overview.isEmpty())
+                    "${serieIntegrated.serieDetails.title}: ${serieIntegrated.serieDetails.firstAirDate}"
                 else
-                    "${serieIntegrated.serieDetails.title}. ${serieIntegrated.serieDetails.firstAirDate}",
-            color = MaterialTheme.colorScheme.onSurface,
+                    serieIntegrated.serieDetails.overview,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = FontSizes.bodySmall,
             lineHeight = FontSizes.bodyMedium,
             maxLines = 4,

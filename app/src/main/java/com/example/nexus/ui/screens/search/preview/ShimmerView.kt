@@ -26,14 +26,6 @@ import androidx.compose.ui.unit.dp
 
 @Preview
 @Composable
-fun ShimmerDemoCardPreview() {
-    ShimmerDemoCard(
-        modifier = Modifier
-    )
-}
-
-@Preview
-@Composable
 fun ShimmerDemoDarkPreview() {
     Row {
         repeat(4) {
@@ -52,95 +44,13 @@ fun ShimmerDemoDarkPreview() {
 }
 
 @Composable
-fun ShimmerDemoCard(
-    modifier: Modifier = Modifier,
-    cornerRadius: Dp = 8.dp,
-    shimmerWidth: Float = 200f,     // ancho de la franja brillante en px
-    animationDuration: Int = 1000   // ms
-) {
-    val shimmerColors = listOf(
-        Color.LightGray.copy(alpha = 0.6f),
-        Color.LightGray.copy(alpha = 0.3f),
-        Color.LightGray.copy(alpha = 0.6f)
-    )
-
-    // animación infinita
-    val transition = rememberInfiniteTransition()
-    val translateAnim = transition.animateFloat(
-        initialValue = -shimmerWidth,
-        targetValue = 1000f, // valor grande para que cruce todo el componente
-        animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = animationDuration, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart
-        )
-    )
-
-    val brush = Brush.linearGradient(
-        colors = shimmerColors,
-        start = Offset(translateAnim.value, 0f),
-        end = Offset(translateAnim.value + shimmerWidth, 0f)
-    )
-
-    Box(
-        modifier = modifier
-            .background(brush = brush, shape = RoundedCornerShape(cornerRadius))
-            .height(120.dp)
-            .fillMaxWidth()
-    )
-}
-
-@Composable
-fun DarkShimmerItem(
-    modifier: Modifier = Modifier,
-    cornerRadius: Dp = 10.dp,
-    shimmerWidth: Float = 250f,
-    animationDuration: Int = 1200
-) {
-    // Colores estilo Netflix / Flow: grises oscuros con un highlight suave
-    val shimmerColors = listOf(
-        Color(0xFF1C1C1E), // gris oscuro base
-        Color(0xFF2A2A2D), // highlight suave
-        Color(0xFF1C1C1E)  // gris oscuro base
-    )
-
-    // Animación infinita
-    val transition = rememberInfiniteTransition()
-    val translateAnim = transition.animateFloat(
-        initialValue = -shimmerWidth,
-        targetValue = 1000f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = animationDuration,
-                easing = LinearEasing
-            ),
-            repeatMode = RepeatMode.Restart
-        )
-    )
-
-    val brush = Brush.linearGradient(
-        colors = shimmerColors,
-        start = Offset(translateAnim.value, 0f),
-        end = Offset(translateAnim.value + shimmerWidth, 0f)
-    )
-
-    Box(
-        modifier = modifier
-            .background(
-                brush = brush,
-                shape = RoundedCornerShape(cornerRadius)
-            )
-            .height(160.dp)   // típico de card de Netflix
-            .fillMaxWidth()
-    )
-}
-
-@Composable
 fun DarkDiagonalShimmerItem(
     modifier: Modifier = Modifier,
     cornerRadius: Dp = 10.dp,
     shimmerWidth: Float = 300f,
     animationDuration: Int = 1300
 ) {
+
     // Colores oscuros estilo Netflix
     val shimmerColors = listOf(
         Color(0xFF1A1A1C), // base oscuro

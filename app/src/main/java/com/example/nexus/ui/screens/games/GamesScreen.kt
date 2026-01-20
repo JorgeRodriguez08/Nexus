@@ -13,10 +13,14 @@ fun GamesScreen(
 ) {
     val featuredMovieState = gamesViewModel.featuredMoviesState.collectAsState().value
     val gamesUiState = gamesViewModel.gamesUiState.collectAsState().value
+    val gamesState = gamesViewModel.gamesState.collectAsState().value
+    val gamesTop10State = gamesViewModel.gamesTop10State.collectAsState().value
 
     GamesLayout(
         featuredMovieState = featuredMovieState,
         gamesUiState = gamesUiState,
+        gamesState = gamesState,
+        gamesTop10State = gamesTop10State,
         categories = GamesCategories.gamesCategories,
         onMovieClick = onMovieClick,
         onSerieClick = onSerieClick,

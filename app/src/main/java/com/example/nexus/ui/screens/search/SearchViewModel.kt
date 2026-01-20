@@ -48,7 +48,7 @@ class SearchViewModel(
             moviesUseCase.discoverMovies.invoke(
                 genreId = MoviesGenreIds.ANIMATION,
                 page = page,
-                originCountry = NetworkConstants.ORIGINAL_COUNTRY_US).collect { resource ->
+                originCountry = NetworkConstants.ORIGIN_COUNTRY_US).collect { resource ->
                 _gamesState.value = when (resource) {
                     is Resource.Loading -> MoviesState.Loading
                     is Resource.Success -> MoviesState.Success(resource.data)

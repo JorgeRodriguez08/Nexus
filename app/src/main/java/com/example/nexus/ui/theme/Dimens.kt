@@ -18,6 +18,7 @@ object Dimens {
         val sectionSmall = 20.dp
         val sectionMedium = 24.dp
         val sectionLarge = 32.dp
+        val sectionExtraLarge = 36.dp
         val hero = 50.dp
     }
 
@@ -41,11 +42,12 @@ object Dimens {
     }
 
     object Alpha {
-        const val hover = 0.05f
+        const val hover = 0.10f
         const val pressed = 0.20f
         const val regular = 0.30f
         const val disabled = 0.40f
         const val medium = 0.60f
+        const val high = 0.90f
     }
 
     data class Size(

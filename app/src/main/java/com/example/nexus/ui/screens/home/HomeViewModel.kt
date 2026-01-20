@@ -30,13 +30,16 @@ class HomeViewModel(
     private val _gamesState = MutableStateFlow<MoviesState>(MoviesState.Loading)
     val gamesState: StateFlow<MoviesState> = _gamesState.asStateFlow()
 
-
+    private val _gamesTop10State = MutableStateFlow<MoviesState>(MoviesState.Loading)
+    val gamesTop10State: StateFlow<MoviesState> = _gamesTop10State.asStateFlow()
 
     private val _homeUiState = MutableStateFlow(HomeUiState())
     val homeUiState: StateFlow<HomeUiState> = _homeUiState.asStateFlow()
 
     init {
         loadFeaturedMovies()
+        loadGamesPopular()
+        loadTop10Games()
         loadHomeContent()
     }
 
@@ -57,8 +60,23 @@ class HomeViewModel(
             moviesUseCase.discoverMovies.invoke(
                 genreId = MoviesGenreIds.ANIMATION,
                 page = page,
-                originCountry = NetworkConstants.ORIGINAL_COUNTRY_US).collect { resource ->
+                originCountry = NetworkConstants.ORIGIN_COUNTRY_US).collect { resource ->
                 _gamesState.value = when (resource) {
+                    is Resource.Loading -> MoviesState.Loading
+                    is Resource.Success -> MoviesState.Success(resource.data)
+                    is Resource.Error -> MoviesState.Error(resource.message)
+                }
+            }
+        }
+    }
+
+    private fun loadTop10Games(page: Int = 2) {
+        viewModelScope.launch {
+            moviesUseCase.discoverMovies.invoke(
+                genreId = MoviesGenreIds.ANIMATION,
+                page = page,
+                originCountry = NetworkConstants.ORIGIN_COUNTRY_US).collect { resource ->
+                _gamesTop10State.value = when (resource) {
                     is Resource.Loading -> MoviesState.Loading
                     is Resource.Success -> MoviesState.Success(resource.data)
                     is Resource.Error -> MoviesState.Error(resource.message)

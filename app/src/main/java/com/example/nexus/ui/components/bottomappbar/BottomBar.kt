@@ -66,7 +66,7 @@ fun BottomBar(
                                         MaterialTheme.colorScheme.onSurface
                                     else
                                         MaterialTheme.colorScheme.onSecondaryContainer ,
-                                fontSize = FontSizes.labelSmall
+                                fontSize = FontSizes.labelBase
                             )
                         }
                     },

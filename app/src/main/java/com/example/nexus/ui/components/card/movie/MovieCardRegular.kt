@@ -8,8 +8,9 @@ import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import com.example.nexus.domain.model.Movie
+import com.example.nexus.ui.shimmer.ShimmerDarkBox
 import com.example.nexus.ui.theme.Dimens
 
 @Composable
@@ -25,10 +26,17 @@ fun MovieCardRegular(
             .clickable(onClick = { onMovieClick(movie.id) }),
         shape = RoundedCornerShape(Dimens.Radius.extraSmall)
     ) {
-        AsyncImage(
+        SubcomposeAsyncImage(
             model = movie.posterUrl,
             contentDescription = movie.title,
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
+            loading = {
+                ShimmerDarkBox(
+                    width = Dimens.Posters.regular.width,
+                    height = Dimens.Posters.regular.height,
+                    cornerRadius = Dimens.Radius.extraSmall
+                )
+            }
         )
     }
 }

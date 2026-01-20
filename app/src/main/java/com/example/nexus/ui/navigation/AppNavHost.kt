@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.nexus.ui.components.bottomappbar.BottomBar
+import com.example.nexus.ui.components.splash.IntroScreen
 import com.example.nexus.ui.components.topappbar.TopBar
 import com.example.nexus.ui.screens.categories.CategoriesScreen
 import com.example.nexus.ui.screens.games.GamesScreen
@@ -78,9 +79,20 @@ fun AppNavHost(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Destinations.Home.route,
+            startDestination = Destinations.Intro.route,
             modifier = modifier.padding(innerPadding)
         ) {
+            composable(route = Destinations.Intro.route) {
+                IntroScreen(
+                    onFinished = {
+                        navController.navigate(Destinations.Home.route) {
+                            popUpTo(Destinations.Intro.route) { inclusive = true }
+                        }
+                    }
+                )
+                navigationViewModel.onRouteChanged(Destinations.Intro.route)
+            }
+
             composable(route = Destinations.Movies.route) {
                 navigationViewModel.onRouteChanged(Destinations.Movies.route)
                 val moviesViewModel: MoviesViewModel = koinViewModel()

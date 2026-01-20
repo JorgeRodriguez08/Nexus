@@ -1,5 +1,7 @@
 package com.example.nexus.ui.screens.newsPopular
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -11,10 +13,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Notifications
@@ -32,12 +34,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import coil.compose.AsyncImage
+import androidx.compose.ui.unit.dp
+import coil.compose.SubcomposeAsyncImage
 import com.example.nexus.domain.model.MovieDetails
+import com.example.nexus.ui.shimmer.ShimmerDarkBox
 import com.example.nexus.ui.theme.Dimens
 import com.example.nexus.ui.theme.FontSizes
 import com.example.nexus.ui.theme.Strings
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NewsMovieCard(
     movieDetails: MovieDetails,
@@ -47,7 +54,7 @@ fun NewsMovieCard(
     Card(
         modifier = Modifier
             .width(Dimens.Posters.extraExtraLarge.width)
-            .wrapContentHeight()
+            .height(Dimens.Posters.extraLarge.height)
             .clickable(onClick = { onMovieClick(movieDetails.movie.id) }),
         shape = RoundedCornerShape( Dimens.Padding.large),
         colors = CardDefaults.cardColors(
@@ -65,7 +72,7 @@ fun NewsMovieCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box {
-                AsyncImage(
+                SubcomposeAsyncImage(
                     model = movieDetails.movie.backdropUrl,
                     contentDescription = movieDetails.movie.title,
                     modifier = Modifier
@@ -77,7 +84,15 @@ fun NewsMovieCard(
                                 topEnd = Dimens.Radius.large
                             )
                         ),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop,
+                    loading = {
+                        ShimmerDarkBox(
+                            width = Dimens.Posters.extraExtraLarge.width,
+                            height = Dimens.Posters.large.height,
+                            cornerRadius = Dimens.Radius.large,
+                            semiRadius = true
+                        )
+                    }
                 )
 
                 Card(
@@ -92,7 +107,9 @@ fun NewsMovieCard(
                     )
                 ) {
                     Box(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .offset(y = -3.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
@@ -118,11 +135,18 @@ fun NewsMovieCard(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 if (!movieDetails.logo?.fileUrl.isNullOrEmpty()) {
-                    AsyncImage(
+                    SubcomposeAsyncImage(
                         model = movieDetails.logo.fileUrl,
                         contentDescription = Strings.Labels.movieLogo,
                         modifier = Modifier.height(Dimens.Posters.extraExtraSmall.height),
-                        contentScale = ContentScale.Fit
+                        contentScale = ContentScale.Fit,
+                        loading = {
+                            ShimmerDarkBox(
+                                width = Dimens.Posters.large.width,
+                                height = Dimens.Posters.extraExtraSmall.height,
+                                cornerRadius = Dimens.Radius.small
+                            )
+                        }
                     )
                 }
             }
@@ -130,12 +154,17 @@ fun NewsMovieCard(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(150.dp)
                     .padding(horizontal = Dimens.Padding.base, vertical = Dimens.Padding.small),
                 verticalArrangement = Arrangement.spacedBy(Dimens.Padding.medium),
                 horizontalAlignment = Alignment.Start
             ) {
+                var date = LocalDate.parse(movieDetails.movie.releaseDate)
+                val formattedDate = date.format(
+                    DateTimeFormatter.ofPattern("dd-MM-yyyy")
+                )
                 Text(
-                    text = Strings.Labels.release + movieDetails.movie.releaseDate,
+                    text = Strings.Labels.release + formattedDate,
                     color = MaterialTheme.colorScheme.onSurface,
                     fontSize = FontSizes.bodySmall,
                     fontWeight = FontWeight.Bold
@@ -150,9 +179,13 @@ fun NewsMovieCard(
                     maxLines = 5,
                     overflow = TextOverflow.Ellipsis
                 )
+            }
 
-                Spacer(modifier = Modifier.height(Dimens.Padding.medium))
-
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = Dimens.Padding.base)
+            ) {
                 Button(
                     onClick = {},
                     modifier = Modifier

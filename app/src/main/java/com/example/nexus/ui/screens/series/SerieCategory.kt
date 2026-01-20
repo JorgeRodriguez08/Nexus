@@ -2,14 +2,13 @@ package com.example.nexus.ui.screens.series
 
 import com.example.nexus.common.constants.NetworkConstants
 import com.example.nexus.common.constants.SeriesGenreIds
-import com.example.nexus.ui.screens.newsPopular.NewsMovieLayout
 import com.example.nexus.ui.theme.Strings
 
 sealed class SerieCategory(
     val title: String,
     val genreId: String? = null,
     val page: Int = 1,
-    val originCountry: String = NetworkConstants.ORIGINAL_COUNTRY_US
+    val originCountry: String = NetworkConstants.ORIGIN_COUNTRY_US
 ) {
     object Trending : SerieCategory(
         title = Strings.serieCategory.trending
@@ -42,7 +41,7 @@ sealed class SerieCategory(
         title = Strings.serieCategory.romanticAsiatic,
         genreId = SeriesGenreIds.DRAMA,
         page = 1,
-        originCountry = NetworkConstants.ORIGINAL_COUNTRY_KR
+        originCountry = NetworkConstants.ORIGIN_COUNTRY_KR
     )
 
     object ActionAdventure : SerieCategory(
@@ -54,7 +53,7 @@ sealed class SerieCategory(
         title = Strings.serieCategory.romanticKorea,
         genreId = SeriesGenreIds.DRAMA,
         page = 2,
-        originCountry = NetworkConstants.ORIGINAL_COUNTRY_KR
+        originCountry = NetworkConstants.ORIGIN_COUNTRY_KR
     )
 
     object Family : SerieCategory(
@@ -77,35 +76,35 @@ sealed class SerieCategory(
     object Drama : SerieCategory(
         title = Strings.serieCategory.drama,
         genreId = SeriesGenreIds.DRAMA,
-        originCountry = NetworkConstants.ORIGINAL_COUNTRY_AR
+        originCountry = NetworkConstants.ORIGIN_COUNTRY_AR
     )
 
     object DramaKorea : SerieCategory(
         title = Strings.serieCategory.dramaKorea,
         genreId = SeriesGenreIds.DRAMA,
         page = 1,
-        originCountry = NetworkConstants.ORIGINAL_COUNTRY_KR
+        originCountry = NetworkConstants.ORIGIN_COUNTRY_KR
     )
 
     object DramaUs : SerieCategory(
         title = Strings.serieCategory.dramaUs,
         genreId = SeriesGenreIds.DRAMA,
         page = 1,
-        originCountry = NetworkConstants.ORIGINAL_COUNTRY_US
+        originCountry = NetworkConstants.ORIGIN_COUNTRY_US
     )
 
     object DramaAndThriller : SerieCategory(
         title = Strings.serieCategory.dramaAndThriller,
         genreId = SeriesGenreIds.DRAMA + NetworkConstants.AND + SeriesGenreIds.CRIME,
         page = 2,
-        originCountry = NetworkConstants.ORIGINAL_COUNTRY_KR
+        originCountry = NetworkConstants.ORIGIN_COUNTRY_KR
     )
 
     object Telenovela : SerieCategory(
         title = Strings.serieCategory.telenovela,
         genreId = SeriesGenreIds.DRAMA,
         page = 1,
-        originCountry = NetworkConstants.ORIGINAL_COUNTRY_MX
+        originCountry = NetworkConstants.ORIGIN_COUNTRY_MX
     )
 
     object Mystery : SerieCategory(
@@ -123,7 +122,7 @@ sealed class SerieCategory(
         title = Strings.serieCategory.seriesKr,
         genreId = SeriesGenreIds.MYSTERY,
         page = 1,
-        originCountry = NetworkConstants.ORIGINAL_COUNTRY_KR
+        originCountry = NetworkConstants.ORIGIN_COUNTRY_KR
     )
 
     object SciFiFantasy : SerieCategory(
@@ -140,7 +139,7 @@ sealed class SerieCategory(
         title = Strings.serieCategory.seriesLatam,
         genreId = SeriesGenreIds.MYSTERY,
         page = 1,
-        originCountry = NetworkConstants.ORIGINAL_COUNTRY_MX
+        originCountry = NetworkConstants.ORIGIN_COUNTRY_MX
     )
 
     object Kids : SerieCategory(
@@ -152,7 +151,7 @@ sealed class SerieCategory(
         title = Strings.serieCategory.seriesMex,
         genreId = SeriesGenreIds.DRAMA,
         page = 1,
-        originCountry = NetworkConstants.ORIGINAL_COUNTRY_MX
+        originCountry = NetworkConstants.ORIGIN_COUNTRY_MX
     )
 
     object Thriller : SerieCategory(
@@ -165,7 +164,7 @@ sealed class SerieCategory(
         title = Strings.serieCategory.thrillerAndMystery,
         genreId = SeriesGenreIds.CRIME + NetworkConstants.AND + SeriesGenreIds.MYSTERY,
         page = 1,
-        originCountry = NetworkConstants.ORIGINAL_COUNTRY_US
+        originCountry = NetworkConstants.ORIGIN_COUNTRY_US
     )
 
     object Popular : SerieCategory(
@@ -176,7 +175,7 @@ sealed class SerieCategory(
         title = Strings.serieCategory.romanticInter,
         genreId = SeriesGenreIds.DRAMA,
         page = 3,
-        originCountry = NetworkConstants.ORIGINAL_COUNTRY_KR
+        originCountry = NetworkConstants.ORIGIN_COUNTRY_KR
     )
 
     object War : SerieCategory(
@@ -204,6 +203,6 @@ sealed class SerieCategory(
         title = Strings.serieCategory.police,
         genreId = SeriesGenreIds.ACTION_ADVENTURE + NetworkConstants.AND + SeriesGenreIds.DRAMA + NetworkConstants.AND + SeriesGenreIds.CRIME,
         page = 1,
-        originCountry = NetworkConstants.ORIGINAL_COUNTRY_US
+        originCountry = NetworkConstants.ORIGIN_COUNTRY_US
     )
 }

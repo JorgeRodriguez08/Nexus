@@ -39,6 +39,7 @@ object Strings {
         const val notificationsIcon = "Notification Icon"
         const val micIcon = "Microphone"
         const val playIcon = "Play Icons"
+        const val top10Icon = "Top 10 Icon"
     }
 
     object NewsFilters {
@@ -50,8 +51,10 @@ object Strings {
     }
 
     object Search {
-        const val searchTextField = "Buscar series, películas, juegos..."
+        const val searchTextField = "Buscar serie, películas, juegos..."
         const val serieAndMoviesRecommended = "Serie y películas recomendadas"
+        const val searchMoviesResults = "Principales resultados de películas"
+        const val searchSeriesResults = "Principales resultados de series"
     }
 
     object movieCategory {
@@ -95,7 +98,7 @@ object Strings {
     }
 
     object serieCategory {
-        const val trending = "Las 10 series más populares en Argentina hoy"
+        const val trending = "Las 10 serie más populares en Argentina hoy"
         const val news = "Lo nuevo en Nexus"
         const val crime = "Dramas implacables sobre crímenes"
         const val airingToday = "Para pasar el rato"
@@ -131,8 +134,38 @@ object Strings {
         const val police = "Series policiales"
     }
 
-    object gamesCategory {
+    object gamesMovieCategory {
         const val gamesMobiles = "Juegos móviles"
         const val gamesTop10 = "Los 10 juegos móviles más populares"
+        const val onlyNexus = "Solo en Nexus"
+        const val recommendedForYou = "Creemos que estos te encantarán"
+        const val newsNexus = "Lo nuevo en Nexus"
+        const val selectionToday = "Nuestra selección de hoy para ti"
+        const val animation = "Animación"
+        const val treasuresForYou = "Tesoros para ti"
+        const val hollywoodYourScreen = "De Hollywood a tu pantalla"
+        const val childrenMovies = "Películas infantiles para pasar la tarde"
+        const val dramaMovies = "Cine dramático"
+        const val moviesHollywood = "Películas para toda la familia"
+        const val womenBehindScenes = "Mujeres detrás de cámaras"
+        const val animationForFamily = "Animación para toda la familia"
+        const val comedyMovies = "Películas de Hollywood para reír"
+        const val wackyMovies = "Películas disparatadas"
+        const val killBoredom = "Para aniquilar el aburrimiento"
+    }
+
+    object gamesSerieCategory {
+        const val nextHistory = "Tu próxima historia"
+        const val excitingSerie = "Series emocionantes"
+        const val dramaSeries = "Series dramáticas"
+        const val childrensContent = "Contenido infantil"
+        const val cartoon = "Dibujos animados"
+        const val seriesComedy = "Series de comedia"
+        const val kidsNotKids = "Para ver con peques no tan peques"
+        const val seriesBasedOnBooks = "Series basadas en libros"
+        const val seriesSpanish = "Series en español"
+        const val curiousMinds = "Mentes curiosas"
+        const val actionSeries = "TV de acción"
+        const val fantasySeries = "Series de fantasía"
     }
 }

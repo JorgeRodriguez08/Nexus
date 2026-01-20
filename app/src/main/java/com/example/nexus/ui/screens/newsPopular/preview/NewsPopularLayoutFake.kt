@@ -87,7 +87,7 @@ fun NewsPopularLayoutFake(
                     FilterChip(
                         selected = false,
                         onClick = { },
-                        label = { Text("Las 10 series más populares", fontSize = 14.sp) },
+                        label = { Text("Las 10 serie más populares", fontSize = 14.sp) },
                         modifier = Modifier.height(40.dp),
                         shape = RoundedCornerShape(18.dp)
                     )

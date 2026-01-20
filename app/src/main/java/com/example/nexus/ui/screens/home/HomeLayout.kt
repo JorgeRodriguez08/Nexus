@@ -19,15 +19,28 @@ import com.example.nexus.ui.components.lazyrow.series.SeriesLazyRow
 import com.example.nexus.ui.components.lazyrow.series.SeriesMediumLazyRow
 import com.example.nexus.ui.components.lazyrow.series.SeriesRegularLazyRow
 import com.example.nexus.ui.components.lazyrow.series.SeriesTop10LazyRow
+import com.example.nexus.ui.shimmer.card.movie.MovieCardLargeShimmer
+import com.example.nexus.ui.shimmer.lazyrow.movies.MoviesLazyRowShimmer
+import com.example.nexus.ui.shimmer.lazyrow.movies.MoviesMediumLazyRowShimmer
+import com.example.nexus.ui.shimmer.lazyrow.movies.MoviesRegularLazyRowShimmer
+import com.example.nexus.ui.shimmer.lazyrow.movies.MoviesTop10LazyRowShimmer
+import com.example.nexus.ui.shimmer.lazyrow.series.SeriesLazyRowShimmer
+import com.example.nexus.ui.shimmer.lazyrow.series.SeriesMediumLazyRowShimmer
+import com.example.nexus.ui.shimmer.lazyrow.series.SeriesRegularLazyRowShimmer
+import com.example.nexus.ui.shimmer.lazyrow.series.SeriesTop10LazyRowShimmer
 import com.example.nexus.ui.screens.movies.MovieCategory
 import com.example.nexus.ui.screens.movies.MoviesState
 import com.example.nexus.ui.screens.series.SerieCategory
 import com.example.nexus.ui.screens.series.SeriesState
+import com.example.nexus.ui.shimmer.lazyrow.games.GamesMobileRecommendedShimmer
+import com.example.nexus.ui.shimmer.lazyrow.games.GamesMobileTop10Shimmer
 import com.example.nexus.ui.theme.Dimens
 
 @Composable
 fun HomeLayout(
     featuredMovieState: MoviesState,
+    gamesState: MoviesState,
+    gamesTop10State: MoviesState,
     homeUiState: HomeUiState,
     categories: List<Any>,
     onMovieClick: (Int) -> Unit,
@@ -37,13 +50,18 @@ fun HomeLayout(
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .padding(top = Dimens.Padding.sectionSmall),
+            .padding(
+                top = Dimens.Padding.sectionSmall,
+                bottom = Dimens.Padding.sectionExtraLarge
+            ),
         verticalArrangement = Arrangement.spacedBy(Dimens.Padding.extraExtraLarge),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
             when (featuredMovieState) {
-                is MoviesState.Loading -> {  }
+                is MoviesState.Loading -> {
+                    MovieCardLargeShimmer()
+                }
                 is MoviesState.Success -> {
                     val featuredMovie = featuredMovieState.results.first()
                     MovieCardLarge(
@@ -51,31 +69,43 @@ fun HomeLayout(
                         onMovieClick = onMovieClick
                     )
                 }
-                is MoviesState.Error -> {  }
+                is MoviesState.Error -> {
+                    MovieCardLargeShimmer()
+                }
             }
         }
 
         item {
-            when (featuredMovieState) {
-                is MoviesState.Loading -> {  }
+            when (gamesState) {
+                is MoviesState.Loading -> {
+                    GamesMobileRecommendedShimmer()
+                }
                 is MoviesState.Success -> {
                     GamesMobileRecommended(
-                        games = featuredMovieState.results
+                        games = gamesState.results,
+                        onMovieClick = onMovieClick
                     )
                 }
-                is MoviesState.Error -> { }
+                is MoviesState.Error -> {
+                    GamesMobileRecommendedShimmer()
+                }
             }
         }
 
         item {
-            when (featuredMovieState) {
-                is MoviesState.Loading -> {  }
+            when (gamesTop10State) {
+                is MoviesState.Loading -> {
+                    GamesMobileTop10Shimmer()
+                }
                 is MoviesState.Success -> {
                     GamesMobileTop10(
-                        games = featuredMovieState.results
+                        games = gamesTop10State.results,
+                        onMovieClick = onMovieClick
                     )
                 }
-                is MoviesState.Error -> {  }
+                is MoviesState.Error -> {
+                    GamesMobileTop10Shimmer()
+                }
             }
         }
 
@@ -85,31 +115,59 @@ fun HomeLayout(
                     val moviesMap = homeUiState.moviesMap
                     val moviesState = moviesMap[category]
                     when (moviesState) {
-                        null, is MoviesState.Loading -> {  }
+                        null, is MoviesState.Loading, is MoviesState.Error -> {
+                            when (category) {
+                                is MovieCategory.Upcoming -> {
+                                    MoviesMediumLazyRowShimmer(
+                                        title = category.title
+                                    )
+                                }
+                                is MovieCategory.OnlyNexus -> {
+                                    MoviesRegularLazyRowShimmer(
+                                        title = category.title
+                                    )
+                                }
+                                is MovieCategory.Trending -> {
+                                    MoviesTop10LazyRowShimmer(
+                                        title = category.title
+                                    )
+                                }
+                                is MovieCategory.NowPlaying -> {
+                                    MoviesMediumLazyRowShimmer(
+                                        title = category.title
+                                    )
+                                }
+                                else -> {
+                                    MoviesLazyRowShimmer(
+                                        title = category.title
+                                    )
+                                }
+                            }
+                        }
                         is MoviesState.Success -> {
                             when (category) {
-                                MovieCategory.Upcoming -> {
+                                is MovieCategory.Upcoming -> {
                                     MoviesMediumLazyRow(
                                         title = category.title,
                                         movies = moviesState.results,
                                         onMovieClick = onMovieClick
                                     )
                                 }
-                                MovieCategory.OnlyNexus -> {
+                                is MovieCategory.OnlyNexus -> {
                                     MoviesRegularLazyRow(
                                         title = category.title,
                                         movies = moviesState.results,
                                         onMovieClick = onMovieClick
                                     )
                                 }
-                                MovieCategory.Trending -> {
+                                is MovieCategory.Trending -> {
                                     MoviesTop10LazyRow(
                                         title = category.title,
                                         movies = moviesState.results,
                                         onMovieClick = onMovieClick
                                     )
                                 }
-                                MovieCategory.NowPlaying -> {
+                                is MovieCategory.NowPlaying -> {
                                     MoviesMediumLazyRow(
                                         title = category.title,
                                         movies = moviesState.results,
@@ -125,7 +183,6 @@ fun HomeLayout(
                                 }
                             }
                         }
-                        is MoviesState.Error -> {  }
                     }
                 }
 
@@ -133,31 +190,59 @@ fun HomeLayout(
                     val seriesMap = homeUiState.seriesMap
                     val seriesState = seriesMap[category]
                     when (seriesState) {
-                        null, is SeriesState.Loading -> { }
+                        null, is SeriesState.Loading, is SeriesState.Error -> {
+                            when (category) {
+                                is SerieCategory.OnTheAir -> {
+                                    SeriesMediumLazyRowShimmer(
+                                        title = category.title
+                                    )
+                                }
+                                is SerieCategory.OnlyNexus -> {
+                                    SeriesRegularLazyRowShimmer(
+                                        title = category.title
+                                    )
+                                }
+                                is SerieCategory.Trending -> {
+                                    SeriesTop10LazyRowShimmer(
+                                        title = category.title
+                                    )
+                                }
+                                is SerieCategory.AiringToday -> {
+                                    SeriesMediumLazyRowShimmer(
+                                        title = category.title
+                                    )
+                                }
+                                else -> {
+                                    SeriesLazyRowShimmer(
+                                        title = category.title
+                                    )
+                                }
+                            }
+                        }
                         is SeriesState.Success -> {
                             when (category) {
-                                SerieCategory.OnTheAir -> {
+                                is SerieCategory.OnTheAir -> {
                                     SeriesMediumLazyRow(
                                         title = category.title,
                                         series = seriesState.results,
                                         onSerieClick = onSerieClick
                                     )
                                 }
-                                SerieCategory.OnlyNexus -> {
+                                is SerieCategory.OnlyNexus -> {
                                     SeriesRegularLazyRow(
                                         title = category.title,
                                         series = seriesState.results,
                                         onSerieClick = onSerieClick
                                     )
                                 }
-                                SerieCategory.Trending -> {
+                                is SerieCategory.Trending -> {
                                     SeriesTop10LazyRow(
                                         title = category.title,
                                         series = seriesState.results,
                                         onSerieClick = onSerieClick,
                                     )
                                 }
-                                SerieCategory.AiringToday -> {
+                                is SerieCategory.AiringToday -> {
                                     SeriesMediumLazyRow(
                                         title = category.title,
                                         series = seriesState.results,
@@ -173,7 +258,6 @@ fun HomeLayout(
                                 }
                             }
                         }
-                        is SeriesState.Error -> {  }
                     }
                 }
             }

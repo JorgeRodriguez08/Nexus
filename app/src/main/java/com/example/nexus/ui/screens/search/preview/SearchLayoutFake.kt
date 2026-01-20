@@ -228,12 +228,12 @@ data class GameItem(
 )
 
 val gameList: List <GameItem> = listOf(
-    GameItem(R.drawable.liloystich, "Football Manager \n26 Mobile", "Deportes"),
-    GameItem(R.drawable.sonic, "Toca Boca Hair \nSalon 4", "Infantil"),
+    GameItem(R.drawable.avengers, "Football Manager \n26 Mobile", "Deportes"),
+    GameItem(R.drawable.avengers, "Toca Boca Hair \nSalon 4", "Infantil"),
     GameItem(R.drawable.avengers, "Blood Line: Un \njuego de Reb...", "Acción"),
     GameItem(R.drawable.squid_game, "El juego del \ncalamar", "Acción"),
-    GameItem(R.drawable.liloystich, "Football \nManager 26...", "Deportes"),
-    GameItem(R.drawable.sonic, "Toca Boca Hair \nSalon 4", "Infantil"),
+    GameItem(R.drawable.avengers, "Football \nManager 26...", "Deportes"),
+    GameItem(R.drawable.avengers, "Toca Boca Hair \nSalon 4", "Infantil"),
     GameItem(R.drawable.avengers, "Blood Line: Un \njuego de Reb...", "Acción"),
     GameItem(R.drawable.squid_game, "El juego del \ncalamar", "Acción"),
 )
@@ -245,12 +245,12 @@ data class SearchItem(
 )
 
 val searchList: List<SearchItem> = listOf(
-    SearchItem(R.drawable.el_ninja_de_berverly_hills, "Un ninja en Beverly Hills"),
+    SearchItem(R.drawable.the_walking_dead, "Un ninja en Beverly Hills"),
     SearchItem(R.drawable.the_walking_dead, "The Walking Dead"),
     SearchItem(R.drawable.squid_game_2, "El juego del calamar"),
-    SearchItem(R.drawable.spartacus, "Spartacus"),
+    SearchItem(R.drawable.the_walking_dead, "Spartacus"),
     SearchItem(R.drawable.the_elixir, "El elixir de la inmortalidad"),
-    SearchItem(R.drawable.sonic, "Sonic: La Película"),
+    SearchItem(R.drawable.the_walking_dead, "Sonic: La Película"),
     SearchItem(R.drawable.avengers, "Avengers: Endgame"),
     SearchItem(R.drawable.tron_backdrops, "Tron: Legacy"),
 )

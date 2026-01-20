@@ -12,10 +12,14 @@ fun HomeScreen(
     modifier: Modifier = Modifier
 ) {
     val featuredMovieState = homeViewModel.featuredMoviesState.collectAsState().value
+    val gamesState = homeViewModel.gamesState.collectAsState().value
+    val gamesTop10State = homeViewModel.gamesTop10State.collectAsState().value
     val homeUiState = homeViewModel.homeUiState.collectAsState().value
 
     HomeLayout(
         featuredMovieState = featuredMovieState,
+        gamesState = gamesState,
+        gamesTop10State = gamesTop10State,
         homeUiState = homeUiState,
         categories = HomeCategories.homeCategories,
         onMovieClick = onMovieClick,

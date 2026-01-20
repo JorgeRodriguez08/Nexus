@@ -18,8 +18,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import com.example.nexus.domain.model.Serie
+import com.example.nexus.ui.shimmer.ShimmerDarkBox
 import com.example.nexus.ui.theme.Dimens
 import com.example.nexus.ui.theme.FontSizes
 
@@ -62,10 +63,17 @@ fun SerieTop(
                 .clickable(onClick = { onSerieClick(serie.id) }),
             shape = RoundedCornerShape(Dimens.Radius.extraSmall)
         ) {
-            AsyncImage(
+            SubcomposeAsyncImage(
                 model = serie.posterUrl,
                 contentDescription = serie.title,
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
+                loading = {
+                    ShimmerDarkBox(
+                        width = Dimens.Posters.top.width,
+                        height = Dimens.Posters.top.height,
+                        cornerRadius = Dimens.Radius.extraSmall
+                    )
+                }
             )
         }
     }

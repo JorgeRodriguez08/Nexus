@@ -1,8 +1,11 @@
 package com.example.nexus.ui.components.filterbar
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.FilterChip
@@ -10,9 +13,14 @@ import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import com.example.nexus.R
 import com.example.nexus.ui.theme.Dimens
 import com.example.nexus.ui.theme.FontSizes
+import com.example.nexus.ui.theme.Strings
 
 @Composable
 fun NewsFilterBar(
@@ -34,7 +42,24 @@ fun NewsFilterBar(
                 FilterChip(
                     selected = newFilter == selectedNewFilter,
                     onClick = { onNewFilterSelected(newFilter) },
-                    label = { Text(text = newFilter.label, fontSize = FontSizes.bodySmall) },
+                    label = {
+                        when (newFilter) {
+                            is NewsFilter.Top10Series, NewsFilter.Top10Movies -> {
+                                Row(
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Image(
+                                        painter = painterResource(R.drawable.top10),
+                                        contentDescription = Strings.Icons.top10Icon,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Text(text = newFilter.label, fontSize = FontSizes.bodySmall)
+                                }
+                            }
+                            else -> Text(text = newFilter.label, fontSize = FontSizes.bodySmall)
+                        }
+                    },
                     modifier = Modifier.height(Dimens.Filters.small.height),
                     shape = RoundedCornerShape(Dimens.Radius.gigaLarge),
                     colors = FilterChipDefaults.filterChipColors(

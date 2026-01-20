@@ -18,8 +18,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import com.example.nexus.R
 import com.example.nexus.domain.model.Movie
+import com.example.nexus.ui.shimmer.ShimmerDarkBox
 import com.example.nexus.ui.theme.Dimens
 import com.example.nexus.ui.theme.FontSizes
 import com.example.nexus.ui.theme.Strings
@@ -38,13 +40,20 @@ fun MovieRecommended(
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        AsyncImage(
+        SubcomposeAsyncImage(
             model = movie.backdropUrl,
             contentDescription = movie.title,
             modifier = Modifier
                 .size(width = Dimens.Posters.base.width, height = Dimens.Posters.base.height)
                 .clip(RoundedCornerShape(Dimens.Radius.extraExtraSmall)),
             contentScale = ContentScale.Crop,
+            loading = {
+                ShimmerDarkBox(
+                    width = Dimens.Posters.base.width,
+                    height = Dimens.Posters.base.height,
+                    cornerRadius = Dimens.Radius.extraExtraSmall
+                )
+            }
         )
 
         Text(

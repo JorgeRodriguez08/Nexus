@@ -13,6 +13,11 @@ import com.example.nexus.ui.components.lazyrow.series.SeriesLazyRow
 import com.example.nexus.ui.components.lazyrow.series.SeriesMediumLazyRow
 import com.example.nexus.ui.components.lazyrow.series.SeriesRegularLazyRow
 import com.example.nexus.ui.components.lazyrow.series.SeriesTop10LazyRow
+import com.example.nexus.ui.shimmer.card.serie.SerieCardLargeShimmer
+import com.example.nexus.ui.shimmer.lazyrow.series.SeriesLazyRowShimmer
+import com.example.nexus.ui.shimmer.lazyrow.series.SeriesMediumLazyRowShimmer
+import com.example.nexus.ui.shimmer.lazyrow.series.SeriesRegularLazyRowShimmer
+import com.example.nexus.ui.shimmer.lazyrow.series.SeriesTop10LazyRowShimmer
 import com.example.nexus.ui.theme.Dimens
 
 @Composable
@@ -26,13 +31,18 @@ fun SeriesLayout(
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .padding(top = Dimens.Padding.sectionSmall),
+            .padding(
+                top = Dimens.Padding.sectionSmall,
+                bottom = Dimens.Padding.sectionExtraLarge
+            ),
         verticalArrangement = Arrangement.spacedBy(Dimens.Padding.extraExtraLarge),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
             when (featuredSerieState) {
-                is SeriesState.Loading -> {  }
+                is SeriesState.Loading -> {
+                    SerieCardLargeShimmer()
+                }
                 is SeriesState.Success -> {
                     val featuredSerie = featuredSerieState.results.first()
                     SerieCardLarge(
@@ -40,7 +50,9 @@ fun SeriesLayout(
                         onSerieClick = onSerieClick
                     )
                 }
-                is SeriesState.Error -> {  }
+                is SeriesState.Error -> {
+                    SerieCardLargeShimmer()
+                }
             }
         }
 
@@ -48,31 +60,60 @@ fun SeriesLayout(
             val seriesMap = seriesUiState.seriesMap
             val seriesState = seriesMap[category]
             when (seriesState) {
-                null, is SeriesState.Loading -> {  }
+                null, is SeriesState.Loading, is SeriesState.Error -> {
+                    when (category) {
+                        is SerieCategory.OnTheAir -> {
+                            SeriesMediumLazyRowShimmer(
+                                title = category.title
+                            )
+                        }
+                        is SerieCategory.OnlyNexus -> {
+                            SeriesRegularLazyRowShimmer(
+                                title = category.title
+                            )
+                        }
+                        is SerieCategory.Trending -> {
+                            SeriesTop10LazyRowShimmer(
+                                title = category.title
+                            )
+                        }
+                        is SerieCategory.AiringToday -> {
+                            SeriesMediumLazyRowShimmer(
+                                title = category.title
+                            )
+                        }
+                        else -> {
+                            SeriesLazyRowShimmer(
+                                title = category.title
+                            )
+                        }
+                    }
+                }
+
                 is SeriesState.Success -> {
                     when (category) {
-                        SerieCategory.OnTheAir -> {
+                        is SerieCategory.OnTheAir -> {
                             SeriesMediumLazyRow(
                                 title = category.title,
                                 series = seriesState.results,
                                 onSerieClick = onSerieClick
                             )
                         }
-                        SerieCategory.OnlyNexus -> {
+                        is SerieCategory.OnlyNexus -> {
                             SeriesRegularLazyRow(
                                 title = category.title,
                                 series = seriesState.results,
                                 onSerieClick = onSerieClick
                             )
                         }
-                        SerieCategory.Trending -> {
+                        is SerieCategory.Trending -> {
                             SeriesTop10LazyRow(
                                 title = category.title,
                                 series = seriesState.results,
                                 onSerieClick = onSerieClick,
                             )
                         }
-                        SerieCategory.AiringToday -> {
+                        is SerieCategory.AiringToday -> {
                             SeriesMediumLazyRow(
                                 title = category.title,
                                 series = seriesState.results,
@@ -88,7 +129,6 @@ fun SeriesLayout(
                         }
                     }
                 }
-                is SeriesState.Error -> {  }
             }
         }
     }

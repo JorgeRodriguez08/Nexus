@@ -8,15 +8,16 @@ import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import com.example.nexus.domain.model.Serie
+import com.example.nexus.ui.shimmer.ShimmerDarkBox
 import com.example.nexus.ui.theme.Dimens
 
 @Composable
 fun SerieCardSmall(
     serie: Serie,
-    modifier: Modifier = Modifier,
-    onSerieClick: (Int) -> Unit
+    onSerieClick: (Int) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier
@@ -25,10 +26,17 @@ fun SerieCardSmall(
             .clickable(onClick = { onSerieClick(serie.id) }),
         shape = RoundedCornerShape(Dimens.Radius.extraSmall)
     ) {
-        AsyncImage(
+        SubcomposeAsyncImage(
             model = serie.posterUrl,
             contentDescription = serie.title,
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
+            loading = {
+                ShimmerDarkBox(
+                    width = Dimens.Posters.small.width,
+                    height = Dimens.Posters.small.height,
+                    cornerRadius = Dimens.Radius.extraSmall
+                )
+            }
         )
     }
 }

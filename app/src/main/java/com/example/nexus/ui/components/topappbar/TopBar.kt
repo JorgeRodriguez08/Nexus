@@ -74,7 +74,7 @@ fun TopBar(
                     }
                 } else {
                     Image(
-                        painter = painterResource(R.drawable.nexus_icon),
+                        painter = painterResource(R.drawable.icons8_netflix),
                         contentDescription = Strings.Icons.nexusIcon,
                         modifier = Modifier.size(Dimens.Icons.base)
                     )

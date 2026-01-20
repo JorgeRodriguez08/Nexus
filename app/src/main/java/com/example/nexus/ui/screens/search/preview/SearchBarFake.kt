@@ -33,7 +33,7 @@ fun SearchBarFake(
         ,
         placeholder = {
             Text(
-                text = "Buscar series, películas, jue...",
+                text = "Buscar serie, películas, jue...",
                 fontSize = 16.sp,
                 textAlign = TextAlign.Start,
                 modifier = Modifier.fillMaxWidth()

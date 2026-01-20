@@ -41,7 +41,7 @@ fun ButtonMedium(
             containerColor = MaterialTheme.colorScheme.onSurface,
             contentColor = MaterialTheme.colorScheme.surface,
             disabledContentColor = MaterialTheme.colorScheme.onSurface,
-            disabledContainerColor = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = Dimens.Alpha.disabled)
+            disabledContainerColor = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = Dimens.Alpha.high)
         ),
         contentPadding = PaddingValues(horizontal = Dimens.Padding.hairline)
     ) {

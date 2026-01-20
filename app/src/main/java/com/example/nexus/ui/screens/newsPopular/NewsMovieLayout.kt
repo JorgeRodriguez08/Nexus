@@ -2,6 +2,7 @@ package com.example.nexus.ui.screens.newsPopular
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -30,21 +31,28 @@ fun NewsMovieLayout(
     }
 
     LazyColumn(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(bottom = Dimens.Padding.sectionExtraLarge)
+        ,
         verticalArrangement = Arrangement.spacedBy(Dimens.Padding.extraExtraLarge),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         items(filterMovies, key = { it.id }) { movie ->
             val movieDetailsState = moviesDetailsStates[movie.id]
             when (movieDetailsState) {
-                null, is MovieDetailsState.Loading -> {  }
+                null, is MovieDetailsState.Loading -> {
+                    NewsMovieCardShimmer()
+                }
                 is MovieDetailsState.Success -> {
                     NewsMovieCard(
                         movieDetails = movieDetailsState.movieDetails,
                         onMovieClick = onMovieClick
                     )
                 }
-                is MovieDetailsState.Error -> {  }
+                is MovieDetailsState.Error -> {
+                    NewsMovieCardShimmer()
+                }
             }
         }
     }

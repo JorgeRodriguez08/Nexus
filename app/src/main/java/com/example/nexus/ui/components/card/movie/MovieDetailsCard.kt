@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -25,8 +26,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import com.example.nexus.domain.model.MovieDetails
 import com.example.nexus.ui.components.buttons.ButtonLarge
+import com.example.nexus.ui.shimmer.ShimmerDarkBox
 import com.example.nexus.ui.theme.Dimens
 import com.example.nexus.ui.theme.FontSizes
 import com.example.nexus.ui.theme.Strings
@@ -50,12 +53,17 @@ fun MovieDetailsCard(
                 .aspectRatio(Dimens.AspectRatio.poster),
             shape = RectangleShape
         ) {
-            AsyncImage(
+            SubcomposeAsyncImage(
                 model = movieDetails.movie.backdropUrl,
                 contentDescription = movieDetails.movie.title,
                 modifier = Modifier.fillMaxSize(),
                 alignment = Alignment.TopCenter,
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
+                loading = {
+                    ShimmerDarkBox(
+                        modifier = Modifier.matchParentSize()
+                    )
+                }
             )
         }
 
@@ -70,13 +78,14 @@ fun MovieDetailsCard(
 
         Row(
             modifier = Modifier,
-            horizontalArrangement = Arrangement.spacedBy(Dimens.Padding.extraExtraLarge),
+            horizontalArrangement = Arrangement.spacedBy(Dimens.Padding.base),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = movieDetails.movie.releaseDate.substring(0, 4),
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                fontSize = FontSizes.labelMedium
+                color = MaterialTheme.colorScheme.outline,
+                fontSize = FontSizes.labelMedium,
+                fontWeight = FontWeight.ExtraBold
             )
 
             Card(
@@ -86,7 +95,9 @@ fun MovieDetailsCard(
                 shape = RectangleShape
             ) {
                 Box(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .offset(y = -3.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -95,7 +106,7 @@ fun MovieDetailsCard(
                                 Strings.Badges.adults
                             else
                                 Strings.Badges.kids,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        color = MaterialTheme.colorScheme.outline,
                         fontSize = FontSizes.labelMedium,
                         fontWeight = FontWeight.ExtraBold
                     )
@@ -104,8 +115,9 @@ fun MovieDetailsCard(
 
             Text(
                 text = "${movieDetails.movie.runtime / 60} h ${movieDetails.movie.runtime % 60} min",
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                fontSize = FontSizes.labelMedium
+                color = MaterialTheme.colorScheme.outline,
+                fontSize = FontSizes.labelMedium,
+                fontWeight = FontWeight.ExtraBold
             )
         }
 
@@ -125,11 +137,11 @@ fun MovieDetailsCard(
 
         Text(
             text =
-                if (movieDetails.movie.overview.isNotEmpty())
-                    movieDetails.movie.overview
+                if (movieDetails.movie.overview.isEmpty())
+                    "${movieDetails.movie.title}. ${movieDetails.movie.releaseDate}"
                 else
-                    "${movieDetails.movie.title}. ${movieDetails.movie.releaseDate}",
-            color = MaterialTheme.colorScheme.onSurface,
+                    movieDetails.movie.overview,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = FontSizes.bodySmall,
             lineHeight = FontSizes.bodyMedium,
             maxLines = 4,

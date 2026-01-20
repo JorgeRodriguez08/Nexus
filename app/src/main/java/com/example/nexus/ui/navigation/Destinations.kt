@@ -8,6 +8,7 @@ sealed class Destinations(
     val showNewsFilterBar: Boolean = false,
     val showSearchBar: Boolean = false
 ) {
+    object Intro : Destinations(NavRoutes.INTRO, showTopBar = false, showBottomBar = false, showFilterBar = false)
     object Movies : Destinations(NavRoutes.MOVIES)
     object Series : Destinations(NavRoutes.SERIES)
     object Home : Destinations(NavRoutes.HOME)
@@ -56,6 +57,7 @@ sealed class Destinations(
         }
 
         fun screens() = listOf(
+            Intro,
             Movies,
             Series,
             Home,

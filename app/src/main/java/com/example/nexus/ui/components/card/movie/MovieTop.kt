@@ -18,8 +18,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import com.example.nexus.domain.model.Movie
+import com.example.nexus.ui.shimmer.ShimmerDarkBox
 import com.example.nexus.ui.theme.Dimens
 import com.example.nexus.ui.theme.FontSizes
 
@@ -62,10 +63,17 @@ fun MovieTop(
                 .clickable(onClick = { onMovieClick(movie.id) }),
             shape = RoundedCornerShape(Dimens.Radius.extraSmall)
         ) {
-            AsyncImage(
+            SubcomposeAsyncImage(
                 model = movie.posterUrl,
                 contentDescription = movie.title,
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
+                loading = {
+                    ShimmerDarkBox(
+                        width = Dimens.Posters.top.width,
+                        height = Dimens.Posters.top.height,
+                        cornerRadius = Dimens.Radius.extraSmall
+                    )
+                }
             )
         }
     }

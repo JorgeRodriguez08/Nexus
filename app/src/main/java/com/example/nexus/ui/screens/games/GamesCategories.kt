@@ -1,77 +1,33 @@
 package com.example.nexus.ui.screens.games
 
-import com.example.nexus.ui.screens.movies.MovieCategory
-import com.example.nexus.ui.screens.series.SerieCategory
-
 object GamesCategories {
     val gamesCategories = listOf(
-        MovieCategory.Upcoming,
-
-        MovieCategory.ActionKorea,
-        SerieCategory.RomanticInter,
-        SerieCategory.Comedy,
-
-        SerieCategory.Trending,
-
-        SerieCategory.DramaUs,
-        SerieCategory.DramaAndThriller,
-        SerieCategory.Police,
-        MovieCategory.TvMovie,
-
-        MovieCategory.OnlyNexus,
-
-        SerieCategory.Animation,
-        MovieCategory.Comedy2,
-        MovieCategory.Horror,
-        MovieCategory.Adventure,
-
-        SerieCategory.AiringToday,
-
-        SerieCategory.ActionAdventure,
-        MovieCategory.Drama,
-        MovieCategory.TaqAction,
-        MovieCategory.Mexican,
-
-        MovieCategory.NowPlaying,
-
-        MovieCategory.ActionAndThriller,
-        SerieCategory.Thriller,
-        MovieCategory.War,
-        SerieCategory.News,
-
-        SerieCategory.OnTheAir,
-
-        SerieCategory.Crime,
-        MovieCategory.Mystery,
-        SerieCategory.Romantic,
-        SerieCategory.RomanticAsiatic,
-
-        MovieCategory.Trending,
-
-        SerieCategory.Crime,
-        MovieCategory.Comedy,
-        SerieCategory.RomanticKorea,
-        MovieCategory.Crime,
-
-        SerieCategory.OnlyNexus,
-
-        MovieCategory.Thriller,
-        SerieCategory.War,
-        SerieCategory.Drama,
-        SerieCategory.Family,
-
-        MovieCategory.Popular,
-
-        MovieCategory.ScienceFiction,
-        MovieCategory.Fantasy,
-        SerieCategory.Telenovela,
-        SerieCategory.Mystery,
-
-        SerieCategory.Popular,
-
-        SerieCategory.SciFiFantasy,
-        SerieCategory.ThrillerAndMystery,
-        SerieCategory.DramaKorea
-
+        GameSerieCategory.NextHistory,
+        GameMovieCategory.MoviesForFamily,
+        GameSerieCategory.ComedySeries,
+        GameMovieCategory.RecommendedMovies,
+        GameSerieCategory.DramaSeries,
+        GameSerieCategory.ChildrensContent,
+        GameSerieCategory.ActionSeries,
+        GameSerieCategory.Cartoon,
+        GameSerieCategory.KidsNotKids,
+        GameMovieCategory.KillBoredom,
+        GameMovieCategory.NewsNexus,
+        GameSerieCategory.SeriesBasedOnBooks,
+        GameSerieCategory.SeriesSpanish,
+        GameSerieCategory.FantasySeries,
+        GameMovieCategory.Animation,
+        GameMovieCategory.TreasuresForYou,
+        GameMovieCategory.ComedyMovies,
+        GameMovieCategory.SelectionToday,
+        GameMovieCategory.HollywoodYourScreen,
+        GameSerieCategory.CuriousMinds,
+        GameMovieCategory.WackyMovies,
+        GameSerieCategory.ExcitingSeries,
+        GameMovieCategory.ChildrenMovies,
+        GameMovieCategory.DramaMovies,
+        GameMovieCategory.OnlyNexus,
+        GameMovieCategory.WomenBehindScenes,
+        GameMovieCategory.AnimationForFamily,
     )
 }
